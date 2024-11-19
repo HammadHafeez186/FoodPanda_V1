@@ -1,0 +1,125 @@
+import React, { useState } from 'react';
+import { 
+  View, 
+  Text, 
+  StyleSheet, 
+  Image, 
+  TouchableOpacity, 
+  FlatList 
+} from 'react-native';
+
+const AddonScreen = ({ navigation }) => {
+  const [selectedAddons, setSelectedAddons] = useState({});
+
+  const addonCategories = [
+    {
+      category: 'Sides',
+      items: [
+        { id: 1, name: 'French Fries', price: 2.99, image: require('./assets/fries.png') },
+        { id: 2, name: 'Coleslaw', price: 1.99, image: require('./assets/coleslaw.png') },
+        { id: 3, name: 'Corn', price: 2.49, image: require('./assets/corn.png') }
+      ]
+    },
+    {
+      category: 'Drinks',
+      items: [
+        { id: 4, name: 'Coca Cola', price: 1.99, image: require('./assets/cola.png') },
+        { id: 5, name: 'Sprite', price: 1.99, image: require('./assets/sprite.png') },
+        { id: 6, name: 'Water', price: 1.49, image: require('./assets/water.png') }
+      ]
+    }
+  ];
+
+  const toggleAddon = (item) => {
+    setSelectedAddons(prev => {
+      const newSelectedAddons = {...prev};
+      if (newSelectedAddons[item.id]) {
+        delete newSelectedAddons[item.id];
+      } else {
+        newSelectedAddons[item.id] = item;
+      }
+      return newSelectedAddons;
+    });
+  };
+
+  const renderAddonCategory = ({ item: category }) => (
+    <View style={styles.categoryContainer}>
+      <Text style={styles.categoryTitle}>{category.category}</Text>
+      <FlatList
+        horizontal
+        data={category.items}
+        keyExtractor={(item) => item.id.toString()}
+        showsHorizontalScrollIndicator={false}
+        renderItem={({ item }) => (
+          <TouchableOpacity 
+            style={[
+              styles.addonItem, 
+              selectedAddons[item.id] && styles.selectedAddon
+            ]}
+            onPress={() => toggleAddon(item)}
+          >
+            <Image source={item.image} style={styles.addonImage} />
+            <Text style={styles.addonName}>{item.name}</Text>
+            <Text style={styles.addonPrice}>${item.price.toFixed(2)}</Text>
+          </TouchableOpacity>
+        )}
+      />
+    </View>
+  );
+
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={addonCategories}
+        keyExtractor={(item) => item.category}
+        renderItem={renderAddonCategory}
+      />
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#f5f5f5'
+  },
+  categoryContainer: {
+    marginVertical: 10
+  },
+  categoryTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginHorizontal: 15,
+    marginBottom: 10
+  },
+  addonItem: {
+    width: 120,
+    alignItems: 'center',
+    padding: 10,
+    marginHorizontal: 5,
+    borderWidth: 1,
+    borderColor: '#e0e0e0',
+    borderRadius: 10,
+    backgroundColor: 'white'
+  },
+  selectedAddon: {
+    borderColor: '#FF6B6B',
+    backgroundColor: '#FFF5F5'
+  },
+  addonImage: {
+    width: 80,
+    height: 80,
+    resizeMode: 'contain'
+  },
+  addonName: {
+    marginTop: 5,
+    fontSize: 14,
+    fontWeight: '500'
+  },
+  addonPrice: {
+    marginTop: 3,
+    color: '#888'
+  }
+});
+
+export default AddonScreen;
