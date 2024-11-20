@@ -1,5 +1,5 @@
 import { StyleSheet, View, FlatList, Image, Dimensions } from "react-native";
-import React, { useState } from "react";
+import React, { useState,useRef } from "react";
 
 const Carousel = () => {
     const images = [
@@ -11,7 +11,7 @@ const Carousel = () => {
 
     const [currentIndex, setCurrentIndex] = useState(0);
 
-    const onViewableItemsChanged = React.useRef(({ viewableItems }) => {
+    const onViewableItemsChanged = useRef(({ viewableItems }) => {
         if (viewableItems.length > 0) {
             setCurrentIndex(viewableItems[0].index);
         }

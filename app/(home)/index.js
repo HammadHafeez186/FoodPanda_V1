@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, Alert, ScrollView, Pressable, TextInput, Image } from "react-native";
+import { StyleSheet, View, Text, Alert, FlatList, Pressable, TextInput, Image } from "react-native";
 import React, { useState, useEffect } from "react";
 import * as Location from "expo-location";
 import Octicons from '@expo/vector-icons/Octicons';
@@ -58,77 +58,94 @@ const Index = () => {
         }
     };
 
-    return (
-        <ScrollView style={styles.container}>
-
-            <View style={styles.locationContainer}>
-                <Octicons name="location" size={24} color="#e52850" />
-                <View style={styles.addressContainer}>
-                    <Text style={styles.deliverToText}>Deliver To:</Text>
-                    <Text style={styles.addressText}>{displayCurrentAddress}</Text>
-                </View>
-                <Pressable style={styles.pressable}>
-                    <Text>S</Text>
-                </Pressable>
-            </View>
-
-            <View style={styles.searchContainer}>
-                <AntDesign name="search1" size={24} color="#ef2b50" />
-                <TextInput
-                    placeholder="Search for Mighty Zinger, Deals, etc"
-                    style={styles.searchInput}
-                    placeholderTextColor="grey"
+    // Render item functions for FlatLists
+    const renderRecommendedItem = ({ item }) => (
+        <View style={styles.foodItemContainer}>
+            <View style={styles.foodImageContainer}>
+                <Image
+                    source={{ uri: item?.image }}
+                    style={styles.foodImage}
                 />
             </View>
 
-            <Categories />
-            <Carousel />
-
-            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                {recommended.map((item, index) => ( //replace with list view
-                    <View style={styles.foodItemContainer} key={index}>
-                        <View style={styles.foodImageContainer}>
-                            <Image
-                                source={{ uri: item?.image }}
-                                style={styles.foodImage}
-                            />
-                        </View>
-
-                        <View style={styles.foodDetailsContainer}>
-                            <Text style={styles.foodName}>{item?.name}</Text>
-                            <Text style={styles.foodType}>{item?.type}</Text>
-
-                            {/* Move the time below food type */}
-                            <View style={styles.timeContainer}>
-                                <Ionicons name="time" size={20} color="black" />
-                                <Text style={styles.timeText}>{item?.time} mins</Text>
-                            </View>
-                        </View>
-                    </View>
-                ))}
-            </ScrollView>
-
-            <Text style={styles.exploreText}>EXPLORE</Text>
-
-            {/* Fixed the explore section */}
-            <ScrollView horizontal showsHorizontalScrollIndicator={false}> // flatList
-                {items.map((item, index) => (
-                    <View key={index} style={styles.itemsExplore}>
-                        <Image style={{ width: 50, height: 50 }} source={{ uri: item?.image }} />
-                        <Text style={styles.itemsExploreName}>{item?.name}</Text>
-                        <Text style={styles.itemsExploreDescription}>{item?.description}</Text>
-                    </View>
-                ))}
-            </ScrollView>
-            <Text style={styles.hotelstag}>ALL RESTAURANTS</Text>
-            <View style={styles.hotelsStartContainer}>
-                {hotelData.map((item, index) => (
-                    <Hotels key={index} item={item} />
-                ))}
-
+            <View style={styles.foodDetailsContainer}>
+                <Text style={styles.foodName}>{item?.name}</Text>
+                <Text style={styles.foodType}>{item?.type}</Text>
+                <View style={styles.timeContainer}>
+                    <Ionicons name="time" size={20} color="black" />
+                    <Text style={styles.timeText}>{item?.time} mins</Text>
+                </View>
             </View>
+        </View>
+    );
 
-        </ScrollView>
+    const renderExploreItem = ({ item }) => (
+        <View style={styles.itemsExplore}>
+            <Image style={{ width: 50, height: 50 }} source={{ uri: item?.image }} />
+            <Text style={styles.itemsExploreName}>{item?.name}</Text>
+            <Text style={styles.itemsExploreDescription}>{item?.description}</Text>
+        </View>
+    );
+
+    const renderHotelItem = ({ item }) => (
+        <Hotels item={item} />
+    );
+
+    return (
+        <FlatList
+            data={hotelData}
+            renderItem={renderHotelItem}
+            keyExtractor={(item, index) => index.toString()}
+            ListHeaderComponent={() => (
+                <>
+                    <View style={styles.locationContainer}>
+                        <Octicons name="location" size={24} color="#e52850" />
+                        <View style={styles.addressContainer}>
+                            <Text style={styles.deliverToText}>Deliver To:</Text>
+                            <Text style={styles.addressText}>{displayCurrentAddress}</Text>
+                        </View>
+                        <Pressable style={styles.pressable}>
+                            <Text>S</Text>
+                        </Pressable>
+                    </View>
+
+                    <View style={styles.searchContainer}>
+                        <AntDesign name="search1" size={24} color="#ef2b50" />
+                        <TextInput
+                            placeholder="Search for Mighty Zinger, Deals, etc"
+                            style={styles.searchInput}
+                            placeholderTextColor="grey"
+                        />
+                    </View>
+
+                    <Categories />
+                    <Carousel />
+
+                    <FlatList
+                        data={recommended}
+                        renderItem={renderRecommendedItem}
+                        keyExtractor={(item, index) => `recommended-${index}`}
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                        style={{ flexGrow: 0 }}
+                    />
+
+                    <Text style={styles.exploreText}>EXPLORE</Text>
+
+                    <FlatList
+                        data={items}
+                        renderItem={renderExploreItem}
+                        keyExtractor={(item, index) => `explore-${index}`}
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                        style={{ flexGrow: 0 }}
+                    />
+
+                    <Text style={styles.hotelstag}>ALL RESTAURANTS</Text>
+                </>
+            )}
+            contentContainerStyle={styles.container}
+        />
     );
 };
 
@@ -136,7 +153,6 @@ export default Index;
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         backgroundColor: "#f8f8f8"
     },
     locationContainer: {
@@ -182,21 +198,19 @@ const styles = StyleSheet.create({
         flex: 1,
         marginLeft: 10
     },
-
-    // Updated styles for food items
     foodItemContainer: {
         backgroundColor: "white",
         flexDirection: "row",
         margin: 10,
         borderRadius: 8,
-        elevation: 3, // Optional: for shadow effect
+        elevation: 3,
         paddingVertical: 10,
         paddingHorizontal: 10
     },
     foodImageContainer: {
         borderTopLeftRadius: 8,
         borderBottomLeftRadius: 7,
-        overflow: "hidden", // To prevent image from overflowing corners
+        overflow: "hidden",
     },
     foodImage: {
         width: 100,
@@ -236,28 +250,27 @@ const styles = StyleSheet.create({
         color: "grey"
     },
     itemsExplore: {
-        width:90,
-        borderColor:"#E0E0E0",
-        borderWidth:1,
-        paddingVertical:5,
-        paddingHorizontal:1,
-        borderRadius:5,
-        marginLeft:10,
-        justifyContent:"center",
-        alignItems:"center",
-        backgroundColor:"white"
-
+        width: 90,
+        borderColor: "#E0E0E0",
+        borderWidth: 1,
+        paddingVertical: 5,
+        paddingHorizontal: 1,
+        borderRadius: 5,
+        marginLeft: 10,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "white"
     },
     itemsExploreName: {
         fontSize: 13,
-        fontWeight:"500",
-        marginTop:6,
+        fontWeight: "500",
+        marginTop: 6,
     },
     itemsExploreDescription: {
-        fontSize:12,
-        color:"grey",
-        marginTop:3,
-        textAlign:"center"
+        fontSize: 12,
+        color: "grey",
+        marginTop: 3,
+        textAlign: "center"
     },
     hotelstag: {
         textAlign: "center",
@@ -265,9 +278,5 @@ const styles = StyleSheet.create({
         letterSpacing: 5,
         marginBottom: 5,
         color: "grey"
-    },
-    hotelsStartContainer: {
-        marginHorizontal:8
     }
-
 });
