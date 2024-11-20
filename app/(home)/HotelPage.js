@@ -41,17 +41,20 @@ const hotelPage = () => {
         </>
     );
 
-    // Render item function for FlatList
-    const renderItem = ({item}) => (
-        <FoodItem item={item}/>
-    );
-
+    
     // Make sure your menu items have unique IDs
-    // If they don't, you might want to add them when preparing the data
+    
     const menuWithIds = menu.map((item, index) => ({
         ...item,
         id: item.id || `item-${index}` // Use existing ID or create one
     }));
+
+    const renderItem = ({item}) => (
+        <FoodItem 
+            item={item}
+            key={item.uniqueId} // Add key here as well
+        />
+    );
 
     return (
         <>
