@@ -6,12 +6,11 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import Carousel from "../../components/Carousel";
 import Categories from "../../components/Categories";
 import Ionicons from '@expo/vector-icons/Ionicons';
-import items from "../../data/items.json";
-import recommended from "../../data/recommended.json";
-import hotelData from "../../data/hotelData.json";
+import { items, recommended, hotelData } from "../../data/HomeIndexData";
 import Hotels from "../../components/Hotels";
+import HomeIndexStyles from "../../Styles/HomeIndexStyles";
 
-const Index = () => {
+const HomeIndex = () => {
     const [locationServicesEnabled, setLocationServicesEnabled] = useState(false);
     const [displayCurrentAddress, setDisplayCurrentAddress] = useState("Waiting for Current Location....");
 
@@ -58,38 +57,31 @@ const Index = () => {
         }
     };
 
-    // Render item functions for FlatLists
     const renderRecommendedItem = ({ item }) => (
-        <View style={styles.foodItemContainer}>
-            <View style={styles.foodImageContainer}>
-                <Image
-                    source={{ uri: item?.image }}
-                    style={styles.foodImage}
-                />
+        <View style={HomeIndexStyles.foodItemContainer}>
+            <View style={HomeIndexStyles.foodImageContainer}>
+                <Image source={{ uri: item?.image }} style={HomeIndexStyles.foodImage} />
             </View>
-
-            <View style={styles.foodDetailsContainer}>
-                <Text style={styles.foodName}>{item?.name}</Text>
-                <Text style={styles.foodType}>{item?.type}</Text>
-                <View style={styles.timeContainer}>
+            <View style={HomeIndexStyles.foodDetailsContainer}>
+                <Text style={HomeIndexStyles.foodName}>{item?.name}</Text>
+                <Text style={HomeIndexStyles.foodType}>{item?.type}</Text>
+                <View style={HomeIndexStyles.timeContainer}>
                     <Ionicons name="time" size={20} color="black" />
-                    <Text style={styles.timeText}>{item?.time} mins</Text>
+                    <Text style={HomeIndexStyles.timeText}>{item?.time} mins</Text>
                 </View>
             </View>
         </View>
     );
 
     const renderExploreItem = ({ item }) => (
-        <View style={styles.itemsExplore}>
+        <View style={HomeIndexStyles.itemsExplore}>
             <Image style={{ width: 50, height: 50 }} source={{ uri: item?.image }} />
-            <Text style={styles.itemsExploreName}>{item?.name}</Text>
-            <Text style={styles.itemsExploreDescription}>{item?.description}</Text>
+            <Text style={HomeIndexStyles.itemsExploreName}>{item?.name}</Text>
+            <Text style={HomeIndexStyles.itemsExploreDescription}>{item?.description}</Text>
         </View>
     );
 
-    const renderHotelItem = ({ item }) => (
-        <Hotels item={item} />
-    );
+    const renderHotelItem = ({ item }) => <Hotels item={item} />;
 
     return (
         <FlatList
@@ -98,22 +90,22 @@ const Index = () => {
             keyExtractor={(item, index) => index.toString()}
             ListHeaderComponent={() => (
                 <>
-                    <View style={styles.locationContainer}>
+                    <View style={HomeIndexStyles.locationContainer}>
                         <Octicons name="location" size={24} color="#e52850" />
-                        <View style={styles.addressContainer}>
-                            <Text style={styles.deliverToText}>Deliver To:</Text>
-                            <Text style={styles.addressText}>{displayCurrentAddress}</Text>
+                        <View style={HomeIndexStyles.addressContainer}>
+                            <Text style={HomeIndexStyles.deliverToText}>Deliver To:</Text>
+                            <Text style={HomeIndexStyles.addressText}>{displayCurrentAddress}</Text>
                         </View>
-                        <Pressable style={styles.pressable}>
+                        <Pressable style={HomeIndexStyles.pressable}>
                             <Text>S</Text>
                         </Pressable>
                     </View>
 
-                    <View style={styles.searchContainer}>
+                    <View style={HomeIndexStyles.searchContainer}>
                         <AntDesign name="search1" size={24} color="#ef2b50" />
                         <TextInput
                             placeholder="Search for Mighty Zinger, Deals, etc"
-                            style={styles.searchInput}
+                            style={HomeIndexStyles.searchInput}
                             placeholderTextColor="grey"
                         />
                     </View>
@@ -130,7 +122,7 @@ const Index = () => {
                         style={{ flexGrow: 0 }}
                     />
 
-                    <Text style={styles.exploreText}>EXPLORE</Text>
+                    <Text style={HomeIndexStyles.exploreText}>EXPLORE</Text>
 
                     <FlatList
                         data={items}
@@ -141,142 +133,12 @@ const Index = () => {
                         style={{ flexGrow: 0 }}
                     />
 
-                    <Text style={styles.hotelstag}>ALL RESTAURANTS</Text>
+                    <Text style={HomeIndexStyles.hotelstag}>ALL RESTAURANTS</Text>
                 </>
             )}
-            contentContainerStyle={styles.container}
+            contentContainerStyle={HomeIndexStyles.container}
         />
     );
 };
 
-export default Index;
-
-const styles = StyleSheet.create({
-    container: {
-        backgroundColor: "#f8f8f8"
-    },
-    locationContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-        gap: 12,
-        padding: 10
-    },
-    addressContainer: {
-        flex: 1
-    },
-    deliverToText: {
-        fontSize: 15,
-        fontWeight: "500"
-    },
-    addressText: {
-        fontSize: 16,
-        color: "grey",
-        marginTop: 3
-    },
-    pressable: {
-        backgroundColor: "#6cb4ee",
-        width: 40,
-        height: 40,
-        borderRadius: 20,
-        justifyContent: "center",
-        alignItems: "center",
-    },
-    searchContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
-        borderWidth: 1,
-        borderColor: "#c0c0c0",
-        paddingVertical: 8,
-        paddingHorizontal: 10,
-        borderRadius: 11,
-        marginTop: 10,
-        marginHorizontal: 10
-    },
-    searchInput: {
-        color: "black",
-        flex: 1,
-        marginLeft: 10
-    },
-    foodItemContainer: {
-        backgroundColor: "white",
-        flexDirection: "row",
-        margin: 10,
-        borderRadius: 8,
-        elevation: 3,
-        paddingVertical: 10,
-        paddingHorizontal: 10
-    },
-    foodImageContainer: {
-        borderTopLeftRadius: 8,
-        borderBottomLeftRadius: 7,
-        overflow: "hidden",
-    },
-    foodImage: {
-        width: 100,
-        height: 100,
-        resizeMode: "cover",
-    },
-    foodDetailsContainer: {
-        flex: 1,
-        justifyContent: "flex-start",
-        marginLeft: 10,
-        paddingVertical: 5,
-    },
-    foodName: {
-        fontSize: 16,
-        fontWeight: "600",
-        color: "#333",
-    },
-    foodType: {
-        fontSize: 14,
-        color: "grey",
-        marginBottom: 10
-    },
-    timeContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-        marginTop: 5,
-    },
-    timeText: {
-        fontSize: 14,
-        color: "#555",
-    },
-    exploreText: {
-        textAlign: "center",
-        marginTop: 7,
-        letterSpacing: 5,
-        marginBottom: 5,
-        color: "grey"
-    },
-    itemsExplore: {
-        width: 90,
-        borderColor: "#E0E0E0",
-        borderWidth: 1,
-        paddingVertical: 5,
-        paddingHorizontal: 1,
-        borderRadius: 5,
-        marginLeft: 10,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "white"
-    },
-    itemsExploreName: {
-        fontSize: 13,
-        fontWeight: "500",
-        marginTop: 6,
-    },
-    itemsExploreDescription: {
-        fontSize: 12,
-        color: "grey",
-        marginTop: 3,
-        textAlign: "center"
-    },
-    hotelstag: {
-        textAlign: "center",
-        marginTop: 8,
-        letterSpacing: 5,
-        marginBottom: 5,
-        color: "grey"
-    }
-});
+export default HomeIndex;

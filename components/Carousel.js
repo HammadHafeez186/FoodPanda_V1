@@ -1,5 +1,6 @@
-import { StyleSheet, View, FlatList, Image, Dimensions } from "react-native";
-import React, { useState,useRef } from "react";
+import { View, FlatList, Image, Dimensions } from "react-native";
+import React, { useState, useRef } from "react";
+import CarouselStyles from '../Styles/CarouselStyles';
 
 const Carousel = () => {
     const images = [
@@ -18,7 +19,7 @@ const Carousel = () => {
     }).current;
 
     return (
-        <View style={styles.container}>
+        <View style={CarouselStyles.container}>
             <FlatList
                 data={images}
                 horizontal
@@ -28,18 +29,18 @@ const Carousel = () => {
                 onViewableItemsChanged={onViewableItemsChanged}
                 viewabilityConfig={{ viewAreaCoveragePercentThreshold: 50 }}
                 renderItem={({ item }) => (
-                    <View style={[styles.imageWrapper, { width }]}>
-                        <Image source={{ uri: item }} style={styles.image} />
+                    <View style={[CarouselStyles.imageWrapper, { width }]}>
+                        <Image source={{ uri: item }} style={CarouselStyles.image} />
                     </View>
                 )}
             />
-            <View style={styles.dotContainer}>
+            <View style={CarouselStyles.dotContainer}>
                 {images.map((_, index) => (
                     <View
                         key={index}
                         style={[
-                            styles.dot,
-                            currentIndex === index && styles.activeDot,
+                            CarouselStyles.dot,
+                            currentIndex === index && CarouselStyles.activeDot,
                         ]}
                     />
                 ))}
@@ -49,39 +50,3 @@ const Carousel = () => {
 };
 
 export default Carousel;
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        marginTop: 10,
-    },
-    imageWrapper: {
-        alignItems: "center",
-        justifyContent: "center",
-    },
-    image: {
-        borderRadius: 15,
-        width: "94%",
-        height: 200,
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.1,
-        shadowRadius: 10,
-        elevation: 5,
-    },
-    dotContainer: {
-        flexDirection: "row",
-        justifyContent: "center",
-        marginTop: 10,
-    },
-    dot: {
-        width: 8,
-        height: 8,
-        borderRadius: 4,
-        backgroundColor: "#90A4AE",
-        marginHorizontal: 4,
-    },
-    activeDot: {
-        backgroundColor: "#13274f",
-    },
-});

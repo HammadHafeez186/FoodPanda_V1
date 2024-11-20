@@ -1,10 +1,11 @@
-import {Image, Pressable, StyleSheet, Text, View} from "react-native";
-import React, {useState} from "react";
-import {FontAwesome} from '@expo/vector-icons';
-import {useDispatch} from "react-redux";
-import {addToCart, decrementQuantity, incrementQuantity, removeFromCart} from "../redux/CartReducer";
+import { Image, Pressable, Text, View } from "react-native";
+import React, { useState } from "react";
+import { FontAwesome } from '@expo/vector-icons';
+import { useDispatch } from "react-redux";
+import { addToCart, decrementQuantity, incrementQuantity, removeFromCart } from "../redux/CartReducer";
+import MenuItemStyles from "../Styles/MenuItemStyles";
 
-const MenuItems = ({item}) => {
+const MenuItems = ({ item }) => {
     const [selected, setSelected] = useState(false);
     const [quantity, setQuantity] = useState(0);
     const dispatch = useDispatch();
@@ -13,7 +14,7 @@ const MenuItems = ({item}) => {
         if (!selected) {
             setSelected(true);
             setQuantity(1);
-            dispatch(addToCart({...item, quantity: 1}));
+            dispatch(addToCart({ ...item, quantity: 1 }));
         } else {
             setQuantity(prev => prev + 1);
             dispatch(incrementQuantity(item));
@@ -33,51 +34,50 @@ const MenuItems = ({item}) => {
 
     return (
         <View>
-            <Pressable style={styles.pressableContainer}>
+            <Pressable style={MenuItemStyles.pressableContainer}>
                 <View>
-                    <Text style={styles.nameText}>{item.name}</Text>
-                    <Text style={styles.priceText}>Rs. {item.price}</Text>
-                    <Text style={styles.starRatingText}>
+                    <Text style={MenuItemStyles.nameText}>{item.name}</Text>
+                    <Text style={MenuItemStyles.priceText}>Rs. {item.price}</Text>
+                    <Text style={MenuItemStyles.starRatingText}>
                         {[0, 0, 0, 0, 0].map((_, i) => (
                             <FontAwesome
                                 key={i}
-                                style={{paddingHorizontal: 3}}
+                                style={{ paddingHorizontal: 3 }}
                                 name={i < Math.floor(item.rating) ? "star" : "star-o"}
                                 size={15}
                                 color="#ffd700"
                             />
                         ))}
                     </Text>
-                    <Text style={styles.itemDescriptionText}>
+                    <Text style={MenuItemStyles.itemDescriptionText}>
                         {item.description?.length > 40
                             ? item.description.substring(0, 40) + "..."
                             : item.description || "No Description Available"}
                     </Text>
-
                 </View>
-                <Pressable style={styles.pressableImageContainer}>
-                    <Image style={styles.imageStyle} source={{uri: item.image}}/>
+                <Pressable style={MenuItemStyles.pressableImageContainer}>
+                    <Image style={MenuItemStyles.imageStyle} source={{ uri: item.image }} />
                     {!selected ? (
                         <Pressable
                             onPress={handleAddToCart}
-                            style={styles.pressableButtonContainer}
+                            style={MenuItemStyles.pressableButtonContainer}
                         >
-                            <Text style={styles.addButtonText}>ADD</Text>
+                            <Text style={MenuItemStyles.addButtonText}>ADD</Text>
                         </Pressable>
                     ) : (
-                        <View style={styles.quantityContainer}>
+                        <View style={MenuItemStyles.quantityContainer}>
                             <Pressable
                                 onPress={handleMinusToCart}
-                                style={styles.quantityButton}
+                                style={MenuItemStyles.quantityButton}
                             >
-                                <Text style={styles.quantityButtonText}>-</Text>
+                                <Text style={MenuItemStyles.quantityButtonText}>-</Text>
                             </Pressable>
-                            <Text style={styles.quantityText}>{quantity}</Text>
+                            <Text style={MenuItemStyles.quantityText}>{quantity}</Text>
                             <Pressable
                                 onPress={handleAddToCart}
-                                style={styles.quantityButton}
+                                style={MenuItemStyles.quantityButton}
                             >
-                                <Text style={styles.quantityButtonText}>+</Text>
+                                <Text style={MenuItemStyles.quantityButtonText}>+</Text>
                             </Pressable>
                         </View>
                     )}
@@ -88,84 +88,3 @@ const MenuItems = ({item}) => {
 };
 
 export default MenuItems;
-
-const styles = StyleSheet.create({
-    starRatingText: {
-        marginTop: 5,
-        borderRadius: 4,
-    },
-    pressableContainer: {
-        margin: 10,
-        flexDirection: "row",
-        justifyContent: "space-between",
-        marginVertical: 15
-    },
-    imageStyle: {
-        width: 120,
-        height: 120,
-        borderRadius: 8,
-    },
-    itemDescriptionText: {
-        width: 200,
-        marginTop: 8,
-        color: "gray",
-        fontSize: 16,
-    },
-    nameText: {
-        fontSize: 18,
-        fontWeight: "600",
-        width: 220,
-    },
-    priceText: {
-        marginTop: 4,
-        fontSize: 15,
-        fontWeight: "500",
-    },
-    pressableImageContainer: {
-        marginRight: 10,
-    },
-    pressableButtonContainer: {
-        position: "absolute",
-        top: 95,
-        left: 20,
-        borderColor: "#a32636",
-        borderWidth: 1,
-        flexDirection: "row",
-        paddingHorizontal: 25,
-        paddingVertical: 5,
-        alignItems: "center",
-        backgroundColor: "white",
-        borderRadius: 5,
-    },
-    addButtonText: {
-        fontSize: 18,
-        fontWeight: "600",
-        color: "#fd5c63"
-    },
-    quantityContainer: {
-        position: "absolute",
-        top: 95,
-        left: 10,
-        flexDirection: "row",
-        alignItems: "center",
-        backgroundColor: "#fd5c63",
-        borderRadius: 5,
-        borderColor: "#a32636",
-        borderWidth: 1,
-    },
-    quantityButton: {
-        paddingHorizontal: 15,
-        paddingVertical: 5,
-    },
-    quantityButtonText: {
-        fontSize: 18,
-        fontWeight: "600",
-        color: "white",
-    },
-    quantityText: {
-        fontSize: 18,
-        fontWeight: "600",
-        color: "white",
-        paddingHorizontal: 10,
-    }
-});
