@@ -1,13 +1,14 @@
-import {StyleSheet, View, Text, Pressable, FlatList} from "react-native";
+import { View, FlatList, Pressable, Text } from "react-native";
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import React from "react";
 import MenuItems from "./MenuItems";
+import FoodItemStyles from '../Styles/FoodItemStyles';
 
-const FoodItem = ({item}) => {
+const FoodItem = ({ item }) => {
     const data = [item];
 
     // Render function for menu items
-    const renderMenuItems = ({item: menuItem}) => (
+    const renderMenuItems = ({ item: menuItem }) => (
         <MenuItems 
             key={menuItem.id || `${item.name}-${menuItem.name}`}
             item={menuItem}
@@ -15,10 +16,10 @@ const FoodItem = ({item}) => {
     );
 
     // Render function for main food item
-    const renderFoodItem = ({item: foodItem}) => (
+    const renderFoodItem = ({ item: foodItem }) => (
         <View key={foodItem.id || foodItem.name}>
-            <Pressable style={styles.pressableContainer}>
-                <Text style={styles.recommendedTagStyle}>
+            <Pressable style={FoodItemStyles.pressableContainer}>
+                <Text style={FoodItemStyles.recommendedTagStyle}>
                     {foodItem?.name} ({foodItem.items.length})
                 </Text>
                 <FontAwesome name="angle-down" size={24} color="black" />
@@ -42,19 +43,6 @@ const FoodItem = ({item}) => {
             />
         </View>
     );
-}
+};
 
 export default FoodItem;
-
-const styles = StyleSheet.create({
-    pressableContainer: {
-        margin: 10,
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between"
-    },
-    recommendedTagStyle: {
-        fontSize: 19,
-        fontWeight: "bold",
-    }
-});
