@@ -60,6 +60,7 @@ const Index = () => {
 
     return (
         <ScrollView style={styles.container}>
+
             <View style={styles.locationContainer}>
                 <Octicons name="location" size={24} color="#e52850" />
                 <View style={styles.addressContainer}>
@@ -80,12 +81,12 @@ const Index = () => {
                 />
             </View>
 
-            <Carousel />
             <Categories />
+            <Carousel />
 
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 {recommended.map((item, index) => ( //replace with list view
-                    <View style={styles.foodItemContainer} key={index}> // separete component for render item
+                    <View style={styles.foodItemContainer} key={index}>
                         <View style={styles.foodImageContainer}>
                             <Image
                                 source={{ uri: item?.image }}
