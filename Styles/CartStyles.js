@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     itemPrice: {
         fontSize: 16,
         fontWeight: "600",
-        color: "#007BFF",
+        color: "#d70000",
         paddingHorizontal: 10,
     },
     quantityContainer: {
