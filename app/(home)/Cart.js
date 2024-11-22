@@ -1,12 +1,16 @@
+import { View, Text, ScrollView, Pressable } from "react-native";
+import Ionicons from '@expo/vector-icons/Ionicons';
 import React from "react";
-import { ScrollView, View, Text, Pressable } from "react-native";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { useLocalSearchParams, router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { useSelector, useDispatch } from "react-redux";
-import { incrementQuantity, decrementQuantity } from "../../redux/CartReducer";
+import { incrementQuantity, decrementQuantity } from '../../redux/CartReducer';
 import Instructions from "../../data/Instructions.json";
-import { FontAwesome5, Feather, AntDesign, Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
-import CartStyles from "../../Styles/CartStyles";
+import { FontAwesome5 } from "@expo/vector-icons";
+import Feather from '@expo/vector-icons/Feather';
+import AntDesign from '@expo/vector-icons/AntDesign';
+import Entypo from '@expo/vector-icons/Entypo';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import styles from "../../Styles/CartStyles";
 
 const Cart = () => {
     const params = useLocalSearchParams();
@@ -14,87 +18,84 @@ const Cart = () => {
     const dispatch = useDispatch();
 
     return (
-        <ScrollView style={CartStyles.container}>
+        <ScrollView style={styles.container}>
             {/* Header Section */}
-            <View style={CartStyles.header}>
+            <View style={styles.header}>
                 <Pressable onPress={() => router.back()}>
                     <Ionicons name="arrow-back" size={24} color="black" />
                 </Pressable>
-                <Text style={CartStyles.headerTitle}>{params?.name}</Text>
+                <Text style={styles.headerTitle}>{params?.name}</Text>
             </View>
 
             {/* Delivery Info */}
-            <View style={CartStyles.deliveryContainer}>
-                <Text style={CartStyles.deliveryText}>Delivery in 35 to 40 min.</Text>
+            <View style={styles.deliveryContainer}>
+                <Text style={styles.deliveryText}>Delivery in 35 to 40 min.</Text>
             </View>
 
             {/* Section Title */}
-            <View style={CartStyles.sectionTitleContainer}>
-                <Text style={CartStyles.sectionTitle}>ITEM(S) ADDED</Text>
+            <View style={styles.sectionTitleContainer}>
+                <Text style={styles.sectionTitle}>ITEM(S) ADDED</Text>
             </View>
 
             {/* Cart Items */}
             <View>
                 {cart.map((item, index) => (
-                    <View key={index} style={CartStyles.cartItem}>
-                        <Text style={CartStyles.itemName}>{item.name}</Text>
-                        <Text style={CartStyles.itemPrice}>Rs.{item.price * item.quantity}</Text>
+                    <View key={item.id || index} style={styles.cartItem}>
+                        <Text style={styles.itemName}>{item.name}</Text>
+                        <Text style={styles.itemPrice}>Rs.{item.price * item.quantity}</Text>
 
-                        <View style={CartStyles.quantityContainer}>
+                        <View style={styles.quantityContainer}>
                             <Pressable
                                 onPress={() => dispatch(decrementQuantity(item))}
-                                style={CartStyles.quantityButton}
+                                style={styles.quantityButton}
                             >
-                                <Text style={CartStyles.quantityButtonText}>-</Text>
+                                <Text style={styles.quantityButtonText}>-</Text>
                             </Pressable>
 
-                            <Text style={CartStyles.quantityText}>{item.quantity}</Text>
+                            <Text style={styles.quantityText}>{item.quantity}</Text>
 
                             <Pressable
                                 onPress={() => dispatch(incrementQuantity(item))}
-                                style={CartStyles.quantityButton}
+                                style={styles.quantityButton}
                             >
-                                <Text style={CartStyles.quantityButtonText}>+</Text>
+                                <Text style={styles.quantityButtonText}>+</Text>
                             </Pressable>
                         </View>
                     </View>
                 ))}
-
                 <View style={{ marginVertical: 10 }}>
-                    <Text style={CartStyles.deliveryInstructionHeading}>Delivery Instruction</Text>
+                    <Text style={styles.deliveryInstructionHeading}>Delivery Instruction</Text>
                     <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                         {Instructions.map((item, index) => (
-                            <Pressable style={CartStyles.deliveryIconPressable} key={index}>
-                                <View style={CartStyles.deliveryInstructionView}>
+                            <Pressable key={item.id || index} style={styles.deliveryIconPressable}>
+                                <View style={styles.deliveryInstructionView}>
                                     <FontAwesome5 name={item?.iconName} size={20} color="black" />
-                                    <Text style={CartStyles.deliveryInstructionText}>{item.name}</Text>
+                                    <Text style={styles.deliveryInstructionText}>{item.name}</Text>
                                 </View>
                             </Pressable>
                         ))}
                     </ScrollView>
                 </View>
-
-                {/* Additional Options */}
-                <View style={CartStyles.outerViewCircleAddMoreItems}>
-                    <View style={CartStyles.innerViewCircleAddMoreItems}>
+                <View style={styles.outerViewCircleAddMoreItems}>
+                    <View style={styles.innerViewCircleAddMoreItems}>
                         <Feather name="plus-circle" size={24} color="black" />
-                        <Text style={CartStyles.optionText}>Add more Items</Text>
+                        <Text style={{ paddingVertical: 3 }}>Add more Items</Text>
                     </View>
                     <AntDesign name="right" size={24} color="black" />
                 </View>
 
-                <View style={CartStyles.outerViewCircleAddMoreItems}>
-                    <View style={CartStyles.innerViewCircleAddMoreItems}>
+                <View style={styles.outerViewCircleAddMoreItems}>
+                    <View style={styles.innerViewCircleAddMoreItems}>
                         <Entypo name="new-message" size={24} color="black" />
-                        <Text style={CartStyles.optionText}>Add more cooking instructions</Text>
+                        <Text style={{ paddingVertical: 3 }}>Add more cooking instructions</Text>
                     </View>
                     <AntDesign name="right" size={24} color="black" />
                 </View>
 
-                <View style={CartStyles.outerViewCircleAddMoreItems}>
-                    <View style={CartStyles.innerViewCircleAddMoreItems}>
+                <View style={styles.outerViewCircleAddMoreItems}>
+                    <View style={styles.innerViewCircleAddMoreItems}>
                         <MaterialCommunityIcons name="food-fork-drink" size={24} color="black" />
-                        <Text style={CartStyles.optionText}>Don't send cutlery with this order</Text>
+                        <Text style={{ paddingVertical: 3 }}>Don't Send cutlery with this order</Text>
                     </View>
                     <AntDesign name="right" size={24} color="black" />
                 </View>

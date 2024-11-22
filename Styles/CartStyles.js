@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 
-const CartStyles = StyleSheet.create({
+const styles = StyleSheet.create({
     container: {
         padding: 10,
         flex: 1,
@@ -69,6 +69,7 @@ const CartStyles = StyleSheet.create({
     quantityContainer: {
         flexDirection: "row",
         alignItems: "center",
+        gap: 10,
     },
     quantityButton: {
         backgroundColor: "#f0f8ff",
@@ -78,6 +79,10 @@ const CartStyles = StyleSheet.create({
         height: 30,
         justifyContent: "center",
         alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.2,
+        shadowRadius: 2,
         elevation: 2,
     },
     quantityButtonText: {
@@ -118,16 +123,12 @@ const CartStyles = StyleSheet.create({
         backgroundColor: "white",
         paddingVertical: 10,
         paddingHorizontal: 10,
-        marginTop: 10,
     },
     innerViewCircleAddMoreItems: {
         flexDirection: "row",
         alignItems: "center",
         gap: 10,
     },
-    optionText: {
-        paddingVertical: 3,
-    },
 });
 
-export default CartStyles;
+export default styles;
