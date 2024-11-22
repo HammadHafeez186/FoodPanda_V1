@@ -40,7 +40,7 @@ const Carousel = () => {
                 flatListRef.current?.scrollToOffset({ offset: 0, animated: false });
                 setCurrentIndex(0);
                 isTransitioningRef.current = false;
-            }, 300);
+            }, 500);
         }
     };
 
