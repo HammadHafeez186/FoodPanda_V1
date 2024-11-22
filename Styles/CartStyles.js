@@ -63,12 +63,13 @@ const CartStyles = StyleSheet.create({
     itemPrice: {
         fontSize: 16,
         fontWeight: "600",
-        color: "#007BFF",
+        color: "#d70000",
         paddingHorizontal: 10,
     },
     quantityContainer: {
         flexDirection: "row",
         alignItems: "center",
+        paddingHorizontal:6
     },
     quantityButton: {
         backgroundColor: "#f0f8ff",

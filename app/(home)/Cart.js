@@ -15,7 +15,6 @@ const Cart = () => {
 
     return (
         <ScrollView style={CartStyles.container}>
-            {/* Header Section */}
             <View style={CartStyles.header}>
                 <Pressable onPress={() => router.back()}>
                     <Ionicons name="arrow-back" size={24} color="black" />
