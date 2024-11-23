@@ -9,6 +9,7 @@ export default function layout() {
             <Stack screenOptions={{headerShown:false}}>
                 <Stack.Screen name="index"/>
                 <Stack.Screen name="Cart"/>
+                <Stack.Screen name="Order"/>
             </Stack>
         </Provider>
 

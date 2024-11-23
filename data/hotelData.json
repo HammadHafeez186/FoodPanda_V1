@@ -19,12 +19,12 @@
     "time": "35 - 40 min • 1Km",
     "average_cost_for_two": 1600,
     "aggregate_rating": 4.3,
-    "adress": "9-A & 12, Hauz Khas Village, New Delhi",
-    "smalladress": "Hauz Khas Village, New Delhi",
+    "adress": "Johar Town, Lahore",
+    "smalladress": "Johar Town, Lahore",
     "offer": "₹80 OFF",
     "no_of_Delivery": 1500,
-    "latitude": 12.9916,
-    "longitude": 77.5712
+    "latitude": 74.2939,
+    "longitude": 31.4679
   },
   {
     "id": "1",
@@ -33,12 +33,12 @@
     "cuisines": "Thai, European, Mexican",
     "average_cost_for_two": 1500,
     "aggregate_rating": 4.5,
-    "adress": "C-7, Vishal Enclave, Opposite Metro Pillar 417, Rajouri Garden, New Delhi",
-    "smalladress": "Rajouri Garden, New Delhi",
+    "adress": "Model Town, Lahore",
+    "smalladress": "Model Town, Lahore",
     "offer": "₹80 OFF",
     "no_of_Delivery": 2500,
-    "latitude": 12.9716,
-    "longitude": 77.5946,
+    "latitude": 74.3277,
+    "longitude": 31.4714,
     "time": "44 min"
   },
   {
@@ -48,12 +48,12 @@
     "cuisines": "Cafe, Italian, Continental",
     "average_cost_for_two": 850,
     "aggregate_rating": 4.3,
-    "adress": "2524, 1st Floor, Hudson Lane, Delhi University-GTB Nagar, New Delhi",
-    "smalladress": "Delhi University-GTB Nagar",
+    "adress": "DHA Phase 6, Lahore",
+    "smalladress": "DHA Phase 6, Lahore",
     "offer": "₹60 OFF",
     "no_of_Delivery": 1800,
-    "latitude": 12.9716,
-    "longitude": 77.5946,
+    "latitude": 74.4106,
+    "longitude": 31.5101,
     "time": "20 min"
   },
   {
@@ -63,12 +63,12 @@
     "cuisines": "Italian, Continental",
     "average_cost_for_two": 1850,
     "aggregate_rating": 4.1,
-    "adress": "1st Floor, DDA Shopping Complex, Aurobindo Place, Hauz Khas, New Delhi",
-    "smalladress": "Hauz Khas, New Delhi",
+    "adress": "Bahria Town, Lahore",
+    "smalladress": "Bahria Town, Lahore",
     "offer": "₹50 OFF",
     "no_of_Delivery": 1700,
-    "latitude": 12.9716,
-    "longitude": 77.5946,
+    "latitude": 74.1704,
+    "longitude": 31.4231,
     "time": "38 min"
   },
   {
@@ -78,12 +78,12 @@
     "cuisines": "North Indian, Italian, Asian",
     "average_cost_for_two": 1600,
     "aggregate_rating": 4.4,
-    "adress": "M-38, Outer Circle, Connaught Place, New Delhi",
-    "smalladress": "Connaught Place, New Delhi",
+    "adress": "Gulberg, Lahore",
+    "smalladress": "Gulberg, Lahore",
     "offer": "₹70 OFF",
     "no_of_Delivery": 1230,
-    "latitude": 12.9716,
-    "longitude": 77.5946,
+    "latitude": 74.3587,
+    "longitude": 31.5188,
     "time": "51 min"
   },
   {
@@ -92,12 +92,12 @@
     "name": "Terra Mayaa Restaurant",
     "cuisines": "North Indian, Continental, Italian",
     "aggregate_rating": 3.5,
-    "adress": "6th Floor, Anil Plaza 2, G.S. Road, Christian Basti",
-    "smalladress": "Anil Plaza 2, G.S. Road",
+    "adress": "Iqbal Town, Lahore",
+    "smalladress": "Iqbal Town, Lahore",
     "offer": "₹55 OFF",
     "no_of_Delivery": 500,
-    "latitude": 12.9716,
-    "longitude": 77.5946,
+    "latitude": 74.2616,
+    "longitude": 31.4987,
     "time": "42 min"
   },
   {
@@ -106,12 +106,12 @@
     "name": "Mocha Hotel",
     "cuisines": "Cafe, Italian",
     "aggregate_rating": 4.2,
-    "adress": "Christian Basti, Guwahati",
-    "smalladress": "Christian Basti, Guwahati",
+    "adress": "Cantt, Lahore",
+    "smalladress": "Cantt, Lahore",
     "offer": "₹90 OFF",
     "no_of_Delivery": 1100,
-    "latitude": 12.9716,
-    "longitude": 77.5946,
+    "latitude": 74.3601,
+    "longitude": 31.5497,
     "time": "34 min"
   },
   {
@@ -120,12 +120,12 @@
     "name": "4 Seasons",
     "cuisines": "Chinese, North Indian",
     "aggregate_rating": 4.5,
-    "adress": "Opposite Institute of Social Science, Bhuban Road, Uzan Bazaar, Guwahati",
-    "smalladress": "Bhuban Road, Uzan Bazaar, Guwahati",
+    "adress": "Johar Town, Lahore",
+    "smalladress": "Johar Town, Lahore",
     "offer": "₹55 OFF",
     "no_of_Delivery": 1500,
-    "latitude": 12.9716,
-    "longitude": 77.5946,
+    "latitude": 74.2939,
+    "longitude": 31.4679,
     "time": "30 min"
   },
   {
@@ -134,12 +134,12 @@
     "name": "Shanghai Salsa",
     "cuisines": "Continental, Fast Food, Chinese",
     "aggregate_rating": 4.1,
-    "adress": "37, 1st Floor, Hatigarh Chariali, Mother Teresa Road, Zoo Tiniali Area, Zoo Tiniali, Guwahati",
-    "smalladress": "Mother Teresa Road, Guwahati",
+    "adress": "Shalimar Town, Lahore",
+    "smalladress": "Shalimar Town, Lahore",
     "offer": "₹75 OFF",
     "no_of_Delivery": 1500,
-    "latitude": 12.9716,
-    "longitude": 77.5946,
+    "latitude": 74.4034,
+    "longitude": 31.5891,
     "time": "45 min"
-    }
+  }
 ]
