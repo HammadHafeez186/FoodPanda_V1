@@ -1,0 +1,152 @@
+import { StyleSheet } from "react-native";
+
+export const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: "white",
+    },
+    header: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        height: 60,
+        backgroundColor: "#fd5c63",
+        paddingHorizontal: 15,
+    },
+    headerText: {
+        color: "white",
+        fontSize: 16,
+        fontWeight: "bold",
+    },
+    subHeaderText: {
+        color: "white",
+        fontSize: 14,
+    },
+    helpText: {
+        color: "white",
+        fontSize: 15,
+        fontWeight: "bold",
+    },
+    mapContainer: {
+        position: "relative",
+    },
+    map: {
+        width: "100%",
+        height: 400,
+    },
+    centerButton: {
+        position: "absolute",
+        bottom: 15,
+        right: 15,
+        backgroundColor: "#fd5c63",
+        borderRadius: 25,
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        paddingHorizontal: 15,
+        paddingVertical: 10,
+        elevation: 5,
+    },
+    centerButtonText: {
+        color: "white",
+        marginLeft: 5,
+        fontWeight: "bold",
+        fontSize: 14,
+    },
+    tipContainer: {
+        height: 320,
+        backgroundColor: "white",
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        padding: 15,
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: -2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 5,
+        elevation: 10,
+    },
+    tipContent: {
+        flex: 1,
+    },
+    tipTextCenter: {
+        fontSize: 18,
+        fontWeight: "bold",
+        textAlign: "center",
+        marginBottom: 15,
+    },
+    tipRow: {
+        flexDirection: "row",
+        alignItems: "center",
+        marginVertical: 15,
+    },
+    tipDetails: {
+        marginLeft: 15,
+        flex: 1,
+    },
+    tipTitle: {
+        fontSize: 16,
+        fontWeight: "bold",
+        marginBottom: 5,
+    },
+    tipDescription: {
+        fontSize: 14,
+        color: "#7d7d7d",
+    },
+    tipOptions: {
+        flexDirection: "row",
+        marginTop: 15,
+    },
+    tipButton: {
+        backgroundColor: "#f5f5f5",
+        borderRadius: 10,
+        padding: 10,
+        marginHorizontal: 5,
+        alignItems: "center",
+        borderWidth: 1,
+        borderColor: "#ddd",
+    },
+    tipAmount: {
+        fontSize: 14,
+        fontWeight: "bold",
+        color: "#002D62",
+    },
+    mostTipped: {
+        marginTop: 5,
+        fontSize: 12,
+        fontWeight: "bold",
+        color: "orange",
+        backgroundColor: "#fff0e0",
+        paddingHorizontal: 5,
+        borderRadius: 5,
+    },
+    selectedTipButton: {
+        backgroundColor: "#fd5c63",
+        borderColor: "#fd5c63",
+    },
+    selectedTipText: {
+        color: "white",
+    },
+    tipPayment: {
+        marginTop: 15,
+        fontSize: 14,
+        color: "#fc8019",
+        textAlign: "center",
+    },
+    cancelTip: {
+        marginTop: 5,
+        alignSelf: "center",
+        width: "40%",
+        paddingVertical: 10,
+        borderRadius: 25,
+        borderWidth: 2,
+        borderColor: "red",
+        backgroundColor: "red",
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    cancelText: {
+        color: "white",
+        fontSize: 16,
+        fontWeight: "bold",
+    },
+});

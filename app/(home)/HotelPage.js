@@ -36,7 +36,9 @@ const HotelPage = () => {
                     color="black"
                 />
                 <View style={HotelPageStyles.threeIconsContainer}>
+                    <Pressable>
                     <SimpleLineIcons name="camera" size={24} color="black" />
+                    </Pressable>
                     <Ionicons name="bookmark-outline" size={24} color="black" />
                     <Ionicons name="share-outline" size={24} color="black" />
                 </View>
