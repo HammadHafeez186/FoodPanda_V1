@@ -129,6 +129,85 @@ const styles = StyleSheet.create({
         alignItems: "center",
         gap: 10,
     },
+
+    // New styles added below
+    instructionsContainer: {
+        padding: 10,
+        backgroundColor: "#fff",
+    },
+    billingContainer: {
+        marginVertical: 10,
+    },
+    billingTitle: {
+        fontSize: 16,
+        fontWeight: "bold",
+        marginBottom: 10,
+    },
+    billingDetails: {
+        backgroundColor: "#fff",
+        padding: 10,
+        borderRadius: 7,
+    },
+    billingRow: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        marginBottom: 5,
+    },
+    billingText: {
+        fontSize: 15,
+        color: "#505050",
+    },
+    billingTotalText: {
+        fontSize: 16,
+        fontWeight: "bold",
+    },
+    footerContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        padding: 20,
+        backgroundColor: "#fff",
+    },
+    footerText: {
+        fontSize: 16,
+        fontWeight: "600",
+    },
+    footerSubText: {
+        marginTop: 7,
+        fontSize: 15,
+    },
+    placeOrderButton: {
+        flexDirection: "row",
+        alignItems: "center",
+        backgroundColor: "#fd5c63",
+        padding: 10,
+        borderRadius: 6,
+        justifyContent: "space-between",
+        width: 200,
+    },
+    placeOrderText: {
+        fontSize: 15,
+        color: "#fff",
+        fontWeight: "bold",
+    },
+    placeOrderSubText: {
+        fontSize: 15,
+        color: "#fff",
+    },
+    placeOrderButtonText: {
+        fontSize: 16,
+        color: "#fff",
+        fontWeight: "600",
+    },
+    emptyCartContainer: {
+        alignItems: "center",
+        justifyContent: "center",
+        flex: 1,
+    },
+    emptyCartText: {
+        fontSize: 20,
+        fontWeight: "600",
+    },
 });
 
 export default styles;
