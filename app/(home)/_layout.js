@@ -7,7 +7,7 @@ export default function layout() {
     return (
         <Provider store={store}>
             <Stack screenOptions={{headerShown:false}}>
-                <Stack.Screen name="index"/>
+                <Stack.Screen name="MainPage"/>
                 <Stack.Screen name="Cart"/>
                 <Stack.Screen name="Order"/>
             </Stack>

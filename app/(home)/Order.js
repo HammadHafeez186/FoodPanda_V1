@@ -5,25 +5,82 @@ import moment from "moment";
 import MapView, { Marker, Polyline } from "react-native-maps";
 import { FontAwesome5, Ionicons } from "@expo/vector-icons";
 import { styles } from "../../Styles/orderStyles";
+import * as Location from 'expo-location';
 
 const Order = () => {
     const params = useLocalSearchParams();
     const [tip, setTip] = useState(0);
     const time = moment().format("LT");
     const mapView = useRef(null);
-    const [coordinates] = useState([
-        {
-            latitude: 12.9716,
-            longitude: 77.5946,
-        },
-        {
-            latitude: 13.0451,
-            longitude: 77.6269,
-        },
-    ]);
+    const [location, setLocation] = useState(null);
+    const [errorMsg, setErrorMsg] = useState(null);
+
+    const hotelLocation = {
+        latitude: 31.4708,
+        longitude: 74.2728,
+    };
+
+    useEffect(() => {
+        (async () => {
+            // Request location permissions
+            let { status } = await Location.requestForegroundPermissionsAsync();
+            if (status !== 'granted') {
+                setErrorMsg('Permission to access location was denied');
+                return;
+            }
+
+            try {
+                // Get current location
+                let currentLocation = await Location.getCurrentPositionAsync({
+                    accuracy: Location.Accuracy.Balanced,
+                });
+                
+                setLocation({
+                    latitude: currentLocation.coords.latitude,
+                    longitude: currentLocation.coords.longitude,
+                });
+
+                // Start watching position
+                const locationSubscription = await Location.watchPositionAsync(
+                    {
+                        accuracy: Location.Accuracy.Balanced,
+                        timeInterval: 5000,
+                        distanceInterval: 10,
+                    },
+                    (newLocation) => {
+                        setLocation({
+                            latitude: newLocation.coords.latitude,
+                            longitude: newLocation.coords.longitude,
+                        });
+                    }
+                );
+
+                return () => {
+                    if (locationSubscription) {
+                        locationSubscription.remove();
+                    }
+                };
+            } catch (error) {
+                setErrorMsg('Error getting location: ' + error.message);
+            }
+        })();
+    }, []);
+
+    // Get coordinates for polyline
+    const getCoordinates = () => {
+        if (!location) return [];
+        return [
+            {
+                latitude: location.latitude,
+                longitude: location.longitude,
+            },
+            hotelLocation
+        ];
+    };
 
     const centerMap = () => {
-        if (mapView.current) {
+        const coordinates = getCoordinates();
+        if (mapView.current && coordinates.length > 0) {
             mapView.current.fitToCoordinates(coordinates, {
                 edgePadding: {
                     top: 50,
@@ -37,8 +94,10 @@ const Order = () => {
     };
 
     useEffect(() => {
-        centerMap();
-    }, []);
+        if (location) {
+            centerMap();
+        }
+    }, [location]);
 
     return (
         <SafeAreaView style={styles.container}>
@@ -58,28 +117,69 @@ const Order = () => {
                 <MapView
                     ref={mapView}
                     initialRegion={{
-                        latitude: 12.9716,
-                        longitude: 77.5946,
-                        latitudeDelta: 0.1,
-                        longitudeDelta: 0.1,
+                        latitude: hotelLocation.latitude,
+                        longitude: hotelLocation.longitude,
+                        latitudeDelta: 0.05,
+                        longitudeDelta: 0.05,
                     }}
                     style={styles.map}
                 >
-                    <Marker coordinate={coordinates[0]} />
-                    <Marker coordinate={coordinates[1]} />
-                    <Polyline
-                        coordinates={coordinates}
-                        strokeColor="#fd5c63"
-                        lineDashPattern={[4]}
-                        strokeWidth={2}
-                    />
+                    {/* Hotel Marker */}
+                    <Marker 
+                        coordinate={hotelLocation}
+                        title="Restaurant"
+                    >
+                        <View style={{
+                            backgroundColor: '#fc8019',
+                            padding: 5,
+                            borderRadius: 20,
+                        }}>
+                            <FontAwesome5 name="store" size={20} color="white" />
+                        </View>
+                    </Marker>
+
+                    {/* User Location Marker */}
+                    {location && (
+                        <Marker
+                            coordinate={location}
+                            title="You"
+                        >
+                            <View style={{
+                                backgroundColor: '#4A89F3',
+                                padding: 5,
+                                borderRadius: 20,
+                            }}>
+                                <FontAwesome5 name="user" size={20} color="white" />
+                            </View>
+                        </Marker>
+                    )}
+
+                    {/* Route Line */}
+                    {location && (
+                        <Polyline
+                            coordinates={getCoordinates()}
+                            strokeColor="#fd5c63"
+                            lineDashPattern={[4]}
+                            strokeWidth={2}
+                        />
+                    )}
                 </MapView>
 
                 {/* Center Button */}
-                <TouchableOpacity style={styles.centerButton} onPress={centerMap}>
+                <TouchableOpacity 
+                    style={styles.centerButton} 
+                    onPress={centerMap}
+                >
                     <Ionicons name="locate" size={20} color="white" />
                     <Text style={styles.centerButtonText}>Center Map</Text>
                 </TouchableOpacity>
+
+                {/* Error Message */}
+                {errorMsg && (
+                    <View style={styles.errorContainer}>
+                        <Text style={styles.errorText}>{errorMsg}</Text>
+                    </View>
+                )}
             </View>
 
             {/* Tip Section */}

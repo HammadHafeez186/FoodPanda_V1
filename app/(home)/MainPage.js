@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, Alert, FlatList, Pressable, TextInput, Image } from "react-native";
+import {StyleSheet, View, Text, Alert, FlatList, Pressable, TextInput, Image, TouchableOpacity} from "react-native";
 import React, { useState, useEffect } from "react";
 import * as Location from "expo-location";
 import Octicons from '@expo/vector-icons/Octicons';
@@ -9,14 +9,19 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { items, recommended, hotelData } from "../../data/HomeIndexData";
 import Hotels from "../../components/Hotels";
 import HomeIndexStyles from "../../Styles/HomeIndexStyles";
+import {supabase} from "../../lib/supabase";  // Import Supabase client
+import {useRouter} from "expo-router";
 
 const HomeIndex = () => {
     const [locationServicesEnabled, setLocationServicesEnabled] = useState(false);
     const [displayCurrentAddress, setDisplayCurrentAddress] = useState("Waiting for Current Location....");
+    const [userInitial, setUserInitial] = useState(""); // State for user's initial
+    const router = useRouter();
 
     useEffect(() => {
         checkIfLocationEnabled();
         getCurrentLocation();
+        fetchUserData(); // Fetch user data on component mount
     }, []);
 
     const checkIfLocationEnabled = async () => {
@@ -54,6 +59,18 @@ const HomeIndex = () => {
                 : "Address not found";
 
             setDisplayCurrentAddress(addressText);
+        }
+    };
+
+    const fetchUserData = async () => {
+        try {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user) {
+                const userName = user.email; // Fallback to email if full_name is unavailable
+                setUserInitial(userName.charAt(0).toUpperCase()); // Use the first character
+            }
+        } catch (error) {
+            console.error("Error fetching user data:", error);
         }
     };
 
@@ -96,9 +113,9 @@ const HomeIndex = () => {
                             <Text style={HomeIndexStyles.deliverToText}>Deliver To:</Text>
                             <Text style={HomeIndexStyles.addressText}>{displayCurrentAddress}</Text>
                         </View>
-                        <Pressable style={HomeIndexStyles.pressable}>
-                            <Text>S</Text>
-                        </Pressable>
+                        <TouchableOpacity style={HomeIndexStyles.pressable} onPress={() => router.push("../../Accounts")}>
+                            <Text style={HomeIndexStyles.userInitialText}>{userInitial || "S"}</Text>  {/* Show user's initial */}
+                        </TouchableOpacity>
                     </View>
 
                     <View style={HomeIndexStyles.searchContainer}>
