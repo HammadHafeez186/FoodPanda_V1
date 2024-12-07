@@ -1,215 +1,111 @@
-import React, { useState, useEffect } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-  FlatList,
-  Pressable,
-  TouchableHighlight
-} from 'react-native';
+import React, { useState, useEffect } from "react";
+import { View, Text, TouchableOpacity, FlatList, Modal, Image } from "react-native";
+import { useRouter } from "expo-router";
+import { useSelector, useDispatch } from "react-redux";
+import { addAddonToItem, removeAddonFromItem } from "../../redux/CartReducer";
+import styles from "../../Styles/AddOnPageStyles";
 
-const AddonScreen = ({ navigation }) => {
-  const [addonData, setAddonData] = useState([]);
-  const [selectedAddons, setSelectedAddons] = useState({});
-  const [expandedCategories, setExpandedCategories] = useState({});
+const AddonPage = () => {
+    const router = useRouter();
+    const dispatch = useDispatch();
+    const cart = useSelector((state) => state.cart);
+    const [modalVisible, setModalVisible] = useState(false);
+    const [selectedAddons, setSelectedAddons] = useState([]);
+    const [currentItem, setCurrentItem] = useState(null);
 
-  useEffect(() => {
-    fetchAddonData();
-  }, []);
+    // Sample Addons for demonstration purposes (e.g., fizzy drinks, cheese slices, etc.)
+    const sampleAddons = [
+        { id: 1, name: "Extra Cheese Slice", price: 30, image: { uri: "https://example.com/cheese.png" } },
+        { id: 2, name: "Fizzy Drink", price: 40, image: { uri: "https://example.com/drink.png" } },
+        { id: 3, name: "Garlic Bread", price: 50, image: { uri: "https://example.com/bread.png" } },
+        { id: 4, name: "Extra Sauce", price: 20, image: { uri: "https://example.com/sauce.png" } },
+        { id: 5, name: "Pepperoni", price: 60, image: { uri: "https://example.com/pepperoni.png" } },
+    ];
 
-  const fetchAddonData = async () => {
-    try {
-      const response = await fetch('https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Addon-PZS6GVl9EgmYq0NUKGGuQKFccf7Iib.json');
-      const data = await response.json();
-      setAddonData(data);
-    } catch (error) {
-      console.error('Error fetching addon data:', error);
-    }
-  };
+    // Handle Addon Selection
+    const handleAddonSelection = (addon) => {
+        if (selectedAddons.some((item) => item.id === addon.id)) {
+            setSelectedAddons(selectedAddons.filter((item) => item.id !== addon.id));
+            dispatch(removeAddonFromItem(currentItem.id, addon));
+        } else {
+            setSelectedAddons([...selectedAddons, addon]);
+            dispatch(addAddonToItem(currentItem.id, addon));
+        }
+    };
 
-  const toggleAddon = (item) => {
-    setSelectedAddons(prev => {
-      const newSelectedAddons = { ...prev };
-      if (newSelectedAddons[item.id]) {
-        delete newSelectedAddons[item.id];
-      } else {
-        newSelectedAddons[item.id] = item;
-      }
-      return newSelectedAddons;
-    });
-  };
+    // Render Addon Item
+    const renderAddonItem = ({ item }) => (
+        <TouchableOpacity
+            style={[
+                styles.addonItem,
+                selectedAddons.some((addon) => addon.id === item.id) && styles.addonSelected,
+            ]}
+            onPress={() => handleAddonSelection(item)}
+        >
+            <Image source={item.image} style={styles.addonImage} />
+            <View style={styles.addonInfo}>
+                <Text style={styles.addonName}>{item.name}</Text>
+                <Text style={styles.addonPrice}>Rs. {item.price}</Text>
+            </View>
+        </TouchableOpacity>
+    );
 
-  const toggleCategoryExpansion = (categoryId) => {
-    setExpandedCategories(prev => ({
-      ...prev,
-      [categoryId]: !prev[categoryId]
-    }));
-  };
+    // Get current item details
+    useEffect(() => {
+        if (cart.length > 0) {
+            setCurrentItem(cart[0]);  // Set the first item as the current item for addon selection
+        }
+    }, [cart]);
 
-  const renderAddonItem = (item) => (
-    <TouchableOpacity
-      key={`addon-${item.id}`}
-      style={[
-        styles.addonItem,
-        selectedAddons[item.id] && styles.selectedAddon
-      ]}
-      onPress={() => toggleAddon(item)}
-    >
-      <Image source={{ uri: item.image }} style={styles.addonImage} />
-      <Text style={styles.addonName}>{item.name}</Text>
-      <Text style={styles.addonPrice}>₹{item.price.toFixed(2)}</Text>
-      {item.veg && <Text style={styles.vegIcon}>🟢</Text>}
-      {item.bestSeller && <Text style={styles.bestSellerBadge}>Best Seller</Text>}
-      <Text style={styles.addonRating}>★ {item.rating} ({item.ratings})</Text>
-    </TouchableOpacity>
-  );
-
-  const renderAddonCategory = ({ item: category }) => {
-    const isExpanded = expandedCategories[category.id];
-    const displayItems = isExpanded ? category.addons : category.addons.slice(0, 3);
+    const item = cart.find((i) => i.id === currentItem?.id);
 
     return (
-      <View key={category.id} style={styles.categoryContainer}>
-        <Text style={styles.categoryTitle}>{category.name}</Text>
-        <View style={styles.addonGridContainer}>
-          {displayItems.map((item) => renderAddonItem(item))}
+        <View style={styles.container}>
+            {/* Header Section */}
+            <View style={styles.header}>
+                <TouchableOpacity onPress={() => router.back()}>
+                    <Text style={styles.headerTitle}>Back</Text>
+                </TouchableOpacity>
+                <Text style={styles.headerTitle}>Add Ons</Text>
+            </View>
+
+            {/* Current Item Name */}
+            <View style={styles.itemContainer}>
+                <Text style={styles.itemTitle}>Customize {item?.name}</Text>
+                <Text style={styles.itemDescription}>{item?.description}</Text>
+            </View>
+
+            {/* Addon Items List */}
+            <FlatList
+                data={sampleAddons} // Using sampleAddons for addon selection
+                keyExtractor={(addon) => addon.id.toString()}
+                renderItem={renderAddonItem}
+            />
+
+            {/* Footer */}
+            <View style={styles.footer}>
+                <TouchableOpacity
+                    style={styles.placeOrderButton}
+                    onPress={() => {
+                        router.back();
+                    }}
+                >
+                    <Text style={styles.placeOrderButtonText}>Done</Text>
+                </TouchableOpacity>
+            </View>
+
+            {/* Customization Modal */}
+            <Modal visible={modalVisible} animationType="slide" onRequestClose={() => setModalVisible(false)}>
+                <View style={styles.modalContainer}>
+                    <Text style={styles.modalTitle}>Customize {currentItem?.name}</Text>
+                    {/* Add more customization options here */}
+                    <TouchableOpacity onPress={() => setModalVisible(false)}>
+                        <Text style={styles.closeButton}>Close</Text>
+                    </TouchableOpacity>
+                </View>
+            </Modal>
         </View>
-        
-        {category.addons.length > 3 && (
-          <Pressable onPress={() => toggleCategoryExpansion(category.id)}>
-            <Text style={styles.viewAllText}>
-              {isExpanded ? 'Show Less' : 'View All'}
-            </Text>
-          </Pressable>
-        )}
-      </View>
     );
-  };
-
-  const handleDone = () => {
-    navigation.goBack();
-  };
-
-  return (
-    <View style={styles.container}>
-      <FlatList
-        data={addonData}
-        keyExtractor={(item) => item.id}
-        renderItem={renderAddonCategory}
-        contentContainerStyle={styles.listContainer}
-      />
-      <TouchableHighlight 
-        style={styles.doneButton} 
-        underlayColor="#FF5733"
-        onPress={handleDone}
-      >
-        <Text style={styles.doneButtonText}>Done</Text>
-      </TouchableHighlight>
-    </View>
-  );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-    paddingVertical: 50,
-    paddingHorizontal: 15
-  },
-  listContainer: {
-    paddingBottom: 100
-  },
-  categoryContainer: {
-    marginVertical: 10
-  },
-  categoryTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginHorizontal: 15,
-    marginBottom: 10
-  },
-  addonGridContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'flex-start',
-    paddingHorizontal: 15
-  },
-  addonItem: {
-    width: '45%',
-    alignItems: 'center',
-    padding: 10,
-    margin: 5,
-    borderWidth: 1,
-    borderColor: '#e0e0e0',
-    borderRadius: 10,
-    backgroundColor: 'white'
-  },
-  selectedAddon: {
-    borderColor: '#FF6B6B',
-    backgroundColor: '#FFF5F5'
-  },
-  addonImage: {
-    width: 100,
-    height: 100,
-    resizeMode: 'cover',
-    borderRadius: 5
-  },
-  addonName: {
-    marginTop: 5,
-    fontSize: 14,
-    fontWeight: '500',
-    textAlign: 'center'
-  },
-  addonPrice: {
-    marginTop: 3,
-    color: '#888'
-  },
-  vegIcon: {
-    position: 'absolute',
-    top: 5,
-    left: 5,
-    fontSize: 12
-  },
-  bestSellerBadge: {
-    position: 'absolute',
-    top: 5,
-    right: 5,
-    backgroundColor: '#FFD700',
-    padding: 2,
-    borderRadius: 3,
-    fontSize: 10,
-    fontWeight: 'bold'
-  },
-  addonRating: {
-    marginTop: 3,
-    fontSize: 12,
-    color: '#FFA500'
-  },
-  viewAllText: {
-    color: 'blue', 
-    textAlign: 'right', 
-    marginTop: 10,
-    marginRight: 15
-  },
-  doneButton: {
-    backgroundColor: '#FF6B6B',
-    padding: 15,
-    borderRadius: 10,
-    marginTop: 20,
-    marginHorizontal: 15,
-    position: 'absolute',
-    bottom: 20,
-    left: 15,
-    right: 15
-  },
-  doneButtonText: {
-    color: 'white',
-    textAlign: 'center',
-    fontSize: 16,
-    fontWeight: 'bold'
-  }
-});
-
-export default AddonScreen;
+export default AddonPage;

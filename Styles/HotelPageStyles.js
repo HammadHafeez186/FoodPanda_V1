@@ -163,6 +163,21 @@ const HotelPageStyles = StyleSheet.create({
         marginVertical: 10,
         marginBottom: 5,
     },
+    customizeButton: {
+        backgroundColor: '#ff6347', // Customize the color
+        paddingVertical: 8,
+        paddingHorizontal: 16,
+        borderRadius: 8,
+        marginTop: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    customizeButtonText: {
+        color: 'white',
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    
 });
 
 export default HotelPageStyles;

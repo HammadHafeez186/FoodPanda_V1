@@ -114,7 +114,7 @@ const HomeIndex = () => {
                             <Text style={HomeIndexStyles.addressText}>{displayCurrentAddress}</Text>
                         </View>
                         <TouchableOpacity style={HomeIndexStyles.pressable} onPress={() => router.push("../../Accounts")}>
-                            <Text style={HomeIndexStyles.userInitialText}>{userInitial || "S"}</Text>  {/* Show user's initial */}
+                            <Text style={HomeIndexStyles.userInitialText}>{userInitial || "NUll"}</Text> 
                         </TouchableOpacity>
                     </View>
 
