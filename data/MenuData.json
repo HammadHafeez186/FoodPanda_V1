@@ -13,7 +13,13 @@
         "image": "https://picsum.photos/208?random=1",
         "veg": true,
         "bestSeller": false,
-        "quantity": 1
+        "quantity": 1,
+        "addons": [
+          { "id": "a1", "name": "Extra Gravy", "price": 30 },
+          { "id": "a2", "name": "Raita", "price": 20 },
+          { "id": "a5", "name": "Spicy Sauce", "price": 15 },
+          { "id": "a6", "name": "Garlic Butter", "price": 25 }
+        ]
       },
       {
         "id": "102",
@@ -25,93 +31,86 @@
         "image": "https://picsum.photos/208?random=2",
         "veg": false,
         "bestSeller": true,
-        "quantity": 1
+        "quantity": 1,
+        "addons": [
+          { "id": "a3", "name": "Extra Spices", "price": 25 },
+          { "id": "a4", "name": "Fried Egg", "price": 35 },
+          { "id": "a7", "name": "Cheese", "price": 40 },
+          { "id": "a8", "name": "Pickled Onions", "price": 10 }
+        ]
       },
       {
         "id": "103",
-        "name": "Spl Veg Biryani",
-        "price": 250,
-        "description": "E: 1327.35 KCal (126.41 KCal), C: 213.24 Grams (20.31 Grams), P: 26.99 Grams (2.57 Grams), F: 38.46 Grams (3.66 Grams)",
-        "rating": 4.5,
-        "ratings": 56,
+        "name": "Mushroom Masala",
+        "price": 220,
+        "description": "A rich, creamy mushroom curry served with naan or rice.",
+        "rating": 4.2,
+        "ratings": 50,
         "image": "https://picsum.photos/208?random=3",
         "veg": true,
         "bestSeller": false,
-        "quantity": 1
+        "quantity": 1,
+        "addons": [
+          { "id": "a9", "name": "Coriander", "price": 10 },
+          { "id": "a10", "name": "Cashew Nuts", "price": 30 },
+          { "id": "a11", "name": "Lemon Wedges", "price": 5 }
+        ]
       },
       {
         "id": "104",
-        "name": "Chilly Paneer",
-        "price": 220,
-        "description": "E: 871.69 KCal (272.40 KCal), C: 21.54 Grams (6.73 Grams), P: 51.90 Grams (16.22 Grams), F: 64.36 Grams (20.11 Grams)",
-        "rating": 3.8,
-        "ratings": 22,
+        "name": "Chicken Biryani",
+        "price": 350,
+        "description": "A flavorful rice dish with spiced chicken pieces, served with raita.",
+        "rating": 4.6,
+        "ratings": 120,
         "image": "https://picsum.photos/208?random=4",
-        "veg": true,
-        "bestSeller": true,
-        "quantity": 1
-      },
-      {
-        "id": "105",
-        "name": "Chicken 65",
-        "price": 300,
-        "description": "E: 544.39 KCal (155.54 KCal), C: 25.11 Grams (7.17 Grams), P: 45.15 Grams (12.90 Grams), F: 27.91 Grams (7.97 Grams)",
-        "rating": 4.5,
-        "ratings": 45,
-        "image": "https://picsum.photos/208?random=5",
         "veg": false,
         "bestSeller": true,
-        "quantity": 1
+        "quantity": 1,
+        "addons": [
+          { "id": "a12", "name": "Boiled Egg", "price": 20 },
+          { "id": "a13", "name": "Salad", "price": 25 },
+          { "id": "a14", "name": "Extra Chicken", "price": 50 }
+        ]
       }
     ]
   },
   {
-    "id": "11",
-    "name": "Rice",
+    "id": "21",
+    "name": "Veg Delights",
     "items": [
       {
-        "id": "201",
-        "name": "Chicken Fried Rice",
-        "price": 260,
-        "description": "E: 1142.26 KCal (163.18 KCal), C: 125.05 Grams (17.86 Grams), P: 40.11 Grams (5.73 Grams), F: 51.37 Grams (7.34 Grams)",
-        "rating": 4.3,
-        "ratings": 34,
+        "id": "105",
+        "name": "Paneer Butter Masala",
+        "price": 300,
+        "description": "Soft paneer cubes cooked in a rich and creamy tomato gravy.",
+        "rating": 4.4,
+        "ratings": 80,
+        "image": "https://picsum.photos/208?random=5",
+        "veg": true,
+        "bestSeller": true,
+        "quantity": 1,
+        "addons": [
+          { "id": "a15", "name": "Garlic Naan", "price": 40 },
+          { "id": "a16", "name": "Butter Rice", "price": 50 },
+          { "id": "a17", "name": "Mango Chutney", "price": 15 }
+        ]
+      },
+      {
+        "id": "106",
+        "name": "Aloo Gobi",
+        "price": 180,
+        "description": "A simple yet delicious dish made with potatoes and cauliflower.",
+        "rating": 4.0,
+        "ratings": 45,
         "image": "https://picsum.photos/208?random=6",
-        "veg": false,
-        "bestSeller": true
-      },
-      {
-        "id": "202",
-        "name": "Egg Fried Rice",
-        "price": 220,
-        "description": "E: 1729.51 KCal (164.72 KCal), C: 204.54 Grams (19.48 Grams), P: 44.03 Grams (4.19 Grams), F: 79.02 Grams (7.53 Grams)",
-        "rating": 4.3,
-        "ratings": 52,
-        "image": "https://picsum.photos/208?random=7",
-        "veg": false,
-        "bestSeller": false
-      },
-      {
-        "id": "203",
-        "name": "Veg Fried Rice",
-        "price": 190,
-        "description": "E: 1477.00 KCal (140.67 KCal), C: 204.14 Grams (19.44 Grams), P: 22.90 Grams (2.18 Grams), F: 59.95 Grams (5.71 Grams)",
-        "rating": 4.6,
-        "ratings": 56,
-        "image": "https://picsum.photos/208?random=8",
         "veg": true,
-        "bestSeller": true
-      },
-      {
-        "id": "204",
-        "name": "Jeera Rice",
-        "price": 195,
-        "description": "E: 1832.30 KCal (174.50 KCal), C: 246.73 Grams (23.50 Grams), P: 27.51 Grams (2.62 Grams), F: 78.15 Grams (7.44 Grams)",
-        "rating": 4.5,
-        "ratings": 48,
-        "image": "https://picsum.photos/208?random=9",
-        "veg": true,
-        "bestSeller": false
+        "bestSeller": false,
+        "quantity": 1,
+        "addons": [
+          { "id": "a18", "name": "Curd", "price": 20 },
+          { "id": "a19", "name": "Green Chutney", "price": 10 }
+        ]
       }
     ]
   }

@@ -1,14 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, FlatList, Modal } from "react-native";
+import React from "react";
+import { View, Text, TouchableOpacity, FlatList } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { FontAwesome5 } from "@expo/vector-icons";
-import Feather from "@expo/vector-icons/Feather";
-import AntDesign from "@expo/vector-icons/AntDesign";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useSelector, useDispatch } from "react-redux";
 import { incrementQuantity, decrementQuantity, cleanCart } from "../../redux/CartReducer";
 import Instructions from "../../data/Instructions.json";
 import styles from "../../Styles/CartStyles";
+import AddonScreen from "./[AddonScreen]";
+
+// Helper function to calculate total price
+const calculateTotalPrice = (cart) => {
+    return cart
+      .map((item) => {
+        const addonTotal = item.addons?.reduce((sum, addon) => sum + addon.price, 0) || 0;
+        return (item.price + addonTotal) * item.quantity;
+      })
+      .reduce((curr, prev) => curr + prev, 0);
+};
 
 const Cart = () => {
     const params = useLocalSearchParams();
@@ -17,21 +26,11 @@ const Cart = () => {
     const dispatch = useDispatch();
 
     // Calculate the total price (including addons)
-    const calculateTotalPrice = () => {
-        return cart
-            .map((item) => {
-                // Include addon prices in the total for each item
-                const addonPrice = item.addons
-                    ? item.addons.reduce((sum, addon) => sum + addon.price, 0)
-                    : 0;
-                return (item.price + addonPrice) * item.quantity;
-            })
-            .reduce((curr, prev) => curr + prev, 0);
-    };
-
-    const deliveryFee = Math.floor(calculateTotalPrice() * 0.2);
+    const totalPrice = calculateTotalPrice(cart);
+    const deliveryFee = Math.floor(totalPrice * 0.2);
     const deliveryPartnerFee = Math.floor(deliveryFee * 0.2);
-    const finalPrice = calculateTotalPrice() + deliveryFee + deliveryPartnerFee;
+    const addOnByItem = cart.map((item) => item.addons.reduce((sum, addon) => sum + addon.price, 0)).reduce((sum, price) => sum + price, 0);
+    const finalPrice = totalPrice + deliveryFee + deliveryPartnerFee;
 
     // Render Cart Items
     const renderCartItem = ({ item }) => (
@@ -63,12 +62,28 @@ const Cart = () => {
             {/* Customize Button */}
             <TouchableOpacity
                 onPress={() => {
-                    router.push("/AddonScreen");
+                    // Pass relevant parameters to the Addons screen
+                    router.replace({
+                        pathname: "/AddonScreen",
+                        params: { itemId: item.id, name: item.name, addons: item.addons }
+                    });
                 }}
                 style={styles.customizeButton}
             >
                 <Text style={styles.customizeButtonText}>Customize</Text>
             </TouchableOpacity>
+
+            {/* Addon Items Section */}
+            {item.addons && item.addons.length > 0 && (
+                <View style={{ backgroundColor: "#f5f5f5", padding: 10, marginTop: 10, borderRadius: 8 }}>
+                    <Text style={{ fontSize: 14, fontWeight: "600", color: "#333", marginBottom: 5 }}>Addons:</Text>
+                    {item.addons.map((addon) => (
+                        <Text key={addon.id} style={{ fontSize: 14, color: "#555" }}>
+                            {addon.name} - Rs. {addon.price}
+                        </Text>
+                    ))}
+                </View>
+            )}
         </View>
     );
 
@@ -138,7 +153,7 @@ const Cart = () => {
                     <View style={styles.billingDetails}>
                         <View style={styles.billingRow}>
                             <Text>Item(s) Total</Text>
-                            <Text>Rs. {calculateTotalPrice().toFixed(2)}</Text>
+                            <Text>Rs. {totalPrice.toFixed(2)}</Text>
                         </View>
                         <View style={styles.billingRow}>
                             <Text>Delivery Fee</Text>
@@ -147,6 +162,10 @@ const Cart = () => {
                         <View style={styles.billingRow}>
                             <Text>Delivery Partner Fee</Text>
                             <Text>Rs. {deliveryPartnerFee}</Text>
+                        </View>
+                        <View style={styles.billingRow}>
+                            <Text>Addon Fee</Text>
+                            <Text>Rs. {addOnByItem}</Text>
                         </View>
                         <View style={styles.billingRow}>
                             <Text style={{ fontWeight: "bold" }}>To pay</Text>

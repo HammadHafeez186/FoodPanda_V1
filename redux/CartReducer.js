@@ -41,8 +41,8 @@ export const CartSlice = createSlice({
       const { itemId, addon } = action.payload;
       const item = state.find((item) => item.id === itemId);
       if (item) {
-        const addonExists = item.addons.find((addonItem) => addonItem.id === addon.id);
-        if (!addonExists) {
+        // Check if addon is already added to avoid duplicates
+        if (!item.addons.find((existingAddon) => existingAddon.id === addon.id)) {
           item.addons.push(addon);
         }
       }
@@ -50,11 +50,11 @@ export const CartSlice = createSlice({
     removeAddonFromItem: (state, action) => {
       const { itemId, addon } = action.payload;
       const item = state.find((item) => item.id === itemId);
-      if (item) {
-        item.addons = item.addons.filter((addonItem) => addonItem.id !== addon.id);
+      if (item && item.addons) {
+        item.addons = item.addons.filter((a) => a.id !== addon.id);
       }
-    },
-  },
+    }
+  }
 });
 
 export const {

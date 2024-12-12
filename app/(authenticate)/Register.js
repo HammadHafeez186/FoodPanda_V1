@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import {SafeAreaView, StyleSheet, Text, View, Pressable, TextInput, Alert, TouchableOpacity} from 'react-native'
+import { SafeAreaView, StyleSheet, Text, View, Pressable, TextInput, Alert, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView } from 'react-native'
 import { supabase } from '../../lib/supabase'
 import Avatar from '../../components/Avatar'
 import { useRouter } from 'expo-router'
@@ -38,68 +38,76 @@ const Register = () => {
     }
 
     return (
-        <SafeAreaView style={styles.safeAreaContainer}>
-            <View style={styles.mainView}>
-                <Text style={styles.headerTextStyle}>Food App</Text>
-            </View>
+        <KeyboardAvoidingView
+            style={{ flex: 1 }}
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        >
+            <SafeAreaView style={styles.safeAreaContainer}>
+                <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}>
+                    <View style={styles.mainView}>
+                        <Text style={styles.headerTextStyle}>Food App</Text>
+                        
+                    </View>
 
-            <View>
-                <Text style={styles.subHeadingFont}>Create Your Account</Text>
-            </View>
+                    <View style={{alignItems:"center"}}>       
+                        <Text style={styles.subHeadingFont}>Create your Account Here</Text>
+                    </View>
 
-            <View style={styles.textInputView}>
-                <Avatar url={avatarPath} size={100} onUpload={setAvatarPath} />
+                    <View style={styles.textInputView}>
+                        <Avatar url={avatarPath} size={100} onUpload={setAvatarPath} />
 
-                <View style={styles.inputContainer}>
-                    <Text style={styles.label}>Full Name</Text>
-                    <TextInput
-                        style={styles.textInput}
-                        placeholder="Enter your full name"
-                        value={fullName}
-                        onChangeText={setFullName}
-                    />
-                </View>
+                        <View style={styles.inputContainer}>
+                            <Text style={styles.label}>Full Name</Text>
+                            <TextInput
+                                style={styles.textInput}
+                                placeholder="Enter your full name"
+                                value={fullName}
+                                onChangeText={setFullName}
+                            />
+                        </View>
 
-                <View style={styles.inputContainer}>
-                    <Text style={styles.label}>Username</Text>
-                    <TextInput
-                        style={styles.textInput}
-                        placeholder="Enter your username"
-                        value={username}
-                        onChangeText={setUsername}
-                    />
-                </View>
+                        <View style={styles.inputContainer}>
+                            <Text style={styles.label}>Username</Text>
+                            <TextInput
+                                style={styles.textInput}
+                                placeholder="Enter your username"
+                                value={username}
+                                onChangeText={setUsername}
+                            />
+                        </View>
 
-                <View style={styles.inputContainer}>
-                    <Text style={styles.label}>Email</Text>
-                    <TextInput
-                        style={styles.textInput}
-                        placeholder="Enter your email"
-                        value={email}
-                        onChangeText={setEmail}
-                    />
-                </View>
+                        <View style={styles.inputContainer}>
+                            <Text style={styles.label}>Email</Text>
+                            <TextInput
+                                style={styles.textInput}
+                                placeholder="Enter your email"
+                                value={email}
+                                onChangeText={setEmail}
+                            />
+                        </View>
 
-                <View style={styles.inputContainer}>
-                    <Text style={styles.label}>Password</Text>
-                    <TextInput
-                        style={styles.textInput}
-                        placeholder="Enter your password"
-                        secureTextEntry
-                        value={password}
-                        onChangeText={setPassword}
-                    />
-                </View>
+                        <View style={styles.inputContainer}>
+                            <Text style={styles.label}>Password</Text>
+                            <TextInput
+                                style={styles.textInput}
+                                placeholder="Enter your password"
+                                secureTextEntry
+                                value={password}
+                                onChangeText={setPassword}
+                            />
+                        </View>
 
-                <TouchableOpacity style={styles.pressableContainer} onPress={handleRegister}>
-                    <Text style={styles.registerButtonText}>Sign Up</Text>
-                </TouchableOpacity>
+                        <TouchableOpacity style={styles.pressableContainer} onPress={handleRegister}>
+                            <Text style={styles.registerButtonText}>Sign Up</Text>
+                        </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => router.back('../Login')} style={styles.loginRedirect}>
-                    <Text style={styles.loginText}>Already have an account? Log in</Text>
-                </TouchableOpacity>
-            </View>
-        </SafeAreaView>
+                        <TouchableOpacity onPress={() => router.back('../Login')} style={styles.loginRedirect}>
+                            <Text style={styles.loginText}>Already have an account? Log in</Text>
+                        </TouchableOpacity>
+                    </View>
+                </ScrollView>
+            </SafeAreaView>
+        </KeyboardAvoidingView>
     )
 }
 
@@ -124,6 +132,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginTop: 12,
         color: 'red',
+        alignItems:"center"
     },
     textInputView: {
         marginTop: 30,
