@@ -1,16 +1,23 @@
 import React from "react";
-import { View, Text, Pressable, FlatList } from "react-native";
+import { View, Text, TouchableOpacity, FlatList } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { FontAwesome5 } from "@expo/vector-icons";
-import Feather from "@expo/vector-icons/Feather";
-import AntDesign from "@expo/vector-icons/AntDesign";
-import Entypo from "@expo/vector-icons/Entypo";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useSelector, useDispatch } from "react-redux";
 import { incrementQuantity, decrementQuantity, cleanCart } from "../../redux/CartReducer";
 import Instructions from "../../data/Instructions.json";
 import styles from "../../Styles/CartStyles";
+import AddonScreen from "./[AddonScreen]";
+
+// Helper function to calculate total price
+const calculateTotalPrice = (cart) => {
+    return cart
+      .map((item) => {
+        const addonTotal = item.addons?.reduce((sum, addon) => sum + addon.price, 0) || 0;
+        return (item.price + addonTotal) * item.quantity;
+      })
+      .reduce((curr, prev) => curr + prev, 0);
+};
 
 const Cart = () => {
     const params = useLocalSearchParams();
@@ -18,53 +25,88 @@ const Cart = () => {
     const cart = useSelector((state) => state.cart);
     const dispatch = useDispatch();
 
-    const total = cart
-        .map((item) => item.price * item.quantity)
-        .reduce((curr, prev) => curr + prev, 0);
-    const deliveryFee = Math.floor(total * 0.2);
+    // Calculate the total price (including addons)
+    const totalPrice = calculateTotalPrice(cart);
+    const deliveryFee = Math.floor(totalPrice * 0.2);
     const deliveryPartnerFee = Math.floor(deliveryFee * 0.2);
-    const finalPrice = total + deliveryFee + deliveryPartnerFee;
+    const addOnByItem = cart.map((item) => item.addons.reduce((sum, addon) => sum + addon.price, 0)).reduce((sum, price) => sum + price, 0);
+    const finalPrice = totalPrice + deliveryFee + deliveryPartnerFee;
 
     // Render Cart Items
     const renderCartItem = ({ item }) => (
         <View style={styles.cartItem}>
             <Text style={styles.itemName}>{item.name}</Text>
-            <Text style={styles.itemPrice}>Rs.{item.price * item.quantity}</Text>
+            <Text style={styles.itemPrice}>
+                Rs.{" "}
+                {(
+                    item.price * item.quantity +
+                    (item.addons ? item.addons.reduce((sum, addon) => sum + addon.price, 0) : 0)
+                ).toFixed(2)}
+            </Text>
             <View style={styles.quantityContainer}>
-                <Pressable
+                <TouchableOpacity
                     onPress={() => dispatch(decrementQuantity(item))}
                     style={styles.quantityButton}
                 >
                     <Text style={styles.quantityButtonText}>-</Text>
-                </Pressable>
+                </TouchableOpacity>
                 <Text style={styles.quantityText}>{item.quantity}</Text>
-                <Pressable
+                <TouchableOpacity
                     onPress={() => dispatch(incrementQuantity(item))}
                     style={styles.quantityButton}
                 >
                     <Text style={styles.quantityButtonText}>+</Text>
-                </Pressable>
+                </TouchableOpacity>
             </View>
+
+            {/* Customize Button */}
+            <TouchableOpacity
+                onPress={() => {
+                    // Pass relevant parameters to the Addons screen
+                    router.replace({
+                        pathname: "/AddonScreen",
+                        params: { itemId: item.id, name: item.name, addons: item.addons }
+                    });
+                }}
+                style={styles.customizeButton}
+            >
+                <Text style={styles.customizeButtonText}>Customize</Text>
+            </TouchableOpacity>
+
+            {/* Addon Items Section */}
+            {item.addons && item.addons.length > 0 && (
+                <View style={{ backgroundColor: "#f5f5f5", padding: 10, marginTop: 10, borderRadius: 8 }}>
+                    <Text style={{ fontSize: 14, fontWeight: "600", color: "#333", marginBottom: 5 }}>Addons:</Text>
+                    {item.addons.map((addon) => (
+                        <Text key={addon.id} style={{ fontSize: 14, color: "#555" }}>
+                            {addon.name} - Rs. {addon.price}
+                        </Text>
+                    ))}
+                </View>
+            )}
         </View>
     );
 
     // Render Delivery Instructions
     const renderInstructionItem = ({ item }) => (
-        <Pressable style={styles.deliveryIconPressable}>
+        <TouchableOpacity style={styles.deliveryIconPressable}>
             <View style={styles.deliveryInstructionView}>
                 <FontAwesome5 name={item.iconName} size={20} color="black" />
                 <Text style={styles.deliveryInstructionText}>{item.name}</Text>
             </View>
-        </Pressable>
+        </TouchableOpacity>
     );
+
+    // Disable the "Place Order" button if finalPrice is less than 500
+    const isPlaceOrderDisabled = finalPrice < 500;
 
     return (
         <View style={styles.container}>
             {/* Header Section */}
             <View style={styles.header}>
-                <Pressable onPress={() => router.back()}>
+                <TouchableOpacity onPress={() => router.back()}>
                     <Ionicons name="arrow-back" size={24} color="black" />
-                </Pressable>
+                </TouchableOpacity>
                 <Text style={styles.headerTitle}>{params?.name}</Text>
             </View>
 
@@ -104,52 +146,6 @@ const Cart = () => {
                 </View>
             )}
 
-            {/* Additional Options */}
-            <FlatList
-    data={[
-        {
-            icon: <Feather name="plus-circle" size={24} color="black" />,
-            text: "Add more Items",
-        },
-        {
-            icon: <Entypo name="new-message" size={24} color="black" />,
-            text: "Add more cooking instructions",
-        },
-        {
-            icon: <MaterialCommunityIcons name="food-fork-drink" size={24} color="black" />,
-            text: "Don't Send cutlery with this order",
-        },
-        {
-            customView: (
-                <View style={{ padding: 10, backgroundColor: "white", marginVertical: 10 }}>
-                    <View>
-                        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
-                            <Text>Feeding Donation to Pakistan</Text>
-                            <AntDesign name="checksquare" size={24} color="#fd5c63" />
-                        </View>
-                        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 10 }}>
-                            <Text style={{ color: "grey" }}>Working Towards a malnrution-free Pakistan</Text>
-                            <Text>Rs. 50</Text>
-                        </View>
-                    </View>
-                </View>
-            )
-        }
-    ]}
-    keyExtractor={(item, index) => index.toString()}
-    renderItem={({ item }) => (
-        item.customView ? item.customView : (
-            <View style={styles.outerViewCircleAddMoreItems}>
-                <View style={styles.innerViewCircleAddMoreItems}>
-                    {item.icon}
-                    <Text>{item.text}</Text>
-                </View>
-                <AntDesign name="right" size={24} color="black" />
-            </View>
-        )
-    )}
-/>
-
             {/* Billing Details */}
             {cart.length > 0 && (
                 <View style={styles.billingContainer}>
@@ -157,7 +153,7 @@ const Cart = () => {
                     <View style={styles.billingDetails}>
                         <View style={styles.billingRow}>
                             <Text>Item(s) Total</Text>
-                            <Text>Rs. {total}</Text>
+                            <Text>Rs. {totalPrice.toFixed(2)}</Text>
                         </View>
                         <View style={styles.billingRow}>
                             <Text>Delivery Fee</Text>
@@ -168,8 +164,12 @@ const Cart = () => {
                             <Text>Rs. {deliveryPartnerFee}</Text>
                         </View>
                         <View style={styles.billingRow}>
+                            <Text>Addon Fee</Text>
+                            <Text>Rs. {addOnByItem}</Text>
+                        </View>
+                        <View style={styles.billingRow}>
                             <Text style={{ fontWeight: "bold" }}>To pay</Text>
-                            <Text>Rs. {finalPrice}</Text>
+                            <Text>Rs. {finalPrice.toFixed(2)}</Text>
                         </View>
                     </View>
                 </View>
@@ -178,16 +178,17 @@ const Cart = () => {
             {/* Footer */}
             {cart.length > 0 && (
                 <View>
-                    <Pressable
+                    <TouchableOpacity
                         style={{ flexDirection: "row", justifyContent: "space-between", padding: 20, backgroundColor: "white" }}
                     >
                         <View>
                             <Text style={{ fontSize: 16, fontWeight: "600" }}>Pay using Cash</Text>
                             <Text style={{ marginTop: 7 }}>Cash on Delivery (Only)</Text>
                         </View>
-                        <Pressable
-                            style={styles.placeOrderButton}
+                        <TouchableOpacity
+                            style={[styles.placeOrderButton, { backgroundColor: isPlaceOrderDisabled ? "gray" : "#fd5c63" }]}
                             onPress={() => {
+                                if (isPlaceOrderDisabled) return;
                                 dispatch(cleanCart());
                                 router.replace({
                                     pathname: "/Order",
@@ -196,12 +197,14 @@ const Cart = () => {
                             }}
                         >
                             <View>
-                                <Text style={styles.placeOrderText}>Rs. {finalPrice}</Text>
+                                <Text style={styles.placeOrderText}>Rs. {finalPrice.toFixed(2)}</Text>
                                 <Text style={styles.placeOrderSubText}>TOTAL</Text>
                             </View>
-                            <Text style={styles.placeOrderButtonText}>Place Order</Text>
-                        </Pressable>
-                    </Pressable>
+                            <Text style={styles.placeOrderButtonText}>
+                                {isPlaceOrderDisabled ? "No Order" : "Place Order"}
+                            </Text>
+                        </TouchableOpacity>
+                    </TouchableOpacity>
                 </View>
             )}
         </View>
