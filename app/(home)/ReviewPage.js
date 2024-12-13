@@ -1,18 +1,6 @@
 import React, { useState, useCallback } from "react";
-import { 
-  Text, 
-  View, 
-  SafeAreaView, 
-  TextInput, 
-  TouchableOpacity, 
-  Alert, 
-  Image, 
-  KeyboardAvoidingView, 
-  Platform, 
-  TouchableWithoutFeedback, 
-  Keyboard, 
-  ScrollView 
-} from "react-native";
+import { Text, View, SafeAreaView, TextInput, TouchableOpacity, Alert, 
+Image, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, ScrollView } from "react-native";
 import { useRouter } from "expo-router";
 import * as ImagePicker from "expo-image-picker";
 import { styles } from "../../Styles/ReviewStyles";

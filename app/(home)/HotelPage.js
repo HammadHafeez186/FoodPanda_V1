@@ -174,12 +174,7 @@ const HotelPage = () => {
                 <View style={HotelPageStyles.modalContainer}>
                     {menu.map((item, index) => (
                         <View
-                            style={{
-                                padding: 10,
-                                flexDirection: "row",
-                                alignItems: "center",
-                                justifyContent: "space-between",
-                            }}
+                            style={HotelPageStyles.mapContainer}
                             key={index}
                         >
                             <Text style={HotelPageStyles.modalText}>{item.name}</Text>

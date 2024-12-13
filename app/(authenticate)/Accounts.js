@@ -1,18 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import {
-    SafeAreaView,
-    StyleSheet,
-    Text,
-    View,
-    TouchableOpacity,
-    TextInput,
-    Alert,
-    KeyboardAvoidingView,
-    Platform,
-    FlatList
-} from 'react-native'
+import { SafeAreaView, Text, View, TouchableOpacity, TextInput, Alert, KeyboardAvoidingView, Platform, FlatList,} from 'react-native'
 import { supabase } from '../../lib/supabase'
 import { useRouter } from 'expo-router'
+import styles from '../../Styles/AccountsStyles'
 
 const Accounts = () => {
     const [email, setEmail] = useState('')
@@ -39,10 +29,7 @@ const Accounts = () => {
 
     const verifyPassword = async () => {
         try {
-            const { error } = await supabase.auth.signInWithPassword({
-                email,
-                password
-            })
+            const { error } = await supabase.auth.signInWithPassword({ email, password })
             if (error) throw error
             await fetchProfileData()
             setIsAuthenticated(true)
@@ -217,16 +204,3 @@ const Accounts = () => {
 }
 
 export default Accounts
-
-const styles = StyleSheet.create({
-    safeAreaContainer: { flex: 1, backgroundColor: '#f9f9f9' },
-    container: { flex: 1, padding: 20 },
-    backButton: { flexDirection: 'row', alignItems: 'center', marginBottom: 20 },
-    backButtonText: { marginLeft: 10, fontSize: 16, color: '#fd5c63' },
-    formContainer: { flex: 1, justifyContent: 'center' },
-    headerTextStyle: { fontSize: 24, textAlign: 'center', fontWeight: '700', marginBottom: 30, color: '#333' },
-    textInput: { backgroundColor: '#fff', padding: 15, borderRadius: 10, marginVertical: 10, fontSize: 16, borderWidth: 1, borderColor: '#ddd' },
-    primaryButton: { backgroundColor: '#fd5c63', borderRadius: 10, padding: 15, alignItems: 'center', marginTop: 20 },
-    secondaryButton: { backgroundColor: '#e0e0e0', borderRadius: 10, padding: 15, alignItems: 'center', marginTop: 10 },
-    buttonText: { fontWeight: '700', color: 'white', fontSize: 16 },
-})

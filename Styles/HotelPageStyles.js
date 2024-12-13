@@ -177,6 +177,12 @@ const HotelPageStyles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
     },
+    mapContainer: {
+        padding: 10,
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+    }
     
 });
 
