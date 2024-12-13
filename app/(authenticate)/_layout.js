@@ -6,6 +6,7 @@ export default function _layout() {
             <Stack.Screen name="Login" options={{ headerShown: false }} />
             <Stack.Screen name="Register" options={{ headerShown: false }} />
             <Stack.Screen name="Accounts" options={{ headerShown: false }} />
+            <Stack.Screen name="ForgotPass" options={{ headerShown: false }} />
         </Stack>
     );
 }
