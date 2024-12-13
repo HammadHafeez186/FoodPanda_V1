@@ -1,13 +1,5 @@
 import React, { useState } from 'react'
-import { 
-  StyleSheet, 
-  Text, 
-  View, 
-  SafeAreaView, 
-  TextInput, 
-  TouchableOpacity, 
-  Alert 
-} from 'react-native'
+import {StyleSheet, Text, View, SafeAreaView, TextInput, TouchableOpacity, Alert} from 'react-native'
 import { supabase } from '../../lib/supabase'
 import { useRouter } from 'expo-router'
 import MaterialIcons from '@expo/vector-icons/MaterialIcons'
