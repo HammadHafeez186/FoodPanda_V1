@@ -10,6 +10,7 @@ export default function layout() {
                 <Stack.Screen name="MainPage"/>
                 <Stack.Screen name="Cart"/>
                 <Stack.Screen name="Order"/>
+                <Stack.Screen name="AddressScreen"/>
             </Stack>
         </Provider>
 

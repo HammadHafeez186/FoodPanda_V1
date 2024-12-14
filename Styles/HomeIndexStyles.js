@@ -21,6 +21,7 @@ const IndexStyles = StyleSheet.create({
         fontSize: 16,
         color: "grey",
         marginTop: 3,
+        maxWidth: '80%',
     },
     pressable: {
         backgroundColor: "#6cb4ee",
@@ -128,6 +129,94 @@ const IndexStyles = StyleSheet.create({
         marginBottom: 5,
         color: "grey",
     },
+    avatarImage: {
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        backgroundColor: "#ccc", 
+    },
+    userInitialText: {
+        color: 'white',
+        fontSize: 18,
+        fontWeight: 'bold',
+    },
+    avatarPlaceholder: {
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        backgroundColor: '#6cb4ee',
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    modalOverlay: {
+        flex: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        justifyContent: 'flex-end',
+    },
+    modalContent: {
+        backgroundColor: 'white',
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        maxHeight: '80%',
+    },
+    modalHeader: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: 15,
+        borderBottomWidth: 1,
+        borderBottomColor: '#e0e0e0',
+    },
+    modalTitle: {
+        fontSize: 18,
+        fontWeight: 'bold',
+    },
+    addressList: {
+        maxHeight: '70%',
+    },
+    addressListItem: {
+        padding: 15,
+        borderBottomWidth: 1,
+        borderBottomColor: '#e0e0e0',
+    },
+    emptyListText: {
+        textAlign: 'center',
+        padding: 20,
+        color: 'gray',
+    },
+    addAddressButton: {
+        backgroundColor: '#e52850',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 15,
+        margin: 15,
+        borderRadius: 10,
+    },
+    addAddressText: {
+        color: 'white',
+        fontSize: 16,
+        fontWeight: 'bold',
+        marginLeft: 10,
+    },
+    addressListItemContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingVertical: 10,
+        paddingHorizontal: 15,
+        borderBottomWidth: 1,
+        borderColor: '#ccc',
+    },
+    deleteButton: {
+        backgroundColor: '#f8d7da',
+        borderRadius: 5,
+        padding: 5,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    
 });
 
 export default IndexStyles;
+

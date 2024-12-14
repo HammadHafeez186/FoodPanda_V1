@@ -55,6 +55,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginTop: 10,
     },
+    dangerButton: {
+        backgroundColor: '#ff3b30',
+        borderRadius: 10,
+        padding: 15,
+        alignItems: 'center',
+        marginTop: 20,
+    },
     buttonText: {
         fontWeight: '700',
         color: 'white',
@@ -98,6 +105,13 @@ const styles = StyleSheet.create({
         marginBottom: 5,
         color: '#333',
     },
+    warningText: {
+        color: '#ff3b30',
+        fontSize: 16,
+        textAlign: 'center',
+        marginBottom: 20,
+    },
 })
 
 export default styles
+
