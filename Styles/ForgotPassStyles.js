@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     color: 'gray',
   },
   resetButton: {
-    backgroundColor: '#fd5c63',
+    backgroundColor: '#FF2B85',
     borderRadius: 6,
     paddingVertical: 15,
     alignItems: 'center',
@@ -67,6 +67,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
+  resetButtonDisabled: {
+    opacity: 0.6
+  }
 })
 
 export default styles
