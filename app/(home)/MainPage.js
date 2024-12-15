@@ -227,7 +227,7 @@ const HomeIndex = () => {
 
     const renderExploreItem = useCallback(({ item }) => (
         <View style={HomeIndexStyles.itemsExplore}>
-            <Image style={{ width: 50, height: 50 }} source={{ uri: item?.image }} />
+            <Image style={{ width: 70, height: 70 }} source={{ uri: item?.image }} />
             <Text style={HomeIndexStyles.itemsExploreName}>{item?.name}</Text>
             <Text style={HomeIndexStyles.itemsExploreDescription}>{item?.description}</Text>
         </View>

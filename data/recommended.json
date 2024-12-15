@@ -1,10 +1,10 @@
 [
   {
     "id": 0,
-    "name": "Samosa and Sweets Heaven",
-    "image": "https://images.deliveryhero.io/image/fd-pk/LH/sana-listing.jpg?width=400&height=225",
-    "time": "35 - 45",
-    "type": "Pakistani sweets"
+    "name": "Califnia Pizza - Bahria Town  ",        
+    "image": "https://images.deliveryhero.io/image/fd-pk/LH/ezu2-listing.jpg?width=400&height=225",
+    "time": "30 - 45",
+    "type": "Fast food"
   },
   {
     "id": 1,
@@ -17,14 +17,14 @@
     "id": 2,
     "name": "Subway - Johar Town          ", 
     "image": "https://images.deliveryhero.io/image/fd-pk/LH/t4vz-listing.jpg?width=400&height=225",
-    "time": "20 - 25",
+    "time": "25 - 30",
     "type": "Sandwiches"
   },
   {
     "id": 3,
     "name": "Johnny & Jugnu - Johar Town  ",        
     "image": "https://images.deliveryhero.io/image/fd-pk/LH/alrm-listing.jpg?width=400&height=225",
-    "time": "20 - 25",
+    "time": "25 - 35",
     "type": "Fast food"
   }
 ]

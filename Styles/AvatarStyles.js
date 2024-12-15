@@ -1,5 +1,7 @@
 import { StyleSheet } from 'react-native'
 
+const PRIMARY_COLOR = '#FF2B85'
+
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
@@ -15,16 +17,16 @@ const styles = StyleSheet.create({
     paddingTop: 0,
   },
   noImage: {
-    backgroundColor: '#333',
+    backgroundColor: '#f0f0f0',
     borderWidth: 1,
     borderStyle: 'solid',
-    borderColor: 'rgb(200, 200, 200)',
+    borderColor: PRIMARY_COLOR,
     borderRadius: 5,
   },
   button: {
     marginTop: 10,
     padding: 10,
-    backgroundColor: '#4630EB',
+    backgroundColor: PRIMARY_COLOR,
     borderRadius: 5,
   },
   buttonText: {
@@ -33,4 +35,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default styles
+export default styles
