@@ -1,125 +1,185 @@
-import { Text, View, SafeAreaView, TextInput, TouchableOpacity, Alert, Image } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
+import { Text, View, SafeAreaView, TextInput, TouchableOpacity, Alert, 
+Image, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, ScrollView } from "react-native";
 import { useRouter } from "expo-router";
 import * as ImagePicker from "expo-image-picker";
 import { styles } from "../../Styles/ReviewStyles";
+import { Ionicons } from "@expo/vector-icons";
 
 const ReviewPage = () => {
     const [review, setReview] = useState("");
-    const [image, setImage] = useState(null);  // For storing the selected image
+    const [image, setImage] = useState(null);
     const router = useRouter();
 
-    // Request permission to pick images
-    const requestPermission = async () => {
+    // Request permission to pick images from gallery
+    const requestGalleryPermission = async () => {
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (status !== "granted") {
-            Alert.alert("Permission required", "We need permission to access your photos.");
+            Alert.alert(
+                "Permission Required", 
+                "Please grant access to your photo library to select images.",
+                [{ text: "OK" }]
+            );
+            return false;
         }
+        return true;
     };
 
-    // Function to open image picker from the gallery
-    const pickImageFromGallery = async () => {
-        await requestPermission();
+    // Request permission to use camera
+    const requestCameraPermission = async () => {
+        const { status } = await ImagePicker.requestCameraPermissionsAsync();
+        if (status !== "granted") {
+            Alert.alert(
+                "Permission Required", 
+                "Please grant camera access to take photos.",
+                [{ text: "OK" }]
+            );
+            return false;
+        }
+        return true;
+    };
+
+    // Pick image from gallery
+    const pickImageFromGallery = useCallback(async () => {
+        const hasPermission = await requestGalleryPermission();
+        if (!hasPermission) return;
+
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            quality: 1,
+            allowsEditing: true,
+            quality: 0.8,
+            aspect: [4, 3]
         });
 
         if (!result.canceled) {
-            setImage(result.assets[0].uri);  // Set the image URI to state
+            setImage(result.assets[0].uri);
         }
-    };
+    }, []);
 
-    // Function to open the camera
-    const pickImageFromCamera = async () => {
-        const { status } = await ImagePicker.requestCameraPermissionsAsync();
-        if (status !== "granted") {
-            Alert.alert("Permission required", "We need permission to access your camera.");
-        }
+    // Take photo with camera
+    const pickImageFromCamera = useCallback(async () => {
+        const hasPermission = await requestCameraPermission();
+        if (!hasPermission) return;
 
         let result = await ImagePicker.launchCameraAsync({
             allowsEditing: true,
-            quality: 1,
+            quality: 0.8,
+            aspect: [4, 3]
         });
 
         if (!result.canceled) {
-            setImage(result.assets[0].uri);  // Set the image URI to state
+            setImage(result.assets[0].uri);
         }
+    }, []);
+
+    // Remove selected image
+    const removeImage = () => {
+        setImage(null);
     };
 
-    // Handle submitting review
+    // Submit review
     const handleSubmitReview = () => {
         if (!review.trim()) {
-            Alert.alert("Review Required", "Please add a review before submitting.");
+            Alert.alert(
+                "Incomplete Review", 
+                "Please write your review before submitting.",
+                [{ text: "OK" }]
+            );
             return;
         }
 
-        Alert.alert("Thank You!", "Your review has been submitted.", [
-            { text: "OK", onPress: () => router.replace("/MainPage") },
-        ]);
+        // Here you would typically send the review to your backend
+        Alert.alert(
+            "Review Submitted", 
+            "Thank you for your feedback!",
+            [{ text: "OK", onPress: () => router.replace("/MainPage") }]
+        );
 
         console.log("Review:", review);
         console.log("Image URI:", image);
     };
 
-    // Navigate directly to the MainPage if user doesn't want to add a review
-    const handleSkipReview = () => {
-        router.replace("/MainPage");
-    };
-
     return (
-        <SafeAreaView style={styles.container}>
-            <Text style={styles.title}>Add a Review</Text>
-            
-            {/* Review Input */}
-            <TextInput
-                style={styles.textInput}
-                placeholder="Share your feedback here..."
-                multiline
-                value={review}
-                onChangeText={(text) => setReview(text)}
-            />
-
-            {/* Image Picker Options */}
-            <View style={styles.imagePickerOptions}>
-                <TouchableOpacity
-                    style={styles.pickImageButton}
-                    onPress={pickImageFromGallery}
+        <KeyboardAvoidingView 
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            style={styles.keyboardContainer}
+        >
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                <ScrollView 
+                    contentContainerStyle={styles.scrollContainer}
+                    keyboardShouldPersistTaps="handled"
                 >
-                    <Text style={styles.pickImageText}>Pick from Gallery</Text>
-                </TouchableOpacity>
+                    <SafeAreaView style={styles.container}>
+                        <Text style={styles.title}>Share Your Experience</Text>
+                        
+                        {/* Review Input */}
+                        <TextInput
+                            style={styles.textInput}
+                            placeholder="Write your detailed feedback here..."
+                            placeholderTextColor="#888"
+                            multiline
+                            numberOfLines={6}
+                            value={review}
+                            onChangeText={setReview}
+                        />
 
-                <TouchableOpacity
-                    style={styles.pickImageButton}
-                    onPress={pickImageFromCamera}
-                >
-                    <Text style={styles.pickImageText}>Use Camera</Text>
-                </TouchableOpacity>
-            </View>
+                        {/* Image Picker Section */}
+                        <View style={styles.imageSection}>
+                            <View style={styles.imagePickerOptions}>
+                                <TouchableOpacity 
+                                    style={styles.pickImageButton} 
+                                    onPress={pickImageFromGallery}
+                                >
+                                    <Ionicons name="images" size={24} color="white" />
+                                    <Text style={styles.pickImageText}>Gallery</Text>
+                                </TouchableOpacity>
 
-            {/* Display Selected Image */}
-            {image && (
-                <View style={styles.imageContainer}>
-                    <Image source={{ uri: image }} style={styles.image} />
-                </View>
-            )}
+                                <TouchableOpacity 
+                                    style={styles.pickImageButton} 
+                                    onPress={pickImageFromCamera}
+                                >
+                                    <Ionicons name="camera" size={24} color="white" />
+                                    <Text style={styles.pickImageText}>Camera</Text>
+                                </TouchableOpacity>
+                            </View>
 
-            {/* Submit Button */}
-            <TouchableOpacity 
-                style={styles.submitButton} 
-                onPress={handleSubmitReview}
-            >
-                <Text style={styles.submitButtonText}>Submit Review</Text>
-            </TouchableOpacity>
+                            {/* Selected Image Preview */}
+                            {image && (
+                                <View style={styles.imagePreviewContainer}>
+                                    <Image 
+                                        source={{ uri: image }} 
+                                        style={styles.imagePreview} 
+                                    />
+                                    <TouchableOpacity 
+                                        style={styles.removeImageButton} 
+                                        onPress={removeImage}
+                                    >
+                                        <Ionicons name="close" size={20} color="white" />
+                                    </TouchableOpacity>
+                                </View>
+                            )}
+                        </View>
 
-            {/* Skip Review Button */}
-            <TouchableOpacity 
-                style={styles.skipButton}
-                onPress={handleSkipReview}
-            >
-                <Text style={styles.skipButtonText}>Skip Review</Text>
-            </TouchableOpacity>
-        </SafeAreaView>
+                        {/* Action Buttons */}
+                        <View style={styles.buttonContainer}>
+                            <TouchableOpacity 
+                                style={styles.submitButton} 
+                                onPress={handleSubmitReview}
+                            >
+                                <Text style={styles.submitButtonText}>Submit Review</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity 
+                                style={styles.skipButton}
+                                onPress={() => router.replace("/MainPage")}
+                            >
+                                <Text style={styles.skipButtonText}>Skip Review</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </SafeAreaView>
+                </ScrollView>
+            </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
     );
 };
 

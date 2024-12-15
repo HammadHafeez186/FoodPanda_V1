@@ -4,8 +4,12 @@ import CarouselStyles from "../Styles/CarouselStyles";
 
 const Carousel = () => {
     const originalImages = [
-        "https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg?auto=compress&cs=tinysrgb&w=800",
-        "https://images.pexels.com/photos/70497/pexels-photo-70497.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "https://images.deliveryhero.io/image/fd-pk/campaign-assets/gallery/2f41a9b0-97b8-11ef-8f93-f69661d3e0b7.png?height=240&quality=95&width=560&",
+        "https://images.deliveryhero.io/image/fd-pk/campaign-assets/2b3f9327-556a-11ef-b6d6-eefe8b50f562/desktop_tile_EnMOif.png?height=240&quality=95&width=560&",
+        "https://images.deliveryhero.io/image/fd-pk/campaign-assets/8c9793b4-aca1-11ef-825c-063ba5777583/desktop_tile_EncQhg.png?height=240&quality=95&width=560&",
+        "https://images.deliveryhero.io/image/fd-pk/campaign-assets/52534de4-c42d-11ee-b7f6-5ab5b78bc0dc/desktop_tile_EnsHKq.png?height=240&quality=95&width=560&",    
+        "https://images.deliveryhero.io/image/fd-pk/campaign-assets/4093d15c-9de4-11ef-a9a9-f69be65d38e7/desktop_tile_EnysVt.png?height=240&quality=95&width=560&",
+        "https://images.deliveryhero.io/image/fd-pk/campaign-assets/ed935765-001c-11ef-9b51-56b33318eaf5/desktop_tile_EnnNLP.png?height=240&quality=95&width=560&",    
     ];
 
     const images = [...originalImages, originalImages[0]]; // Add first image to end for smooth transition

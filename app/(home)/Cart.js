@@ -186,7 +186,7 @@ const Cart = () => {
                             <Text style={{ marginTop: 7 }}>Cash on Delivery (Only)</Text>
                         </View>
                         <TouchableOpacity
-                            style={[styles.placeOrderButton, { backgroundColor: isPlaceOrderDisabled ? "gray" : "#fd5c63" }]}
+                            style={[styles.placeOrderButton, { backgroundColor: isPlaceOrderDisabled ? "gray" : "#FF2B85" }]}
                             onPress={() => {
                                 if (isPlaceOrderDisabled) return;
                                 dispatch(cleanCart());
@@ -196,13 +196,13 @@ const Cart = () => {
                                 });
                             }}
                         >
-                            <View>
+                            <View style = {{allignItems: 'center'}}>
                                 <Text style={styles.placeOrderText}>Rs. {finalPrice.toFixed(2)}</Text>
-                                <Text style={styles.placeOrderSubText}>TOTAL</Text>
-                            </View>
+                            
                             <Text style={styles.placeOrderButtonText}>
                                 {isPlaceOrderDisabled ? "No Order" : "Place Order"}
                             </Text>
+                            </View>
                         </TouchableOpacity>
                     </TouchableOpacity>
                 </View>

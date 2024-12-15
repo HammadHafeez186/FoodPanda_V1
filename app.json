@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "kfc",
-    "slug": "kfc",
+    "name": "bitbites",
+    "slug": "bitbites",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "scheme": ["bitbites", "exp+bitbites"],
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
@@ -14,13 +14,15 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.yourcompany.bitbites"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.yourcompany.bitbites"
     },
     "web": {
       "bundler": "metro",
@@ -35,3 +37,4 @@
     }
   }
 }
+

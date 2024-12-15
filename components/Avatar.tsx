@@ -1,130 +1,122 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
-import { StyleSheet, View, Alert, Image, Button } from 'react-native'
-import * as ImagePicker from "expo-image-picker"
+import { View, Alert, Image, TouchableOpacity, Text } from 'react-native'
+import * as ImagePicker from 'expo-image-picker'
+import { decode } from 'base64-arraybuffer'
+import styles from '../Styles/AvatarStyles'
 
 interface Props {
-    size: number
-    url: string | null
-    onUpload: (filePath: string) => void
+  size: number
+  url: string | null
+  onUpload: (filePath: string) => void
 }
 
 export default function Avatar({ url, size = 150, onUpload }: Props) {
-    const [uploading, setUploading] = useState(false)
-    const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
-    const avatarSize = { height: size, width: size }
+  const [uploading, setUploading] = useState(false)
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
+  const avatarSize = { height: size, width: size }
 
-    useEffect(() => {
-        if (url) downloadImage(url)
-    }, [url])
+  useEffect(() => {
+    if (url) downloadImage(url)
+  }, [url])
 
-    async function downloadImage(path: string) {
-        try {
-            const { data, error } = await supabase.storage.from('avatars').download(path)
+  async function downloadImage(path: string) {
+    try {
+      const { data, error } = await supabase.storage.from('avatars').download(path)
 
-            if (error) {
-                throw error
-            }
+      if (error) {
+        throw error
+      }
 
-            const fr = new FileReader()
-            fr.readAsDataURL(data)
-            fr.onload = () => {
-                setAvatarUrl(fr.result as string)
-            }
-        } catch (error) {
-            if (error instanceof Error) {
-                console.log('Error downloading image: ', error.message)
-            }
-        }
+      const fr = new FileReader()
+      fr.readAsDataURL(data)
+      fr.onload = () => {
+        setAvatarUrl(fr.result as string)
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        console.log('Error downloading image: ', error.message)
+      }
     }
+  }
 
-    async function uploadAvatar() {
-        try {
-            setUploading(true)
+  async function uploadAvatar() {
+    try {
+      setUploading(true)
 
-            const result = await ImagePicker.launchImageLibraryAsync({
-                mediaTypes: ImagePicker.MediaTypeOptions.Images, // Restrict to only images
-                allowsMultipleSelection: false, // Can only select one image
-                allowsEditing: true, // Allows the user to crop / rotate their photo before uploading it
-                quality: 1,
-                exif: false, // We don't want nor need that data.
-            })
+      const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync()
+      
+      if (!permissionResult.granted) {
+        Alert.alert("Permission Required", "You need to grant permission to access your photos.")
+        return
+      }
 
-            if (result.canceled || !result.assets || result.assets.length === 0) {
-                console.log('User cancelled image picker.')
-                return
-            }
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 1,
+        base64: true,
+      })
 
-            const image = result.assets[0]
-            console.log('Got image', image)
+      if (result.canceled || !result.assets || result.assets.length === 0) {
+        console.log('User cancelled image picker.')
+        return
+      }
 
-            if (!image.uri) {
-                throw new Error('No image uri!') // Realistically, this should never happen, but just in case...
-            }
+      const image = result.assets[0]
+      console.log('Got image', image)
 
-            const arraybuffer = await fetch(image.uri).then((res) => res.arrayBuffer())
+      if (!image.base64) {
+        throw new Error('No image data!')
+      }
 
-            const fileExt = image.uri?.split('.').pop()?.toLowerCase() ?? 'jpeg'
-            const path = `${Date.now()}.${fileExt}`
-            const { data, error: uploadError } = await supabase.storage
-                .from('avatars')
-                .upload(path, arraybuffer, {
-                    contentType: image.mimeType ?? 'image/jpeg',
-                })
+      const fileExt = image.uri.split('.').pop()?.toLowerCase() ?? 'jpg'
+      const fileName = `${Date.now()}.${fileExt}`
+      const filePath = `${fileName}`
 
-            if (uploadError) {
-                throw uploadError
-            }
+      const { error: uploadError } = await supabase.storage
+        .from('avatars')
+        .upload(filePath, decode(image.base64), {
+          contentType: `image/${fileExt}`,
+        })
 
-            onUpload(data.path)
-        } catch (error) {
-            if (error instanceof Error) {
-                Alert.alert(error.message)
-            } else {
-                throw error
-            }
-        } finally {
-            setUploading(false)
-        }
+      if (uploadError) {
+        throw uploadError
+      }
+
+      onUpload(filePath)
+    } catch (error) {
+      if (error instanceof Error) {
+        Alert.alert("Upload Error", error.message)
+      } else {
+        throw error
+      }
+    } finally {
+      setUploading(false)
     }
+  }
 
-    return (
-        <View>
-            {avatarUrl ? (
-                <Image
-                    source={{ uri: avatarUrl }}
-                    accessibilityLabel="Avatar"
-                    style={[avatarSize, styles.avatar, styles.image]}
-                />
-            ) : (
-                <View style={[avatarSize, styles.avatar, styles.noImage]} />
-            )}
-            <View>
-                <Button
-                    title={uploading ? 'Uploading ...' : 'Upload'}
-                    onPress={uploadAvatar}
-                    disabled={uploading}
-                />
-            </View>
-        </View>
-    )
+  return (
+    <View style={styles.container}>
+      {avatarUrl ? (
+        <Image
+          source={{ uri: avatarUrl }}
+          accessibilityLabel="Avatar"
+          style={[avatarSize, styles.avatar, styles.image]}
+        />
+      ) : (
+        <View style={[avatarSize, styles.avatar, styles.noImage]} />
+      )}
+      <TouchableOpacity
+        style={styles.button}
+        onPress={uploadAvatar}
+        disabled={uploading}
+      >
+        <Text style={styles.buttonText}>
+          {uploading ? 'Uploading ...' : 'Upload'}
+        </Text>
+      </TouchableOpacity>
+    </View>
+  )
 }
-
-const styles = StyleSheet.create({
-    avatar: {
-        borderRadius: 5,
-        overflow: 'hidden',
-        maxWidth: '100%',
-    },
-    image: {
-        objectFit: 'cover',
-        paddingTop: 0,
-    },
-    noImage: {
-        backgroundColor: '#333',
-        borderWidth: 1,
-        borderStyle: 'solid',
-        borderColor: 'rgb(200, 200, 200)',
-        borderRadius: 5,
-    },
-})
