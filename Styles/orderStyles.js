@@ -21,7 +21,7 @@ export const styles = StyleSheet.create({
         color: '#888',
     },
     helpText: {
-        color: '#fc8019',
+        color: '#FF2B85',
         fontWeight: 'bold',
         fontSize: 14,
     },
@@ -38,7 +38,7 @@ export const styles = StyleSheet.create({
         bottom: 20,
         left: '50%',
         marginLeft: -60,
-        backgroundColor: '#4A89F3',
+        backgroundColor: '#FF2B85',
         padding: 10,
         borderRadius: 50,
         alignItems: 'center',
@@ -90,6 +90,7 @@ export const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
         marginBottom: 10,
+        color: '',
     },
     tipRow: {
         flexDirection: 'row',
@@ -103,10 +104,10 @@ export const styles = StyleSheet.create({
     tipTitle: {
         fontSize: 14,
         fontWeight: 'bold',
-    },
+    },   
     tipDescription: {
         fontSize: 12,
-        color: '#555',
+        color: '#FF2B85',
         marginVertical: 5,
     },
     tipOptions: {
@@ -116,23 +117,28 @@ export const styles = StyleSheet.create({
     tipButton: {
         padding: 10,
         borderRadius: 5,
-        backgroundColor: '#f2f2f2',
+        backgroundColor: 'white',
         marginVertical: 5,
         alignItems: 'center',
         flexDirection: 'row',
+        borderWidth: 1,
+        borderColor: '#FF2B85',
     },
+    mostTipped: {
+        fontSize: 14,
+        color: "#FF2B85", 
+        marginTop: 4, 
+        fontWeight: "500", 
+        
+      },
     selectedTipButton: {
-        backgroundColor: '#fc8019',
+        backgroundColor: '#FF2B85',
     },
     tipAmount: {
         fontSize: 14,
     },
     selectedTipText: {
         color: 'white',
-    },
-    mostTipped: {
-        fontSize: 12,
-        color: '#fc8019',
     },
     tipPayment: {
         fontSize: 14,
@@ -145,10 +151,10 @@ export const styles = StyleSheet.create({
     },
     cancelText: {
         fontSize: 14,
-        color: '#fc8019',
+        color: '#FF2B85',
     },
     cancelOrderButton: {
-        backgroundColor: '#fc8019',
+        backgroundColor: '#FF2B85',
         padding: 10,
         borderRadius: 5,
         marginTop: 15,
@@ -160,7 +166,7 @@ export const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     orderReceivedButton: {
-        backgroundColor: '#fd5c63',
+        backgroundColor: '##FF2B85',
         borderRadius: 25,
         paddingVertical: 12,
         paddingHorizontal: 30,

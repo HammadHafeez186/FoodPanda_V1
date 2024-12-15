@@ -185,7 +185,7 @@ const IndexStyles = StyleSheet.create({
         color: 'gray',
     },
     addAddressButton: {
-        backgroundColor: '#e52850',
+        backgroundColor: '#FF2B85',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',

@@ -51,7 +51,7 @@ const MenuItemStyles = StyleSheet.create({
     addButtonText: {
         fontSize: 18,
         fontWeight: "600",
-        color: "#fd5c63",
+        color: "#FF2B85",
     },
     quantityContainer: {
         position: "absolute",
@@ -59,7 +59,7 @@ const MenuItemStyles = StyleSheet.create({
         left: 10,
         flexDirection: "row",
         alignItems: "center",
-        backgroundColor: "#fd5c63",
+        backgroundColor: "#FF2B85",
         borderRadius: 5,
         borderColor: "#a32636",
         borderWidth: 1,

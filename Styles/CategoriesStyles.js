@@ -6,7 +6,7 @@ const CategoriesStyles = StyleSheet.create({
         marginVertical: 5,
         marginHorizontal: 10,
         padding: 5,
-        backgroundColor: "#DB7093",
+        backgroundColor: "#FF2B85",
         borderRadius: 8,
     },
     category: {

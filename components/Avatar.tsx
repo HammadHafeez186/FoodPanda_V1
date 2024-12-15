@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
-import { StyleSheet, View, Alert, Image, TouchableOpacity, Text } from 'react-native'
+import { View, Alert, Image, TouchableOpacity, Text } from 'react-native'
 import * as ImagePicker from 'expo-image-picker'
 import { decode } from 'base64-arraybuffer'
+import styles from '../Styles/AvatarStyles'
 
 interface Props {
   size: number
@@ -119,37 +120,3 @@ export default function Avatar({ url, size = 150, onUpload }: Props) {
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  avatar: {
-    borderRadius: 100,
-    overflow: 'hidden',
-    maxWidth: '100%',
-  },
-  image: {
-    objectFit: 'cover',
-    paddingTop: 0,
-  },
-  noImage: {
-    backgroundColor: '#333',
-    borderWidth: 1,
-    borderStyle: 'solid',
-    borderColor: 'rgb(200, 200, 200)',
-    borderRadius: 5,
-  },
-  button: {
-    marginTop: 10,
-    padding: 10,
-    backgroundColor: '#4630EB',
-    borderRadius: 5,
-  },
-  buttonText: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
-})
-

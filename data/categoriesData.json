@@ -1,7 +1,7 @@
 [
     {
         "id": "1",
-        "name": "fastest delivery"
+        "name": "Free delivery"
     },
     {
         "id": "2",
@@ -9,18 +9,18 @@
     },
     {
         "id": "3",
-        "name": "offers"
+        "name": "Home Chefs"
     },
     {
         "id": "4",
-        "name": "cuisines"
+        "name": "Cuisines"
     },
     {
         "id": "5",
-        "name": "MAX Safety"
+        "name": "Local Delights"
     },
     {
         "id": "6",
-        "name": "Pro"
+        "name": "Panda Pro"
     }
 ]

@@ -100,7 +100,7 @@ const HotelPage = () => {
                     <Text style={HotelPageStyles.ratingTextStyle}>3.2k ratings</Text>
                 </View>
                 <View style={HotelPageStyles.waitTimeContainer}>
-                    <Text>30-40 mins 6km Johar Town</Text>
+                    <Text style = {{color: "white"}}>30-40 mins 6km Johar Town</Text>
                 </View>
             </View>
         </>
@@ -181,7 +181,7 @@ const HotelPage = () => {
                             <Text style={HotelPageStyles.modalText}>{item.items.length}</Text>
                         </View>
                     ))}
-                    <Image style={HotelPageStyles.modalImage} source={require("../../images/newPng.png")} />
+                    <Image style={HotelPageStyles.modalImage} source={require("../../images/logo.png")} />
                 </View>
             </Modal>
         </>

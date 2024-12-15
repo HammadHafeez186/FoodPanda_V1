@@ -257,7 +257,7 @@ const Order = () => {
                         <TouchableOpacity
                             onPress={handleCancelOrder}
                             style={{
-                                backgroundColor: canCancelOrder ? '#fc8019' : '#cccccc',
+                                backgroundColor: canCancelOrder ? '#FF2B85' : '#cccccc',
                                 padding: 10,
                                 borderRadius: 5,
                                 opacity: canCancelOrder ? 1 : 0.5
@@ -308,12 +308,14 @@ const Order = () => {
                                         tip === 50 && styles.selectedTipButton,
                                     ]}
                                 >
+                                    <View style= {{alignItems: "center"}}>
                                     <Text
                                         style={[styles.tipAmount, tip === 50 && styles.selectedTipText]}
                                     >
                                         Rs. 50
                                     </Text>
                                     <Text style={styles.mostTipped}>Most Tipped</Text>
+                                    </View>
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     activeOpacity={0.6}
@@ -353,7 +355,7 @@ const Order = () => {
             <View style={{ alignItems: "center", marginTop: 20 }}>
     <TouchableOpacity
         style={{
-            backgroundColor: "#fd5c63",
+            backgroundColor: "#FF2B85",
             borderRadius: 25,
             paddingVertical: 12,
             paddingHorizontal: 30,

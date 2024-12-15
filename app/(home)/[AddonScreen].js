@@ -3,8 +3,8 @@ import { View, Text, TouchableOpacity, FlatList } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useSelector, useDispatch } from "react-redux";
 import { addAddonToItem, removeAddonFromItem } from "../../redux/CartReducer";
-import Menu from "../../data/MenuData.json"; // Assuming MenuData is stored here
-import { styles } from '../../Styles/AddOnStyles';  // Import styles
+import Menu from "../../data/MenuData.json"; 
+import { styles } from '../../Styles/AddOnStyles'; 
 
 const AddonScreen = () => {
   const { itemId, name, addons: initialAddons } = useLocalSearchParams();
@@ -16,7 +16,6 @@ const AddonScreen = () => {
   const [selectedAddons, setSelectedAddons] = useState(initialAddons || []);
 
   useEffect(() => {
-    // Find the selected item from the cart based on the itemId
     const item = cart.find((item) => item.id === itemId);
     if (item) {
       setSelectedItem(item);
@@ -30,27 +29,21 @@ const AddonScreen = () => {
     ?.items.find((item) => item.id === itemId)
     ?.addons || [];
 
-  // Handle Addon Selection
   const handleAddonSelection = (addon) => {
     if (selectedAddons.some((a) => a.id === addon.id)) {
-      // Remove Addon
       setSelectedAddons(selectedAddons.filter((a) => a.id !== addon.id));
       dispatch(removeAddonFromItem({ itemId: selectedItem.id, addon }));
     } else {
-      // Add Addon
       setSelectedAddons([...selectedAddons, addon]);
       dispatch(addAddonToItem({ itemId: selectedItem.id, addon }));
     }
   };
 
-  // Handle Done
   const handleDone = () => {
-    // Update the selectedItem with new addons in Redux
     dispatch(addAddonToItem({ itemId: setSelectedItem.id, addons: selectedAddons }));
-    router.replace("/Cart"); // Navigate back to the Cart screen
+    router.replace("/Cart"); 
   };
 
-  // Render Addon Items
   const renderAddonItem = ({ item }) => (
     <TouchableOpacity
       style={[

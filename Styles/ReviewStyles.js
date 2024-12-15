@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
     title: {
         fontSize: 28,
         fontWeight: '700',
-        color: '#333',
+        color: '#FF2B85',
         marginBottom: 20,
         textAlign: 'center',
     },
@@ -48,7 +48,7 @@ export const styles = StyleSheet.create({
         marginBottom: 15,
     },
     pickImageButton: {
-        backgroundColor: '#fd5c63',
+        backgroundColor: '#FF2B85',
         borderRadius: 15,
         paddingVertical: 12,
         paddingHorizontal: 20,
@@ -91,7 +91,7 @@ export const styles = StyleSheet.create({
         marginTop: 20,
     },
     submitButton: {
-        backgroundColor: '#fd5c63',
+        backgroundColor: '#FF2B85',
         borderRadius: 25,
         paddingVertical: 15,
         alignItems: 'center',
@@ -115,10 +115,10 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderWidth: 1,
-        borderColor: '#fd5c63',
+        borderColor: '#FF2B85',
     },
     skipButtonText: {
-        color: '#fd5c63',
+        color: '#FF2B85',
         fontSize: 18,
         fontWeight: 'bold',
     },

@@ -1,23 +1,30 @@
 [
   {
     "id": 0,
-    "name": "Nandhana Palace",
-    "image": "https://b.zmtcdn.com/data/pictures/chains/3/50713/81d0735ce259a6bf800e16bb54cb9e5e.jpg?fit=around%7C200%3A200&crop=200%3A200%3B%2A%2C%2A",
+    "name": "Samosa and Sweets Heaven",
+    "image": "https://images.deliveryhero.io/image/fd-pk/LH/sana-listing.jpg?width=400&height=225",
     "time": "35 - 45",
-    "type": "Andhra"
+    "type": "Pakistani sweets"
   },
   {
     "id": 1,
-    "name": "GFC Biriyani",
-    "image": "https://b.zmtcdn.com/data/pictures/0/20844770/f9582144619b80d30566f497a02e2c8d.jpg?output-format=webp&fit=around|771.75:416.25&crop=771.75:416.25;*,*",
+    "name": "Foodilicious - Wapda Town    ",
+    "image": "https://images.deliveryhero.io/image/fd-pk/LH/mgal-listing.jpg?width=400&height=225",
     "time": "10 - 35",
-    "type": "North Indian"
+    "type": "Biryani lovers"
   },
   {
     "id": 2,
-    "name": "Happiness Dhaba",
-    "image": "https://b.zmtcdn.com/data/reviews_photos/2f1/c66cf9c2c68f652db16f2c0a6188a2f1_1659295848.jpg?fit=around%7C200%3A200&crop=200%3A200%3B%2A%2C%2A",
+    "name": "Subway - Johar Town          ", 
+    "image": "https://images.deliveryhero.io/image/fd-pk/LH/t4vz-listing.jpg?width=400&height=225",
     "time": "20 - 25",
-    "type": "North Indian"
+    "type": "Sandwiches"
+  },
+  {
+    "id": 3,
+    "name": "Johnny & Jugnu - Johar Town  ",        
+    "image": "https://images.deliveryhero.io/image/fd-pk/LH/alrm-listing.jpg?width=400&height=225",
+    "time": "20 - 25",
+    "type": "Fast food"
   }
 ]

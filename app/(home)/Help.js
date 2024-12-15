@@ -3,33 +3,11 @@ import { Text, View, SafeAreaView, TouchableOpacity, ScrollView, Linking } from 
 import { FontAwesome5, Ionicons } from "@expo/vector-icons";
 import { styles } from "../../Styles/HelpStyles";  // Import styles from external file
 import { useRouter } from "expo-router";
+import helpSections from "../../data/helpSections.json";  // Import the JSON file
 
 const HelpPage = () => {
   const [expandedSection, setExpandedSection] = useState(null);
   const router = useRouter();
-
-  const helpSections = [
-    {
-      title: 'How to Order',
-      content: 'Browse restaurants, select your items, customize your order, and checkout. You can add items to cart, modify quantities, and choose delivery or pickup options.'
-    },
-    {
-      title: 'Tracking Your Order',
-      content: 'Once your order is placed, you can track its status in real-time. Statuses include: Preparing, Out for Delivery, and Delivered. You\'ll receive notifications at each stage.'
-    },
-    {
-      title: 'Payment Methods',
-      content: 'We accept credit cards, debit cards, Apple Pay, Google Pay, and PayPal. You can save multiple payment methods in your account for quick checkout.'
-    },
-    {
-      title: 'Dietary Restrictions',
-      content: 'Easily filter restaurants and menu items based on dietary needs like vegetarian, vegan, gluten-free, and more. Each restaurant provides detailed ingredient information.'
-    },
-    {
-      title: 'Cancellation & Refunds',
-      content: 'You can cancel an order within 5 minutes of placing it. After that, contact customer support. Refunds are processed within 3-5 business days to your original payment method.'
-    }
-  ];
 
   const toggleSection = (index) => {
     setExpandedSection(expandedSection === index ? null : index);

@@ -15,10 +15,10 @@ const styles = StyleSheet.create({
     headerTitle: {
         fontSize: 20,
         fontWeight: "bold",
-        color: "#333",
+        color: "#FF2B85",
     },
     deliveryContainer: {
-        backgroundColor: "#f1f1f1",
+        backgroundColor: "#FF2B85",
         padding: 10,
         borderRadius: 8,
         marginBottom: 20,
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     deliveryText: {
         fontSize: 16,
         fontWeight: "600",
-        color: "#333",
+        color: "white",
     },
     sectionTitleContainer: {
         marginBottom: 10,
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     sectionTitle: {
         fontSize: 18,
         fontWeight: "bold",
-        color: "#333",
+        color: "#FF2B85",
     },
     cartItem: {
         backgroundColor: "#fff",
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     },
     customizeButton: {
         marginTop: 10,
-        backgroundColor: "#fd5c63",
+        backgroundColor: "#FF2B85",
         paddingVertical: 10,
         borderRadius: 5,
         alignItems: "center",
@@ -145,16 +145,17 @@ const styles = StyleSheet.create({
         marginBottom: 5,
     },
     placeOrderButton: {
-        backgroundColor: "#fd5c63",
+        backgroundColor: "#FF2B85",
         padding: 15,
         borderRadius: 8,
-        marginTop: 20,
+        marginTop: 10,
         alignItems: "center",
     },
     placeOrderText: {
         fontSize: 18,
         fontWeight: "600",
         color: "#fff",
+        paddingTop: 5
     },
     placeOrderSubText: {
         fontSize: 14,
@@ -166,6 +167,8 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: "bold",
         color: "#fff",
+        paddingTop: 5,
+        alignSelf: "center",
     },
 });
 

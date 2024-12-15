@@ -18,6 +18,7 @@ export const styles = StyleSheet.create({
   headerText: {
     fontSize: 20,
     fontWeight: 'bold',
+    color: '#FF2B85',
   },
   backButton: {
     flexDirection: 'row',
@@ -38,6 +39,7 @@ export const styles = StyleSheet.create({
   subHeaderText: {
     fontSize: 16,
     color: '#555',
+    padding: 10,
   },
   sectionContainer: {
     backgroundColor: 'white',
@@ -56,7 +58,7 @@ export const styles = StyleSheet.create({
     padding: 15,
   },
   expandButton: {
-    color: '#fc8019',
+    color: '#FF2B85',
   },
   sectionContent: {
     padding: 15,
@@ -68,11 +70,12 @@ export const styles = StyleSheet.create({
   tipDescription: {
     fontSize: 14,
     color: '#777',
+    padding: 10
   },
   contactContainer: {
     backgroundColor: 'white',
     borderRadius: 10,
-    padding: 15,
+    padding: 5,
     alignItems: 'center',
     marginTop: 15,
     shadowColor: '#000',
@@ -82,7 +85,7 @@ export const styles = StyleSheet.create({
     elevation: 3,
   },
   contactButton: {
-    backgroundColor: '#fc8019',
+    backgroundColor: '#FF2B85',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 8,

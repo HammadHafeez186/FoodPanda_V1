@@ -55,7 +55,7 @@ const HotelPageStyles = StyleSheet.create({
     aggregate_ratingContainer: {
         flexDirection: "row",
         alignItems: "center",
-        backgroundColor: "#006a4e",
+        backgroundColor: "#FF2B85",
         borderRadius: 4,
         paddingHorizontal: 4,
         paddingVertical: 5,
@@ -75,7 +75,7 @@ const HotelPageStyles = StyleSheet.create({
     waitTimeContainer: {
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#d0f0c0",
+        backgroundColor: "#FF2B85",
         borderRadius: 20,
         paddingHorizontal: 10,
         paddingVertical: 5,
@@ -94,7 +94,7 @@ const HotelPageStyles = StyleSheet.create({
         bottom: 10,
         left: 10,
         right: 10,
-        backgroundColor: "#fd5c63",
+        backgroundColor: "#FF2B85",
         paddingHorizontal: 10,
         paddingVertical: 10,
         justifyContent: "center",
@@ -118,7 +118,7 @@ const HotelPageStyles = StyleSheet.create({
         marginHorizontal: 10,
         alignItems: "center",
         justifyContent: "center",
-        borderColor: "#181818",
+        borderColor: "#FF2B85",
         borderWidth: 1,
     },
     menuPressable: {
@@ -129,7 +129,7 @@ const HotelPageStyles = StyleSheet.create({
         alignItems: "center",
         position: "absolute",
         right: 25,
-        backgroundColor: "black",
+        backgroundColor: "#FF2B85",
     },
     menuPressableText: {
         textAlign: "center",
@@ -143,7 +143,7 @@ const HotelPageStyles = StyleSheet.create({
     modalContainer: {
         height: 190,
         width: 250,
-        backgroundColor: "black",
+        backgroundColor: "#FF2B85",
         position: "absolute",
         bottom: 35,
         right: 10,
@@ -151,20 +151,20 @@ const HotelPageStyles = StyleSheet.create({
         padding: 10,
     },
     modalText: {
-        color: "#d0d0d0",
+        color: "white",
         fontWeight: "600",
         fontSize: 18,
     },
     modalImage: {
         width: "65%",
-        height: 85,
+        height: 75,
         resizeMode: "cover",
         alignSelf: "center",
         marginVertical: 10,
         marginBottom: 5,
     },
     customizeButton: {
-        backgroundColor: '#ff6347', // Customize the color
+        backgroundColor: '#FF2B85', // Customize the color
         paddingVertical: 8,
         paddingHorizontal: 16,
         borderRadius: 8,
