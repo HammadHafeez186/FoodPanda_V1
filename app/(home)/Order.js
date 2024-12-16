@@ -164,7 +164,7 @@ const Order = () => {
                     <Text style={styles.headerText}>Delivery in 25 mins</Text>
                     <Text style={styles.subHeaderText}>Order placed at {time}</Text>
                 </View>
-                <TouchableOpacity onPress={() => router.push("/Help")}>
+                <TouchableOpacity onPress={() => router.push("./Help")}>
                     <Text style={styles.helpText}>HELP</Text>
                 </TouchableOpacity>
             </View>

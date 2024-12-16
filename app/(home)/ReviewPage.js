@@ -1,5 +1,19 @@
 import React, { useState, useCallback, useEffect } from "react";
-import {Text,View,SafeAreaView,TextInput,TouchableOpacity,Alert,Image,KeyboardAvoidingView,Platform,TouchableWithoutFeedback,Keyboard,ScrollView,Dimensions} from "react-native";
+import {
+  Text,
+  View,
+  SafeAreaView,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableWithoutFeedback,
+  Keyboard,
+  ScrollView,
+  Dimensions
+} from "react-native";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { supabase } from "../../lib/supabase";
@@ -36,7 +50,12 @@ const ReviewPage = () => {
           console.error("Error fetching user profile:", profileError);
         } else {
           setUserProfile(profileData);
-          setAvatarUrl(profileData.avatar_url);
+          if (profileData.avatar_url) {
+            const { data } = supabase.storage
+              .from("avatars")
+              .getPublicUrl(profileData.avatar_url);
+            setAvatarUrl(data.publicUrl);
+          }
           console.log("User profile:", profileData);
         }
       }

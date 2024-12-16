@@ -1,44 +1,17 @@
-import { Image, Pressable, Text, View } from "react-native";
-import React, { useState } from "react";
+import React, { memo } from "react";
+import { Image, Pressable, Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { FontAwesome } from '@expo/vector-icons';
-import { useDispatch } from "react-redux";
-import { addToCart, decrementQuantity, incrementQuantity, removeFromCart } from "../redux/CartReducer";
-import MenuItemStyles from "../Styles/MenuItemStyles";
+import menuItemStyles from "../../FoodPanda_V1/Styles/HotelPageStyles";
 
-const MenuItems = ({ item }) => {
-    const [selected, setSelected] = useState(false);
-    const [quantity, setQuantity] = useState(0);
-    const dispatch = useDispatch();
 
-    const handleAddToCart = () => {
-        if (!selected) {
-            setSelected(true);
-            setQuantity(1);
-            dispatch(addToCart({ ...item, quantity: 1 }));
-        } else {
-            setQuantity(prev => prev + 1);
-            dispatch(incrementQuantity(item));
-        }
-    };
-
-    const handleMinusToCart = () => {
-        if (quantity === 1) {
-            setSelected(false);
-            setQuantity(0);
-            dispatch(removeFromCart(item));
-        } else {
-            setQuantity(prev => prev - 1);
-            dispatch(decrementQuantity(item));
-        }
-    };
-
+const MenuItems = memo(({ item, onAddToCart, onQuantityChange, quantity }) => {
     return (
         <View>
-            <Pressable style={MenuItemStyles.pressableContainer}>
+            <View style={menuItemStyles.pressableContainer}>
                 <View>
-                    <Text style={MenuItemStyles.nameText}>{item.name}</Text>
-                    <Text style={MenuItemStyles.priceText}>Rs. {item.price}</Text>
-                    <Text style={MenuItemStyles.starRatingText}>
+                    <Text style={menuItemStyles.nameText}>{item.name}</Text>
+                    <Text style={menuItemStyles.priceText}>Rs. {item.price}</Text>
+                    <Text style={menuItemStyles.starRatingText}>
                         {[0, 0, 0, 0, 0].map((_, i) => (
                             <FontAwesome
                                 key={i}
@@ -49,42 +22,43 @@ const MenuItems = ({ item }) => {
                             />
                         ))}
                     </Text>
-                    <Text style={MenuItemStyles.itemDescriptionText}>
+                    <Text style={menuItemStyles.itemDescriptionText}>
                         {item.description?.length > 40
                             ? item.description.substring(0, 40) + "..."
                             : item.description || "No Description Available"}
                     </Text>
                 </View>
-                <Pressable style={MenuItemStyles.pressableImageContainer}>
-                    <Image style={MenuItemStyles.imageStyle} source={{ uri: item.image }} />
-                    {!selected ? (
-                        <Pressable
-                            onPress={handleAddToCart}
-                            style={MenuItemStyles.pressableButtonContainer}
+                <View style={menuItemStyles.pressableImageContainer}>
+                    <Image style={menuItemStyles.imageStyle} source={{ uri: item.image }} />
+                    {quantity === 0 ? (
+                        <TouchableOpacity
+                            onPress={() => onAddToCart(item)}
+                            style={menuItemStyles.pressableButtonContainer}
                         >
-                            <Text style={MenuItemStyles.addButtonText}>ADD</Text>
-                        </Pressable>
+                            <Text style={menuItemStyles.addButtonText}>ADD</Text>
+                        </TouchableOpacity>
                     ) : (
-                        <View style={MenuItemStyles.quantityContainer}>
-                            <Pressable
-                                onPress={handleMinusToCart}
-                                style={MenuItemStyles.quantityButton}
+                        <View style={menuItemStyles.quantityContainer}>
+                            <TouchableOpacity
+                                onPress={() => onQuantityChange('decrement')}
+                                style={menuItemStyles.quantityButton}
                             >
-                                <Text style={MenuItemStyles.quantityButtonText}>-</Text>
-                            </Pressable>
-                            <Text style={MenuItemStyles.quantityText}>{quantity}</Text>
-                            <Pressable
-                                onPress={handleAddToCart}
-                                style={MenuItemStyles.quantityButton}
+                                <Text style={menuItemStyles.quantityButtonText}>-</Text>
+                            </TouchableOpacity>
+                            <Text style={menuItemStyles.quantityText}>{quantity}</Text>
+                            <TouchableOpacity
+                                onPress={() => onQuantityChange('increment')}
+                                style={menuItemStyles.quantityButton}
                             >
-                                <Text style={MenuItemStyles.quantityButtonText}>+</Text>
-                            </Pressable>
+                                <Text style={menuItemStyles.quantityButtonText}>+</Text>
+                            </TouchableOpacity>
                         </View>
                     )}
-                </Pressable>
-            </Pressable>
+                </View>
+            </View>
         </View>
     );
-};
+});
 
 export default MenuItems;
+

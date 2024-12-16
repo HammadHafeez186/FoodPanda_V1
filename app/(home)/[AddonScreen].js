@@ -2,46 +2,59 @@ import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, FlatList } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useSelector, useDispatch } from "react-redux";
-import { addAddonToItem, removeAddonFromItem } from "../../redux/CartReducer";
-import Menu from "../../data/MenuData.json"; 
-import { styles } from '../../Styles/AddOnStyles'; 
+import { addAddonToItem, removeAddonFromItem, updateItemPrice } from "../../redux/CartReducer";
+import restaurantData from "../../data/dataRestaurantMenu.json";
+import { styles } from '../../Styles/AddOnStyles';
 
 const AddonScreen = () => {
-  const { itemId, name, addons: initialAddons } = useLocalSearchParams();
+  const { itemId, name, hotel_id } = useLocalSearchParams();
   const router = useRouter();
   const dispatch = useDispatch();
-  const cart = useSelector((state) => state.cart);
+  const { items: cart } = useSelector((state) => state.cart);
 
   const [selectedItem, setSelectedItem] = useState(null);
-  const [selectedAddons, setSelectedAddons] = useState(initialAddons || []);
+  const [selectedAddons, setSelectedAddons] = useState([]);
 
   useEffect(() => {
-    const item = cart.find((item) => item.id === itemId);
+    const item = cart.find((item) => item.id === itemId && item.hotel_id === hotel_id);
     if (item) {
       setSelectedItem(item);
       setSelectedAddons(item.addons || []);
     }
-  }, [cart, itemId]);
+  }, [cart, itemId, hotel_id]);
 
-  const itemAddons = Menu.find((category) =>
-    category.items.some((item) => item.id === itemId)
-  )
-    ?.items.find((item) => item.id === itemId)
-    ?.addons || [];
+  const restaurant = restaurantData.restaurants.find(r => r.id === hotel_id);
+  const menuItem = restaurant?.menu
+    .flatMap(category => category.items)
+    .find(item => item.id === itemId);
+
+  const itemAddons = menuItem?.addons || [];
 
   const handleAddonSelection = (addon) => {
-    if (selectedAddons.some((a) => a.id === addon.id)) {
-      setSelectedAddons(selectedAddons.filter((a) => a.id !== addon.id));
-      dispatch(removeAddonFromItem({ itemId: selectedItem.id, addon }));
+    const isSelected = selectedAddons.some((a) => a.id === addon.id);
+    let updatedAddons;
+
+    if (isSelected) {
+      updatedAddons = selectedAddons.filter((a) => a.id !== addon.id);
+      dispatch(removeAddonFromItem({ itemId, hotel_id, addonId: addon.id }));
     } else {
-      setSelectedAddons([...selectedAddons, addon]);
-      dispatch(addAddonToItem({ itemId: selectedItem.id, addon }));
+      updatedAddons = [...selectedAddons, addon];
+      dispatch(addAddonToItem({ itemId, hotel_id, addon }));
     }
+
+    setSelectedAddons(updatedAddons);
+
+    // Update the item price
+    const newPrice = calculateNewPrice(menuItem.price, updatedAddons);
+    dispatch(updateItemPrice({ itemId, hotel_id, newPrice }));
+  };
+
+  const calculateNewPrice = (basePrice, addons) => {
+    return addons.reduce((total, addon) => total + addon.price, basePrice);
   };
 
   const handleDone = () => {
-    dispatch(addAddonToItem({ itemId: setSelectedItem.id, addons: selectedAddons }));
-    router.replace("/Cart"); 
+    router.replace("/Cart");
   };
 
   const renderAddonItem = ({ item }) => (
@@ -80,3 +93,4 @@ const AddonScreen = () => {
 };
 
 export default AddonScreen;
+

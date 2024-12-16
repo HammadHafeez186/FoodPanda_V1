@@ -1,59 +1,87 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-// Cart Item schema: { id, name, price, quantity, addons: [] }
-// Addons structure: { id, name, price }
-
-export const CartSlice = createSlice({
+const CartSlice = createSlice({
   name: "cart",
-  initialState: [],
+  initialState: {
+    items: [],
+    currentHotelId: null,
+  },
   reducers: {
     addToCart: (state, action) => {
-      const itemPresent = state.find((item) => item.id === action.payload.id);
-      if (itemPresent) {
-        itemPresent.quantity += action.payload.quantity; // Add quantity if already exists
+      const { id, name, price, hotel_id } = action.payload;
+      if (state.currentHotelId === null) {
+        state.currentHotelId = hotel_id;
+      }
+      if (state.currentHotelId === hotel_id) {
+        const existingItem = state.items.find(item => item.id === id);
+        if (existingItem) {
+          existingItem.quantity++;
+        } else {
+          state.items.push({ id, name, price, quantity: 1, addons: [], hotel_id });
+        }
       } else {
-        state.push({ ...action.payload, addons: [] }); // Initialize addons as an empty array
+        // If trying to add item from a different hotel, we don't modify the state
+        // The UI should handle showing a prompt to the user
+        return state;
       }
     },
     removeFromCart: (state, action) => {
-      return state.filter((item) => item.id !== action.payload.id);
+      const { id } = action.payload;
+      state.items = state.items.filter(item => item.id !== id);
+      if (state.items.length === 0) {
+        state.currentHotelId = null;
+      }
     },
     incrementQuantity: (state, action) => {
-      const itemPresent = state.find((item) => item.id === action.payload.id);
-      if (itemPresent) {
-        itemPresent.quantity++;
+      const { id } = action.payload;
+      const item = state.items.find(item => item.id === id);
+      if (item) {
+        item.quantity++;
       }
     },
     decrementQuantity: (state, action) => {
-      const itemPresent = state.find((item) => item.id === action.payload.id);
-      if (itemPresent) {
-        if (itemPresent.quantity === 1) {
-          return state.filter((item) => item.id !== action.payload.id);
+      const { id } = action.payload;
+      const itemIndex = state.items.findIndex(item => item.id === id);
+      if (itemIndex !== -1) {
+        if (state.items[itemIndex].quantity === 1) {
+          state.items.splice(itemIndex, 1);
+          if (state.items.length === 0) {
+            state.currentHotelId = null;
+          }
         } else {
-          itemPresent.quantity--;
+          state.items[itemIndex].quantity--;
         }
       }
     },
-    cleanCart: () => {
-      return [];
+    resetCart: (state) => {
+      state.items = [];
+      state.currentHotelId = null;
     },
     addAddonToItem: (state, action) => {
       const { itemId, addon } = action.payload;
-      const item = state.find((item) => item.id === itemId);
-      if (item) {
-        // Check if addon is already added to avoid duplicates
-        if (!item.addons.find((existingAddon) => existingAddon.id === addon.id)) {
-          item.addons.push(addon);
-        }
+      const item = state.items.find(item => item.id === itemId);
+      if (item && !item.addons.some(existingAddon => existingAddon.id === addon.id)) {
+        item.addons.push(addon);
       }
     },
     removeAddonFromItem: (state, action) => {
-      const { itemId, addon } = action.payload;
-      const item = state.find((item) => item.id === itemId);
+      const { itemId, addonId } = action.payload;
+      const item = state.items.find(item => item.id === itemId);
       if (item && item.addons) {
-        item.addons = item.addons.filter((a) => a.id !== addon.id);
+        item.addons = item.addons.filter(a => a.id !== addonId);
       }
-    }
+    },
+    updateItemPrice: (state, action) => {
+      const { itemId, newPrice } = action.payload;
+      const item = state.items.find(item => item.id === itemId);
+      if (item) {
+        item.price = newPrice;
+      }
+    },
+    cleanCart: (state) => {
+      state.items = [];
+      state.currentHotelId = null;
+    },
   }
 });
 
@@ -62,9 +90,12 @@ export const {
   removeFromCart,
   incrementQuantity,
   decrementQuantity,
-  cleanCart,
+  resetCart,
   addAddonToItem,
   removeAddonFromItem,
+  updateItemPrice,
+  cleanCart,
 } = CartSlice.actions;
 
 export default CartSlice.reducer;
+

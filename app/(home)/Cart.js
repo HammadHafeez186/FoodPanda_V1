@@ -1,16 +1,17 @@
 import React from "react";
-import { View, Text, TouchableOpacity, FlatList } from "react-native";
+import { View, Text, TouchableOpacity, FlatList, ScrollView, Alert } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useSelector, useDispatch } from "react-redux";
-import { incrementQuantity, decrementQuantity, cleanCart } from "../../redux/CartReducer";
+import { incrementQuantity, decrementQuantity, removeFromCart, cleanCart } from "../../redux/CartReducer";
 import Instructions from "../../data/Instructions.json";
 import styles from "../../Styles/CartStyles";
-import AddonScreen from "./[AddonScreen]";
+import { supabase } from '../../lib/supabase';
 
 // Helper function to calculate total price
 const calculateTotalPrice = (cart) => {
+    if (!Array.isArray(cart) || cart.length === 0) return 0;
     return cart
       .map((item) => {
         const addonTotal = item.addons?.reduce((sum, addon) => sum + addon.price, 0) || 0;
@@ -22,14 +23,14 @@ const calculateTotalPrice = (cart) => {
 const Cart = () => {
     const params = useLocalSearchParams();
     const router = useRouter();
-    const cart = useSelector((state) => state.cart);
+    const { items: cart } = useSelector((state) => state.cart);
     const dispatch = useDispatch();
 
     // Calculate the total price (including addons)
     const totalPrice = calculateTotalPrice(cart);
     const deliveryFee = Math.floor(totalPrice * 0.2);
     const deliveryPartnerFee = Math.floor(deliveryFee * 0.2);
-    const addOnByItem = cart.map((item) => item.addons.reduce((sum, addon) => sum + addon.price, 0)).reduce((sum, price) => sum + price, 0);
+    const addOnByItem = Array.isArray(cart) ? cart.reduce((sum, item) => sum + (item.addons?.reduce((addonSum, addon) => addonSum + addon.price, 0) || 0), 0) : 0;
     const finalPrice = totalPrice + deliveryFee + deliveryPartnerFee;
 
     // Render Cart Items
@@ -45,27 +46,34 @@ const Cart = () => {
             </Text>
             <View style={styles.quantityContainer}>
                 <TouchableOpacity
-                    onPress={() => dispatch(decrementQuantity(item))}
+                    onPress={() => dispatch(decrementQuantity({ id: item.id, hotel_id: item.hotel_id }))}
                     style={styles.quantityButton}
                 >
                     <Text style={styles.quantityButtonText}>-</Text>
                 </TouchableOpacity>
                 <Text style={styles.quantityText}>{item.quantity}</Text>
                 <TouchableOpacity
-                    onPress={() => dispatch(incrementQuantity(item))}
+                    onPress={() => dispatch(incrementQuantity({ id: item.id, hotel_id: item.hotel_id }))}
                     style={styles.quantityButton}
                 >
                     <Text style={styles.quantityButtonText}>+</Text>
                 </TouchableOpacity>
             </View>
 
+            {/* Remove Button */}
+            <TouchableOpacity
+                onPress={() => dispatch(removeFromCart({ id: item.id, hotel_id: item.hotel_id }))}
+                style={styles.removeButton}
+            >
+                <Text style={styles.removeButtonText}>Remove</Text>
+            </TouchableOpacity>
+
             {/* Customize Button */}
             <TouchableOpacity
                 onPress={() => {
-                    // Pass relevant parameters to the Addons screen
                     router.replace({
                         pathname: "/AddonScreen",
-                        params: { itemId: item.id, name: item.name, addons: item.addons }
+                        params: { itemId: item.id, name: item.name, hotel_id: item.hotel_id }
                     });
                 }}
                 style={styles.customizeButton}
@@ -75,10 +83,10 @@ const Cart = () => {
 
             {/* Addon Items Section */}
             {item.addons && item.addons.length > 0 && (
-                <View style={{ backgroundColor: "#f5f5f5", padding: 10, marginTop: 10, borderRadius: 8 }}>
-                    <Text style={{ fontSize: 14, fontWeight: "600", color: "#333", marginBottom: 5 }}>Addons:</Text>
+                <View style={styles.addonsContainer}>
+                    <Text style={styles.addonsTitle}>Addons:</Text>
                     {item.addons.map((addon) => (
-                        <Text key={addon.id} style={{ fontSize: 14, color: "#555" }}>
+                        <Text key={addon.id} style={styles.addonItem}>
                             {addon.name} - Rs. {addon.price}
                         </Text>
                     ))}
@@ -97,11 +105,53 @@ const Cart = () => {
         </TouchableOpacity>
     );
 
+    // Function to upload cart data to Supabase
+    const uploadCartData = async (userId, cartItems) => {
+        try {
+            for (const item of cartItems) {
+                // Insert cart item
+                const { data: cartItem, error: cartItemError } = await supabase
+                    .from('cart_items')
+                    .insert({
+                        user_id: userId,
+                        hotel_id: item.hotel_id,
+                        item_name: item.name,
+                        price: item.price,
+                        quantity: item.quantity
+                    })
+                    .select()
+                    .single();
+
+                if (cartItemError) throw cartItemError;
+
+                // Insert addons for this cart item
+                if (item.addons && item.addons.length > 0) {
+                    const addons = item.addons.map(addon => ({
+                        cart_item_id: cartItem.id,
+                        addon_name: addon.name,
+                        addon_price: addon.price
+                    }));
+
+                    const { error: addonsError } = await supabase
+                        .from('cart_item_addons')
+                        .insert(addons);
+
+                    if (addonsError) throw addonsError;
+                }
+            }
+
+            console.log('Cart data uploaded successfully');
+        } catch (error) {
+            console.error('Error uploading cart data:', error);
+            throw error;
+        }
+    };
+
     // Disable the "Place Order" button if finalPrice is less than 500
     const isPlaceOrderDisabled = finalPrice < 500;
 
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
             {/* Header Section */}
             <View style={styles.header}>
                 <TouchableOpacity onPress={() => router.back()}>
@@ -121,24 +171,26 @@ const Cart = () => {
             </View>
 
             {/* Cart Items */}
-            <FlatList
-                data={cart}
-                keyExtractor={(item, index) => item.id || index.toString()}
-                renderItem={renderCartItem}
-                ListEmptyComponent={
-                    <View>
-                        <Text style={{ fontSize: 20, fontWeight: "600" }}>Your cart is empty</Text>
-                    </View>
-                }
-            />
+            {Array.isArray(cart) && cart.length > 0 ? (
+                <FlatList
+                    data={cart}
+                    keyExtractor={(item) => `${item.id}-${item.hotel_id}`}
+                    renderItem={renderCartItem}
+                    scrollEnabled={false}
+                />
+            ) : (
+                <View>
+                    <Text style={styles.emptyCartText}>Your cart is empty</Text>
+                </View>
+            )}
 
             {/* Delivery Instructions */}
-            {cart.length > 0 && (
-                <View style={{ marginVertical: 10 }}>
+            {Array.isArray(cart) && cart.length > 0 && (
+                <View style={styles.deliveryInstructionsContainer}>
                     <Text style={styles.deliveryInstructionHeading}>Delivery Instruction</Text>
                     <FlatList
                         data={Instructions}
-                        keyExtractor={(item, index) => item.id || index.toString()}
+                        keyExtractor={(item) => item.id.toString()}
                         renderItem={renderInstructionItem}
                         horizontal
                         showsHorizontalScrollIndicator={false}
@@ -147,7 +199,7 @@ const Cart = () => {
             )}
 
             {/* Billing Details */}
-            {cart.length > 0 && (
+            {Array.isArray(cart) && cart.length > 0 && (
                 <View style={styles.billingContainer}>
                     <Text style={styles.billingTitle}>Billing Details</Text>
                     <View style={styles.billingDetails}>
@@ -168,47 +220,57 @@ const Cart = () => {
                             <Text>Rs. {addOnByItem}</Text>
                         </View>
                         <View style={styles.billingRow}>
-                            <Text style={{ fontWeight: "bold" }}>To pay</Text>
-                            <Text>Rs. {finalPrice.toFixed(2)}</Text>
+                            <Text style={styles.totalText}>To pay</Text>
+                            <Text style={styles.totalAmount}>Rs. {finalPrice.toFixed(2)}</Text>
                         </View>
                     </View>
                 </View>
             )}
 
             {/* Footer */}
-            {cart.length > 0 && (
-                <View>
-                    <TouchableOpacity
-                        style={{ flexDirection: "row", justifyContent: "space-between", padding: 20, backgroundColor: "white" }}
-                    >
+            {Array.isArray(cart) && cart.length > 0 && (
+                <View style={styles.footer}>
+                    <TouchableOpacity style={styles.paymentMethod}>
                         <View>
-                            <Text style={{ fontSize: 16, fontWeight: "600" }}>Pay using Cash</Text>
-                            <Text style={{ marginTop: 7 }}>Cash on Delivery (Only)</Text>
+                            <Text style={styles.paymentMethodTitle}>Pay using Cash</Text>
+                            <Text style={styles.paymentMethodSubtitle}>Cash on Delivery (Only)</Text>
                         </View>
                         <TouchableOpacity
                             style={[styles.placeOrderButton, { backgroundColor: isPlaceOrderDisabled ? "gray" : "#FF2B85" }]}
-                            onPress={() => {
+                            onPress={async () => {
                                 if (isPlaceOrderDisabled) return;
-                                dispatch(cleanCart());
-                                router.replace({
-                                    pathname: "/Order",
-                                    params: { name: params.name },
-                                });
+
+                                try {
+                                    const { data: { user } } = await supabase.auth.getUser()
+                                    if (!user) throw new Error('No user logged in');
+
+                                    await uploadCartData(user.id, cart);
+
+                                    // If successful, clean the cart and navigate to the Order page
+                                    dispatch(cleanCart());
+                                    router.replace({
+                                        pathname: "/Order",
+                                        params: { name: params.name },
+                                    });
+                                } catch (error) {
+                                    console.error('Error placing order:', error);
+                                    Alert.alert('Error', 'Failed to place order. Please try again.');
+                                }
                             }}
                         >
-                            <View style = {{allignItems: 'center'}}>
+                            <View style={styles.placeOrderButtonContent}>
                                 <Text style={styles.placeOrderText}>Rs. {finalPrice.toFixed(2)}</Text>
-                            
-                            <Text style={styles.placeOrderButtonText}>
-                                {isPlaceOrderDisabled ? "No Order" : "Place Order"}
-                            </Text>
+                                <Text style={styles.placeOrderButtonText}>
+                                    {isPlaceOrderDisabled ? "No Order" : "Place Order"}
+                                </Text>
                             </View>
                         </TouchableOpacity>
                     </TouchableOpacity>
                 </View>
             )}
-        </View>
+        </ScrollView>
     );
 };
 
 export default Cart;
+

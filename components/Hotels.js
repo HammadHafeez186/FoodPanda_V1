@@ -34,14 +34,13 @@ const hotels = ({item}) => {
              <View style={hotelsStyles.styleInBetween}/>
              <View style={hotelsStyles.discountView}>
                  <MaterialCommunityIcons name="brightness-percent" size={24} color="#FF2B85" />
-                 <Text style={hotelsStyles.discountText}>15% OFF till PKR 500</Text>
+                 <Text style={hotelsStyles.discountText}>Discount on selected items</Text>
              </View>
              <View style={hotelsStyles.discountView}>
                  <MaterialCommunityIcons name="brightness-percent" size={24} color="#FF2B85" />
                  <Text style={hotelsStyles.discountText}>Get exclusive discounts with Panda Pro</Text>
              </View>
          </Pressable>
-
 
     );
 }
