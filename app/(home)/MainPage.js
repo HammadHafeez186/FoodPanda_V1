@@ -9,10 +9,13 @@ import { supabase } from "../../lib/supabase";
 import { useRouter } from "expo-router";
 import { useIsFocused } from '@react-navigation/native';
 import HomeIndexStyles from "../../Styles/HomeIndexStyles";
-import { items, recommended, hotelData } from "../../data/HomeIndexData";
+import { items } from "../../data/HomeIndexData";
+import restaurantData from "../../data/dataRestaurantMenu.json";
 import Hotels from "../../components/Hotels";
-import Categories from "../../components/Categories";
-import Carousel from "../../components/Carousel";
+import Categories from '../../components/Categories';
+import Carousel from '../../components/Carousel';
+import CartButton from '../../components/CartButton';
+import { useSelector } from 'react-redux';
 
 const HomeIndex = () => {
     const [locationServicesEnabled, setLocationServicesEnabled] = useState(false);
@@ -25,6 +28,7 @@ const HomeIndex = () => {
     const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
     const isFocused = useIsFocused();
+    const cart = useSelector((state) => state.cart.items);
 
     useEffect(() => {
         checkIfLocationEnabled();
@@ -210,30 +214,38 @@ const HomeIndex = () => {
     }, [selectedAddressId, saveSelectedAddress, deleteAddress]);
 
     const renderRecommendedItem = useCallback(({ item }) => (
-        <View style={HomeIndexStyles.foodItemContainer}>
+        <TouchableOpacity 
+            style={HomeIndexStyles.foodItemContainer}
+            onPress={() => router.push({ 
+                pathname: "/HotelPage", 
+                params: { id: item.hotel_id } 
+            })}
+        >
             <View style={HomeIndexStyles.foodImageContainer}>
                 <Image source={{ uri: item?.image }} style={HomeIndexStyles.foodImage} />
             </View>
             <View style={HomeIndexStyles.foodDetailsContainer}>
                 <Text style={HomeIndexStyles.foodName}>{item?.name}</Text>
-                <Text style={HomeIndexStyles.foodType}>{item?.type}</Text>
+                <Text style={HomeIndexStyles.foodType}>{item?.price} RS</Text>
                 <View style={HomeIndexStyles.timeContainer}>
-                    <Ionicons name="time" size={20} color="black" />
-                    <Text style={HomeIndexStyles.timeText}>{item?.time} mins</Text>
+                    <Ionicons name="star" size={20} color="gold" />
+                    <Text style={HomeIndexStyles.timeText}>{item?.rating}</Text>
                 </View>
             </View>
-        </View>
-    ), []);
+        </TouchableOpacity>
+    ), [router]);
 
     const renderExploreItem = useCallback(({ item }) => (
         <View style={HomeIndexStyles.itemsExplore}>
-            <Image style={{ width: 50, height: 50 }} source={{ uri: item?.image }} />
+            <Image style={{ width: 70, height: 70 }} source={{ uri: item?.image }} />
             <Text style={HomeIndexStyles.itemsExploreName}>{item?.name}</Text>
             <Text style={HomeIndexStyles.itemsExploreDescription}>{item?.description}</Text>
         </View>
     ), []);
 
-    const renderHotelItem = useCallback(({ item }) => <Hotels item={item} />, []);
+    const renderRestaurantItem = useCallback(({ item }) => (
+        <Hotels item={item} />
+    ), []);
 
     const ListHeaderComponent = useCallback(() => (
         <>
@@ -270,13 +282,14 @@ const HomeIndex = () => {
                 />
             </View>
 
-            <Categories />
             <Carousel />
+            <Categories />
 
+            <Text style={HomeIndexStyles.exploreText}>Recommended Food Items</Text>
             <FlatList
-                data={recommended}
+                data={restaurantData.restaurants[0].menu.find(category => category.name === "Recommended")?.items || []}
                 renderItem={renderRecommendedItem}
-                keyExtractor={(item, index) => `recommended-${index}`}
+                keyExtractor={(item) => `recommended-${item.id}`}
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 style={{ flexGrow: 0 }}
@@ -298,11 +311,11 @@ const HomeIndex = () => {
     ), [displayCurrentAddress, userInitial, fetchUserAddresses, renderRecommendedItem, renderExploreItem]);
 
     return (
-        <>
+        <View style={{ flex: 1 }}>
             <FlatList
-                data={hotelData}
-                renderItem={renderHotelItem}
-                keyExtractor={(item, index) => index.toString()}
+                data={restaurantData.restaurants}
+                renderItem={renderRestaurantItem}
+                keyExtractor={(item) => item.id}
                 ListHeaderComponent={ListHeaderComponent}
                 contentContainerStyle={HomeIndexStyles.container}
             />
@@ -347,7 +360,8 @@ const HomeIndex = () => {
                     </View>
                 </View>
             </Modal>
-        </>
+            <CartButton />
+        </View>
     );
 };
 

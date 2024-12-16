@@ -17,7 +17,7 @@ const hotelStyles = StyleSheet.create({
     aggregate_rating:{
         flexDirection:"row",
         alignItems:"center",
-        backgroundColor:"#006a4e",
+        backgroundColor:"#FF2B85",
         borderRadius:4,
         paddingHorizontal:5,
         paddingVertical:5,
@@ -70,7 +70,7 @@ const hotelStyles = StyleSheet.create({
     },
     discountText:{
         marginLeft:2,
-        color:"#1f75fe",
+        color:"#FF2B85",
         fontWeight:"500"
 
     }

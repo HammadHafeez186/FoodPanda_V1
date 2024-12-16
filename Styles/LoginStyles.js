@@ -1,103 +1,73 @@
-// styles.js
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
+
+const { width, height } = Dimensions.get('window');
+const logoSize = width * 0.5;
 
 export default StyleSheet.create({
-  headerTextStyle: {
-    fontSize: 20,
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
-  mainView: {
-    marginTop: 50,
-    alignItems: 'center',
-  },
-  maskedContainer: {
-    backgroundColor: 'transparent',
-    alignItems: 'center',
-  },
-  maskedText: {
-    fontSize: 40,
-    fontWeight: 'bold',
-  },
-  gradientText: {
-    height: 60,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  gradientTextOverlay: {
-    fontSize: 40,
-    fontWeight: 'bold',
-    color: 'transparent',
-  },
   safeAreaContainer: {
     flex: 1,
     backgroundColor: 'white',
+  },
+  scrollView: {
+    flexGrow: 1,
+  },
+  contentContainer: {
+    flexGrow: 1,
     alignItems: 'center',
+    justifyContent: 'flex-start',
+    paddingTop: height * 0.05,
+    paddingBottom: 20,
+  },
+  logoContainer: {
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  logoImage: {
+    width: logoSize * 2,
+    height: logoSize * 0.3,
+    marginBottom: 10,
+    resizeMode: 'contain',
+  },
+  formContainer: {
+    width: '85%',
   },
   subHeadingFont: {
-    fontSize: 17,
+    fontSize: 22,
     fontWeight: 'bold',
-    marginTop: 12,
-    color: 'red',
-  },
-  textInputView: {
-    marginTop: 50,
-    width: '80%',
+    marginBottom: 30,
+    color: '#FF2B85',
+    textAlign: 'center',
   },
   inputContainer: {
-    marginBottom: 20,
+    marginBottom: 15,
   },
   label: {
     fontSize: 14,
     color: 'gray',
     marginBottom: 5,
   },
-  emailTextInput: {
-    color: 'gray',
-    width: '100%',
-  },
-  emailViewContainer: {
+  inputWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 5,
-    backgroundColor: '#e0e0e0',
-    paddingVertical: 5,
-    borderRadius: 5,
+    backgroundColor: '#F0F0F0',
+    borderRadius: 8,
     paddingHorizontal: 10,
   },
-  Icon: {
-    marginRight: 5,
+  icon: {
+    marginRight: 10,
+  },
+  textInput: {
+    flex: 1,
+    paddingVertical: 12,
+    fontSize: 16,
   },
   signedInCategoryContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginTop: 12,
+    marginTop: 10,
   },
-  pressableContainer: {
-    width: '100%',
-    backgroundColor: '#fd5c63',
-    borderRadius: 6,
-    marginTop: 30,
-    padding: 15,
-    alignSelf: 'center',
-  },
-  loginButtonText: {
-    textAlign: 'center',
-    fontWeight: 'bold',
-    fontSize: 16,
-    color: 'white',
-  },
-  pressablRegisterContainer: {
-    marginTop: 15,
-  },
-  registerText: {
-    textAlign: 'center',
-    color: 'gray',
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-  checkboxTouchable: {
+  checkboxContainer: {
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -112,13 +82,36 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   checkboxChecked: {
-    backgroundColor: '#fd5c63',
-    borderColor: '#fd5c63',
-  },
-  checkboxTick: {
-    position: 'absolute',
+    backgroundColor: '#FF2B85',
+    borderColor: '#FF2B85',
   },
   checkboxLabel: {
     color: 'gray',
+    fontSize: 14,
+  },
+  forgotPasswordText: {
+    color: 'black',
+    fontSize: 14,
+  },
+  loginButton: {
+    backgroundColor: '#FF2B85',
+    borderRadius: 8,
+    paddingVertical: 15,
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  loginButtonText: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  signUpContainer: {
+    marginTop: 15,
+  },
+  signUpText: {
+    color: 'gray',
+    fontSize: 16,
+    textAlign: 'center',
   },
 });
+

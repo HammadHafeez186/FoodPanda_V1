@@ -1,28 +1,28 @@
 {
   "expo": {
-    "name": "bitbites",
-    "slug": "bitbites",
+    "name": "foodpanda",
+    "slug": "foodpanda",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": ["bitbites", "exp+bitbites"],
+    "scheme": ["foodpanda", "exp+foodpanda"],
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/images/splash-icon.png",
+      "image": "./assets/images/icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.yourcompany.bitbites"
+      "bundleIdentifier": "com.yourcompany.foodpanda"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.yourcompany.bitbites"
+      "package": "com.yourcompany.foodpanda"
     },
     "web": {
       "bundler": "metro",

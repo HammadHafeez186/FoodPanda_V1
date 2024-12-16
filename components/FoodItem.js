@@ -1,48 +1,45 @@
-import { View, FlatList, Pressable, Text } from "react-native";
+import React, { memo } from "react";
+import { View, FlatList, Pressable, Text, StyleSheet } from "react-native";
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import React from "react";
 import MenuItems from "./MenuItems";
-import FoodItemStyles from '../Styles/FoodItemStyles';
 
-const FoodItem = ({ item }) => {
-    const data = [item];
+import foodItemStyles from "../../FoodPanda_V1/Styles/HotelPageStyles";
 
-    // Render function for menu items
-    const renderMenuItems = ({ item: menuItem }) => (
+const FoodItem = memo(({ item, onAddToCart, onQuantityChange, cartItems }) => {
+    const [expanded, setExpanded] = React.useState(true);
+
+    const renderMenuItems = React.useCallback(({ item: menuItem }) => (
         <MenuItems 
-            key={menuItem.id || `${item.name}-${menuItem.name}`}
+            key={menuItem.id}
             item={menuItem}
+            onAddToCart={() => onAddToCart(menuItem)}
+            onQuantityChange={(action) => onQuantityChange(menuItem, action)}
+            quantity={cartItems.find(cartItem => cartItem.id === menuItem.id)?.quantity || 0}
         />
-    );
-
-    // Render function for main food item
-    const renderFoodItem = ({ item: foodItem }) => (
-        <View key={foodItem.id || foodItem.name}>
-            <Pressable style={FoodItemStyles.pressableContainer}>
-                <Text style={FoodItemStyles.recommendedTagStyle}>
-                    {foodItem?.name} ({foodItem.items.length})
-                </Text>
-                <FontAwesome name="angle-down" size={24} color="black" />
-            </Pressable>
-            <FlatList
-                data={foodItem.items}
-                renderItem={renderMenuItems}
-                keyExtractor={(menuItem) => menuItem.id || `${foodItem.name}-${menuItem.name}`}
-                scrollEnabled={false} // Prevent nested scrolling
-            />
-        </View>
-    );
+    ), [onAddToCart, onQuantityChange, cartItems]);
 
     return (
         <View>
-            <FlatList
-                data={data}
-                renderItem={renderFoodItem}
-                keyExtractor={(foodItem) => foodItem.id || foodItem.name}
-                scrollEnabled={false} // Prevent nested scrolling
-            />
+            <Pressable 
+                style={foodItemStyles.pressableContainer}
+                onPress={() => setExpanded(!expanded)}
+            >
+                <Text style={foodItemStyles.recommendedTagStyle}>
+                    {item.name} ({item.items.length})
+                </Text>
+                <FontAwesome name={expanded ? "angle-up" : "angle-down"} size={24} color="black" />
+            </Pressable>
+            {expanded && (
+                <FlatList
+                    data={item.items}
+                    renderItem={renderMenuItems}
+                    keyExtractor={(menuItem) => menuItem.id.toString()}
+                    scrollEnabled={false}
+                />
+            )}
         </View>
     );
-};
+});
 
 export default FoodItem;
+
