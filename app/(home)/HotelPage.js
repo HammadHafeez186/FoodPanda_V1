@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useEffect } from "react";
-import { View, Text, Pressable, Alert, TouchableOpacity, Image, SafeAreaView } from "react-native";
+import { View, Text, Pressable, Alert, TouchableOpacity, Image, FlatList } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -53,63 +53,73 @@ const HotelPage = () => {
     }
   }, [dispatch]);
 
+  const renderFoodItem = useCallback(({ item }) => (
+    <FoodItem
+      item={item}
+      onAddToCart={handleAddToCart}
+      onQuantityChange={handleQuantityChange}
+      cartItems={cart}
+      discountPercentage={restaurant?.discount?.percentage || 0}
+    />
+  ), [handleAddToCart, handleQuantityChange, cart, restaurant]);
+
+  const renderHeader = useCallback(() => (
+    <>
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
+          <Ionicons name="arrow-back" size={24} color="#333" />
+        </TouchableOpacity>
+        <Text style={styles.restaurantName}>{restaurant?.name}</Text>
+      </View>
+
+      <Image 
+        source={{ uri: restaurant?.featured_image }} 
+        style={styles.bannerImage}
+      />
+
+      <View style={styles.infoContainer}>
+        <Text style={styles.cuisineText}>{restaurant?.cuisines}</Text>
+        <View style={styles.ratingContainer}>
+          <Ionicons name="star" size={20} color="#FFD700" />
+          <Text style={styles.ratingText}>{restaurant?.aggregate_rating}</Text>
+        </View>
+      </View>
+
+      {restaurant?.discount?.percentage > 0 && (
+        <View style={styles.discountBanner}>
+          <MaterialCommunityIcons name="tag" size={24} color="#FF2B85" />
+          <Text style={styles.discountText}>{restaurant?.discount?.percentage}% off on all menu items</Text>
+        </View>
+      )}
+    </>
+  ), [restaurant, router]);
+
   if (!restaurant) {
     return <Text>Loading...</Text>;
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-          <Ionicons name="arrow-back" size={24} color="#333" />
-        </TouchableOpacity>
-        <Text style={styles.restaurantName}>{restaurant.name}</Text>
-      </View>
-
-      <Image 
-        source={{ uri: restaurant.featured_image }} 
-        style={styles.bannerImage}
+    <View style={styles.container}>
+      <FlatList
+        ListHeaderComponent={renderHeader}
+        data={restaurant.menu}
+        renderItem={renderFoodItem}
+        keyExtractor={(item) => item.id.toString()}
+        contentContainerStyle={styles.menuContainer}
       />
-
-      <View style={styles.infoContainer}>
-        <Text style={styles.cuisineText}>{restaurant.cuisines}</Text>
-        <View style={styles.ratingContainer}>
-          <Ionicons name="star" size={20} color="#FFD700" />
-          <Text style={styles.ratingText}>{restaurant.aggregate_rating}</Text>
-        </View>
-      </View>
-
-      {restaurant.discount.percentage > 0 && (
-        <View style={styles.discountBanner}>
-          <MaterialCommunityIcons name="tag" size={24} color="#FF2B85" />
-          <Text style={styles.discountText}>{restaurant.discount.percentage}% off on all menu items</Text>
-        </View>
-      )}
-
-      <View style={styles.menuContainer}>
-        {restaurant.menu.map((category) => (
-          <FoodItem
-            key={category.id}
-            item={category}
-            onAddToCart={handleAddToCart}
-            onQuantityChange={handleQuantityChange}
-            cartItems={cart}
-            discountPercentage={restaurant.discount.percentage}
-          />
-        ))}
-      </View>
-
       {cart.length > 0 && (
-        <Pressable
-          style={styles.viewCartButton}
-          onPress={() => router.push({ pathname: "/Cart", params: { name: restaurant.name } })}
-        >
-          <Text style={styles.viewCartText}>
-            View Cart ({cart.reduce((total, item) => total + item.quantity, 0)} items)
-          </Text>
-        </Pressable>
+        <View style={styles.viewCartButtonContainer}>
+          <Pressable
+            style={styles.viewCartButton}
+            onPress={() => router.push({ pathname: "/Cart", params: { name: restaurant.name } })}
+          >
+            <Text style={styles.viewCartText}>
+              View Cart ({cart.reduce((total, item) => total + item.quantity, 0)} items)
+            </Text>
+          </Pressable>
+        </View>
       )}
-    </SafeAreaView>
+    </View>
   );
 };
 

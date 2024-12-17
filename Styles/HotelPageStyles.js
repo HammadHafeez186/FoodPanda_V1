@@ -64,18 +64,19 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   menuContainer: {
-    flex: 1,
-    backgroundColor: '#fff',
+    paddingBottom: 80, // Add padding to account for the View Cart button
   },
-  viewCartButton: {
+  viewCartButtonContainer: {
     position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
+    backgroundColor: '#fff',
+  },
+  viewCartButton: {
     backgroundColor: '#FF2B85',
     padding: 16,
     alignItems: 'center',
-    borderRadius: 0,
   },
   viewCartText: {
     color: '#fff',

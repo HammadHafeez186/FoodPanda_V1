@@ -1,12 +1,14 @@
+import React, { useRef, useState, useEffect, useCallback } from "react";
 import { Text, View, SafeAreaView, TouchableOpacity, Pressable, Alert } from "react-native";
-import React, { useRef, useState, useEffect } from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import moment from "moment";
 import MapView, { Marker, Polyline } from "react-native-maps";
 import { FontAwesome5, Ionicons } from "@expo/vector-icons";
 import { styles } from "../../Styles/orderStyles";
 import * as Location from 'expo-location';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { cleanCart } from "../../redux/CartReducer";
+import restaurantData from "../../data/dataRestaurantMenu.json";
 
 const Order = () => {
     const params = useLocalSearchParams();
@@ -17,71 +19,73 @@ const Order = () => {
     const [location, setLocation] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
     const router = useRouter();
+    const dispatch = useDispatch();
 
-    // New state for order cancellation
     const [canCancelOrder, setCanCancelOrder] = useState(true);
     const [orderCancelled, setOrderCancelled] = useState(false);
 
-    // Get the current hotel ID from Redux store
-    const currentHotelId = useSelector(state => state.cart.currentHotelId);
+    const { currentHotelId } = useSelector((state) => state.cart);
+    const currentRestaurant = restaurantData.restaurants.find(r => r.id === currentHotelId || r.id === params.currentHotelId);
 
-    // Get the restaurants data
-    const restaurants = useSelector(state => state.restaurants);
-
-    // Find the current restaurant
-    const currentRestaurant = restaurants.find(restaurant => restaurant.id === currentHotelId);
-
-    // Use the actual restaurant coordinates or fallback to default
     const hotelLocation = currentRestaurant
         ? { latitude: currentRestaurant.latitude, longitude: currentRestaurant.longitude }
         : { latitude: 31.4708, longitude: 74.2728 };
 
-    useEffect(() => {
-        (async () => {
-            // Request location permissions
-            let { status } = await Location.requestForegroundPermissionsAsync();
-            if (status !== 'granted') {
-                setErrorMsg('Permission to access location was denied');
-                return;
-            }
+    const requestLocationPermission = useCallback(async () => {
+        let { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
+            setErrorMsg('Permission to access location was denied');
+            return false;
+        }
+        return true;
+    }, []);
 
-            try {
-                // Get current location
-                let currentLocation = await Location.getCurrentPositionAsync({
-                    accuracy: Location.Accuracy.Balanced,
-                });
-                
+    const getCurrentLocation = useCallback(async () => {
+        try {
+            let currentLocation = await Location.getCurrentPositionAsync({
+                accuracy: Location.Accuracy.Balanced,
+            });
+            
+            setLocation({
+                latitude: currentLocation.coords.latitude,
+                longitude: currentLocation.coords.longitude,
+            });
+        } catch (error) {
+            setErrorMsg('Error getting location: ' + error.message);
+        }
+    }, []);
+
+    const watchLocation = useCallback(async () => {
+        const locationSubscription = await Location.watchPositionAsync(
+            {
+                accuracy: Location.Accuracy.Balanced,
+                timeInterval: 5000,
+                distanceInterval: 10,
+            },
+            (newLocation) => {
                 setLocation({
-                    latitude: currentLocation.coords.latitude,
-                    longitude: currentLocation.coords.longitude,
+                    latitude: newLocation.coords.latitude,
+                    longitude: newLocation.coords.longitude,
                 });
-
-                // Start watching position
-                const locationSubscription = await Location.watchPositionAsync(
-                    {
-                        accuracy: Location.Accuracy.Balanced,
-                        timeInterval: 5000,
-                        distanceInterval: 10,
-                    },
-                    (newLocation) => {
-                        setLocation({
-                            latitude: newLocation.coords.latitude,
-                            longitude: newLocation.coords.longitude,
-                        });
-                    }
-                );
-
-                return () => {
-                    if (locationSubscription) {
-                        locationSubscription.remove();
-                    }
-                };
-            } catch (error) {
-                setErrorMsg('Error getting location: ' + error.message);
             }
-        })();
+        );
 
-        // Check cancellation window
+        return locationSubscription;
+    }, []);
+
+    useEffect(() => {
+        let locationSubscription;
+
+        const setupLocation = async () => {
+            const hasPermission = await requestLocationPermission();
+            if (hasPermission) {
+                await getCurrentLocation();
+                locationSubscription = await watchLocation();
+            }
+        };
+
+        setupLocation();
+
         const checkCancellationWindow = () => {
             const currentTime = moment();
             const timeDiff = currentTime.diff(orderTime, 'minutes');
@@ -91,18 +95,18 @@ const Order = () => {
             }
         };
 
-        // Check immediately
         checkCancellationWindow();
+        const intervalId = setInterval(checkCancellationWindow, 60000);
 
-        // Set up an interval to check periodically
-        const intervalId = setInterval(checkCancellationWindow, 60000); // Check every minute
+        return () => {
+            clearInterval(intervalId);
+            if (locationSubscription) {
+                locationSubscription.remove();
+            }
+        };
+    }, [requestLocationPermission, getCurrentLocation, watchLocation]);
 
-        // Cleanup interval on component unmount
-        return () => clearInterval(intervalId);
-    }, []);
-
-    // Get coordinates for polyline
-    const getCoordinates = () => {
+    const getCoordinates = useCallback(() => {
         if (!location) return [];
         return [
             {
@@ -111,9 +115,9 @@ const Order = () => {
             },
             hotelLocation
         ];
-    };
+    }, [location, hotelLocation]);
 
-    const centerMap = () => {
+    const centerMap = useCallback(() => {
         const coordinates = getCoordinates();
         if (mapView.current && coordinates.length > 0) {
             mapView.current.fitToCoordinates(coordinates, {
@@ -126,15 +130,15 @@ const Order = () => {
                 animated: true,
             });
         }
-    };
+    }, [getCoordinates]);
 
     useEffect(() => {
         if (location) {
             centerMap();
         }
-    }, [location]);
+    }, [location, centerMap]);
 
-    const handleCancelOrder = () => {
+    const handleCancelOrder = useCallback(() => {
         if (!canCancelOrder) {
             Alert.alert(
                 "Cannot Cancel Order",
@@ -154,21 +158,36 @@ const Order = () => {
                 {
                     text: "Yes",
                     onPress: () => {
+                        setOrderCancelled(true);
                         router.replace("/MainPage");
                     }
                 }
             ]
         );
-    };
+    }, [canCancelOrder, router]);
 
-    // If order is cancelled, return null or a placeholder
+    const handleOrderReceived = useCallback(() => {
+        dispatch(cleanCart());
+        router.replace("/ReviewPage");
+    }, [dispatch, router]);
+
     if (orderCancelled) {
         return null;
     }
 
+    if (!currentRestaurant) {
+        return (
+            <View style={styles.errorContainer}>
+                <Text style={styles.errorText}>Restaurant not found</Text>
+                <TouchableOpacity onPress={() => router.replace("/MainPage")} style={styles.errorButton}>
+                    <Text style={styles.errorButtonText}>Go back to main page</Text>
+                </TouchableOpacity>
+            </View>
+        );
+    }
+
     return (
         <SafeAreaView style={styles.container}>
-            {/* Header */}
             <View style={styles.header}>
                 <View>
                     <Text style={styles.headerText}>Delivery in 25 mins</Text>
@@ -179,7 +198,6 @@ const Order = () => {
                 </TouchableOpacity>
             </View>
 
-            {/* Map */}
             <View style={styles.mapContainer}>
                 <MapView
                     ref={mapView}
@@ -191,37 +209,26 @@ const Order = () => {
                     }}
                     style={styles.map}
                 >
-                    {/* Hotel Marker */}
                     <Marker 
                         coordinate={hotelLocation}
                         title="Restaurant"
                     >
-                        <View style={{
-                            backgroundColor: '#fc8019',
-                            padding: 5,
-                            borderRadius: 20,
-                        }}>
+                        <View style={styles.markerContainer}>
                             <FontAwesome5 name="store" size={20} color="white" />
                         </View>
                     </Marker>
 
-                    {/* User Location Marker */}
                     {location && (
                         <Marker
                             coordinate={location}
                             title="You"
                         >
-                            <View style={{
-                                backgroundColor: '#4A89F3',
-                                padding: 5,
-                                borderRadius: 20,
-                            }}>
+                            <View style={styles.markerContainer}>
                                 <FontAwesome5 name="user" size={20} color="white" />
                             </View>
                         </Marker>
                     )}
 
-                    {/* Route Line */}
                     {location && (
                         <Polyline
                             coordinates={getCoordinates()}
@@ -232,7 +239,6 @@ const Order = () => {
                     )}
                 </MapView>
 
-                {/* Center Button */}
                 <TouchableOpacity 
                     style={styles.centerButton} 
                     onPress={centerMap}
@@ -241,14 +247,12 @@ const Order = () => {
                     <Text style={styles.centerButtonText}>Center Map</Text>
                 </TouchableOpacity>
 
-                {/* Error Message */}
                 {errorMsg && (
                     <View style={styles.errorContainer}>
                         <Text style={styles.errorText}>{errorMsg}</Text>
                     </View>
                 )}
 
-                {/* Display Restaurant Coordinates */}
                 <View style={styles.coordinatesContainer}>
                     <Text style={styles.coordinatesText}>
                         Restaurant Coordinates: 
@@ -258,32 +262,22 @@ const Order = () => {
                 </View>
             </View>
 
-            {/* Tip Section */}
             <View style={styles.tipContainer}>
                 <View style={styles.tipContent}>
                     <Text style={styles.tipTextCenter}>
-                        {params?.name} has accepted your order
+                        {currentRestaurant.name} has accepted your order
                     </Text>
 
-                    {/* Cancellation Option */}
-                    <View style={{
-                        marginTop: 10,
-                        marginBottom: 10,
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                    }}>
+                    <View style={styles.cancelButtonContainer}>
                         <TouchableOpacity
                             onPress={handleCancelOrder}
-                            style={{
-                                backgroundColor: canCancelOrder ? '#FF2B85' : '#cccccc',
-                                padding: 10,
-                                borderRadius: 5,
-                                opacity: canCancelOrder ? 1 : 0.5
-                            }}
+                            style={[
+                                styles.cancelButton,
+                                !canCancelOrder && styles.disabledCancelButton
+                            ]}
                             disabled={!canCancelOrder}
                         >
-                            <Text style={{ color: 'white', fontWeight: 'bold' }}>
+                            <Text style={styles.cancelButtonText}>
                                 {canCancelOrder 
                                     ? 'Cancel Order' 
                                     : 'Order Cannot Be Cancelled'}
@@ -291,7 +285,6 @@ const Order = () => {
                         </TouchableOpacity>
                     </View>
 
-                    {/* Tip Section */}
                     <View style={styles.tipRow}>
                         <FontAwesome5
                             name="hand-holding-heart"
@@ -305,55 +298,30 @@ const Order = () => {
                                 Show your appreciation with a tip.
                             </Text>
                             <Pressable style={styles.tipOptions}>
-                                <TouchableOpacity
-                                    activeOpacity={0.6}
-                                    onPress={() => setTip(30)}
-                                    style={[
-                                        styles.tipButton,
-                                        tip === 30 && styles.selectedTipButton,
-                                    ]}
-                                >
-                                    <Text
-                                        style={[styles.tipAmount, tip === 30 && styles.selectedTipText]}
+                                {[30, 50, 70].map((amount) => (
+                                    <TouchableOpacity
+                                        key={amount}
+                                        activeOpacity={0.6}
+                                        onPress={() => setTip(amount)}
+                                        style={[
+                                            styles.tipButton,
+                                            tip === amount && styles.selectedTipButton,
+                                        ]}
                                     >
-                                        Rs. 30
-                                    </Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity
-                                    activeOpacity={0.6}
-                                    onPress={() => setTip(50)}
-                                    style={[
-                                        styles.tipButton,
-                                        tip === 50 && styles.selectedTipButton,
-                                    ]}
-                                >
-                                    <View style= {{alignItems: "center"}}>
-                                    <Text
-                                        style={[styles.tipAmount, tip === 50 && styles.selectedTipText]}
-                                    >
-                                        Rs. 50
-                                    </Text>
-                                    <Text style={styles.mostTipped}>Most Tipped</Text>
-                                    </View>
-                                </TouchableOpacity>
-                                <TouchableOpacity
-                                    activeOpacity={0.6}
-                                    onPress={() => setTip(70)}
-                                    style={[
-                                        styles.tipButton,
-                                        tip === 70 && styles.selectedTipButton,
-                                    ]}
-                                >
-                                    <Text
-                                        style={[styles.tipAmount, tip === 70 && styles.selectedTipText]}
-                                    >
-                                        Rs. 70
-                                    </Text>
-                                </TouchableOpacity>
+                                        <View style={styles.tipButtonContent}>
+                                            <Text
+                                                style={[styles.tipAmount, tip === amount && styles.selectedTipText]}
+                                            >
+                                                Rs. {amount}
+                                            </Text>
+                                            {amount === 50 && <Text style={styles.mostTipped}>Most Tipped</Text>}
+                                        </View>
+                                    </TouchableOpacity>
+                                ))}
                             </Pressable>
                         </View>
                     </View>
-                    {tip ? (
+                    {tip > 0 && (
                         <View>
                             <Text style={styles.tipPayment}>
                                 Please pay Rs. {tip} to your delivery agent at the time of
@@ -367,34 +335,20 @@ const Order = () => {
                                 <Text style={styles.cancelText}>(Cancel)</Text>
                             </TouchableOpacity>
                         </View>
-                    ) : null}
+                    )}
                 </View>
             </View>
 
-            <View style={{ alignItems: "center", marginTop: 20 }}>
+            <View style={styles.orderReceivedContainer}>
                 <TouchableOpacity
-                    style={{
-                        backgroundColor: "#FF2B85",
-                        borderRadius: 25,
-                        paddingVertical: 12,
-                        paddingHorizontal: 30,
-                        alignItems: "center",
-                        justifyContent: "center",
-                        shadowColor: "#000",
-                        shadowOffset: { width: 0, height: 2 },
-                        shadowOpacity: 0.3,
-                        shadowRadius: 5,
-                        elevation: 5,
-                        paddingBelow: 100,
-                    }}
-                    onPress={() => router.replace("/ReviewPage")}
+                    style={styles.orderReceivedButton}
+                    onPress={handleOrderReceived}
                 >
-                    <Text style={{ color: "white", fontSize: 16, fontWeight: "bold" }}>
+                    <Text style={styles.orderReceivedButtonText}>
                         Order Received
                     </Text>
                 </TouchableOpacity>
             </View>
-
         </SafeAreaView>
     );
 };

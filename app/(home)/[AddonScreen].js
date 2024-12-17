@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, FlatList } from "react-native";
+import { View, Text, TouchableOpacity, FlatList, Image } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useSelector, useDispatch } from "react-redux";
 import { addAddonToItem, removeAddonFromItem, updateItemPrice } from "../../redux/CartReducer";
@@ -21,6 +21,13 @@ const AddonScreen = () => {
       setSelectedItem(item);
       setSelectedAddons(item.addons || []);
     }
+
+    // Log addon ImageUrls
+    const restaurant = restaurantData.restaurants.find(r => r.id === hotel_id);
+    const menuItem = restaurant?.menu
+      .flatMap(category => category.items)
+      .find(item => item.id === itemId);
+    const itemAddons = menuItem?.addons || [];
   }, [cart, itemId, hotel_id]);
 
   const restaurant = restaurantData.restaurants.find(r => r.id === hotel_id);
@@ -65,8 +72,20 @@ const AddonScreen = () => {
       ]}
       onPress={() => handleAddonSelection(item)}
     >
-      <Text style={styles.addonText}>{item.name}</Text>
-      <Text style={styles.addonPrice}>Rs. {item.price}</Text>
+      {item.ImageUrl ? (
+        <Image 
+          source={{ uri: item.ImageUrl }} 
+          style={styles.addonImage} 
+          resizeMode="cover"
+          onError={(e) => console.log('Image loading error:', e.nativeEvent.error)}
+        />
+      ) : (
+        <View style={[styles.addonImage, styles.placeholderImage]} />
+      )}
+      <View style={styles.addonTextContainer}>
+        <Text style={styles.addonText}>{item.name}</Text>
+        <Text style={styles.addonPrice}>Rs. {item.price}</Text>
+      </View>
     </TouchableOpacity>
   );
 
