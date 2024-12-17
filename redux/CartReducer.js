@@ -5,6 +5,7 @@ const CartSlice = createSlice({
   initialState: {
     items: [],
     currentHotelId: null,
+    discount: 0,
   },
   reducers: {
     addToCart: (state, action) => {
@@ -20,8 +21,6 @@ const CartSlice = createSlice({
           state.items.push({ id, name, price, quantity: 1, addons: [], hotel_id });
         }
       } else {
-        // If trying to add item from a different hotel, we don't modify the state
-        // The UI should handle showing a prompt to the user
         return state;
       }
     },
@@ -56,6 +55,7 @@ const CartSlice = createSlice({
     resetCart: (state) => {
       state.items = [];
       state.currentHotelId = null;
+      state.discount = 0;
     },
     addAddonToItem: (state, action) => {
       const { itemId, addon } = action.payload;
@@ -81,6 +81,10 @@ const CartSlice = createSlice({
     cleanCart: (state) => {
       state.items = [];
       state.currentHotelId = null;
+      state.discount = 0;
+    },
+    setDiscount: (state, action) => {
+      state.discount = action.payload;
     },
   }
 });
@@ -95,6 +99,7 @@ export const {
   removeAddonFromItem,
   updateItemPrice,
   cleanCart,
+  setDiscount,
 } = CartSlice.actions;
 
 export default CartSlice.reducer;

@@ -215,6 +215,13 @@ const IndexStyles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    searchResultsContainer: {
+        position: 'absolute',
+        top: 100, // Adjust this value based on your layout
+        left: 10,
+        right: 10,
+        zIndex: 1000,
+    },
     
 });
 

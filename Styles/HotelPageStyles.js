@@ -1,107 +1,88 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 
-const hotelPageStyles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
-    backgroundColor: 'white',
+    backgroundColor: '#fff',
   },
-  headingsContainer: {
-    flexDirection:'row',
-    alignItems:'center',
-    padding:10,
-    gap:10
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingTop: 48,
+    paddingBottom: 16,
+    backgroundColor: '#fff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#f0f0f0',
+  },
+  backButton: {
+    marginRight: 16,
   },
   restaurantName: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 10,
+    fontSize: 20,
+    fontWeight: '600',
+    color: '#333',
+    flex: 1,
+  },
+  bannerImage: {
+    width: '100%',
+    height: 200,
+  },
+  infoContainer: {
+    padding: 16,
+  },
+  cuisineText: {
+    fontSize: 16,
+    color: '#666',
+    marginBottom: 8,
+  },
+  ratingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 8,
+  },
+  ratingText: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#333',
+    marginLeft: 4,
+  },
+  starIcon: {
+    color: '#FFD700',
+  },
+  discountBanner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FFF0F4',
+    padding: 16,
+    marginTop: 8,
+  },
+  discountText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#FF2B85',
+    marginLeft: 8,
+  },
+  menuContainer: {
+    flex: 1,
+    backgroundColor: '#fff',
   },
   viewCartButton: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
     backgroundColor: '#FF2B85',
-    padding: 15,
-    borderRadius: 5,
+    padding: 16,
     alignItems: 'center',
-    marginTop: 10,
+    borderRadius: 0,
   },
   viewCartText: {
-    color: 'white',
-    fontWeight: 'bold',
-  },  pressableContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
-},
-recommendedTagStyle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-}, pressableContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginVertical: 10,
-    marginHorizontal: 15,
-},
-nameText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-},
-priceText: {
+    color: '#fff',
     fontSize: 16,
-    color: 'gray',
-},
-starRatingText: {
-    marginVertical: 5,
-},
-itemDescriptionText: {
-    color: 'gray',
-    width: 200,
-},
-pressableImageContainer: {
-    marginRight: 10,
-},
-imageStyle: {
-    width: 120,
-    height: 120,
-    borderRadius: 8,
-},
-pressableButtonContainer: {
-    position: 'absolute',
-    right: 10,
-    bottom: 10,
-    backgroundColor: 'white',
-    padding: 10,
-    borderRadius: 5,
-},
-addButtonText: {
-    textAlign: 'center',
-    color: '#FF2B85',
-    fontWeight: 'bold',
-},
-quantityContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    position: 'absolute',
-    right: 10,
-    bottom: 10,
-    backgroundColor: '#FF2B85',
-    borderRadius: 5,
-},
-quantityButton: {
-    padding: 5,
-},
-quantityButtonText: {
-    fontSize: 20,
-    color: 'white',
-    fontWeight: 'bold',
-},
-quantityText: {
-    fontSize: 18,
-    marginHorizontal: 10,
-    color: 'white',
-},
+    fontWeight: '600',
+  },
 });
 
-export default hotelPageStyles;
+export default styles;
+

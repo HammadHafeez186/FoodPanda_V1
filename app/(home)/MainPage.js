@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, Alert, FlatList, TextInput, TouchableOpacity, Image, Modal } from "react-native";
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { View, Text, Alert, FlatList, TextInput, TouchableOpacity, Image, Modal, Keyboard, TouchableWithoutFeedback } from "react-native";
 import * as Location from "expo-location";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Octicons from "@expo/vector-icons/Octicons";
@@ -11,10 +11,12 @@ import { useIsFocused } from '@react-navigation/native';
 import HomeIndexStyles from "../../Styles/HomeIndexStyles";
 import { items } from "../../data/HomeIndexData";
 import restaurantData from "../../data/dataRestaurantMenu.json";
+import categoriesData from '../../data/categoriesData.json';
 import Hotels from "../../components/Hotels";
 import Categories from '../../components/Categories';
 import Carousel from '../../components/Carousel';
 import CartButton from '../../components/CartButton';
+import SearchResults from '../../components/SearchResults';
 import { useSelector } from 'react-redux';
 
 const HomeIndex = () => {
@@ -26,6 +28,12 @@ const HomeIndex = () => {
     const [userId, setUserId] = useState(null);
     const [selectedAddressId, setSelectedAddressId] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [selectedCategory, setSelectedCategory] = useState(null);
+    const [filteredRestaurants, setFilteredRestaurants] = useState(restaurantData.restaurants);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [searchResults, setSearchResults] = useState([]);
+    const [showSearchResults, setShowSearchResults] = useState(false);
+    const searchInputRef = useRef(null);
     const router = useRouter();
     const isFocused = useIsFocused();
     const cart = useSelector((state) => state.cart.items);
@@ -49,6 +57,10 @@ const HomeIndex = () => {
             setDisplayCurrentAddress("Waiting for Current Location....");
         }
     }, [addresses]);
+
+    useEffect(() => {
+        filterRestaurants(selectedCategory, searchQuery);
+    }, [selectedCategory, searchQuery]);
 
     const checkIfLocationEnabled = async () => {
         const enabled = await Location.hasServicesEnabledAsync();
@@ -247,73 +259,167 @@ const HomeIndex = () => {
         <Hotels item={item} />
     ), []);
 
+    const filterRestaurants = (category, query) => {
+        let filtered = restaurantData.restaurants;
+
+        if (category) {
+            filtered = filtered.filter(restaurant => {
+                switch(category) {
+                    case 'Free delivery':
+                        return restaurant.free_delivery;
+                    case 'rating 4.0+':
+                        return restaurant.aggregate_rating > 4;
+                    case 'Home Chefs':
+                        return restaurant.is_home_chef;
+                    case 'Panda Pro':
+                        return restaurant.is_panda_pro;
+                    default:
+                        return true;
+                }
+            });
+        }
+
+        if (query) {
+            const lowercaseQuery = query.toLowerCase();
+            filtered = filtered.filter(restaurant => 
+                restaurant.name.toLowerCase().includes(lowercaseQuery) ||
+                restaurant.cuisines.toLowerCase().includes(lowercaseQuery)
+            );
+        }
+
+        setFilteredRestaurants(filtered);
+    };
+
+    const handleSearch = (text) => {
+        setSearchQuery(text);
+        performSearch(text);
+    };
+
+    const performSearch = (query) => {
+        if (query.length > 0) {
+            const filtered = restaurantData.restaurants.filter(restaurant => 
+                restaurant.name.toLowerCase().includes(query.toLowerCase()) ||
+                restaurant.cuisines.toLowerCase().toLowerCase().includes(query.toLowerCase())
+            );
+            setSearchResults(filtered);
+            setShowSearchResults(true);
+        } else {
+            setSearchResults([]);
+            setShowSearchResults(false);
+        }
+    };
+
+    const handleSearchSubmit = () => {
+        performSearch(searchQuery);
+    };
+
+    const handleSearchItemPress = (item) => {
+        router.push({ 
+            pathname: "/HotelPage", 
+            params: { id: item.id } 
+        });
+        clearSearch();
+    };
+
+    const clearSearch = () => {
+        setSearchQuery('');
+        setSearchResults([]);
+        setShowSearchResults(false);
+        if (searchInputRef.current) {
+            searchInputRef.current.blur();
+        }
+    };
+
+    const handleOutsidePress = () => {
+        if (showSearchResults) {
+            clearSearch();
+        }
+    };
+
     const ListHeaderComponent = useCallback(() => (
-        <>
-            <View style={HomeIndexStyles.locationContainer}>
-                <Octicons name="location" size={24} color="#e52850" />
-                <TouchableOpacity
-                    onPress={() => {
-                        setModalVisible(true);
-                        fetchUserAddresses();
-                    }}
-                    style={HomeIndexStyles.addressContainer}
-                >
-                    <Text style={HomeIndexStyles.deliverToText}>Deliver To:</Text>
-                    <Text style={HomeIndexStyles.addressText} numberOfLines={1} ellipsizeMode="tail">{displayCurrentAddress}</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={HomeIndexStyles.pressable}
-                    onPress={() => router.push("/Accounts")}
-                >
-                    <View style={HomeIndexStyles.avatarPlaceholder}>
-                        <Text style={HomeIndexStyles.userInitialText}>
-                            {userInitial || "N"}
-                        </Text>
-                    </View>
-                </TouchableOpacity>
-            </View>
+        <TouchableWithoutFeedback onPress={handleOutsidePress}>
+            <View>
+                <View style={HomeIndexStyles.locationContainer}>
+                    <Octicons name="location" size={24} color="#e52850" />
+                    <TouchableOpacity
+                        onPress={() => {
+                            setModalVisible(true);
+                            fetchUserAddresses();
+                        }}
+                        style={HomeIndexStyles.addressContainer}
+                    >
+                        <Text style={HomeIndexStyles.deliverToText}>Deliver To:</Text>
+                        <Text style={HomeIndexStyles.addressText} numberOfLines={1} ellipsizeMode="tail">{displayCurrentAddress}</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={HomeIndexStyles.pressable}
+                        onPress={() => router.push("/Accounts")}
+                    >
+                        <View style={HomeIndexStyles.avatarPlaceholder}>
+                            <Text style={HomeIndexStyles.userInitialText}>
+                                {userInitial || "N"}
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
 
-            <View style={HomeIndexStyles.searchContainer}>
-                <AntDesign name="search1" size={24} color="#ef2b50" />
-                <TextInput
-                    placeholder="Search for Mighty Zinger, Deals, etc"
-                    style={HomeIndexStyles.searchInput}
-                    placeholderTextColor="grey"
+                <View style={HomeIndexStyles.searchContainer}>
+                    <AntDesign name="search1" size={24} color="#ef2b50" />
+                    <TextInput
+                        ref={searchInputRef}
+                        placeholder="Search for restaurants, cuisines..."
+                        style={HomeIndexStyles.searchInput}
+                        placeholderTextColor="grey"
+                        value={searchQuery}
+                        onChangeText={handleSearch}
+                        onSubmitEditing={handleSearchSubmit}
+                        returnKeyType="search"
+                    />
+                </View>
+                {showSearchResults && (
+                    <SearchResults
+                        results={searchResults}
+                        onItemPress={handleSearchItemPress}
+                        onClearSearch={clearSearch}
+                    />
+                )}
+                <Carousel />
+                <Categories 
+                    categories={categoriesData}
+                    selectedCategory={selectedCategory}
+                    onSelectCategory={(category) => setSelectedCategory(category)}
                 />
+
+                <Text style={HomeIndexStyles.exploreText}>Recommended Food Items</Text>
+                <FlatList
+                    data={restaurantData.restaurants[0].menu.find(category => category.name === "Recommended")?.items || []}
+                    renderItem={renderRecommendedItem}
+                    keyExtractor={(item) => `recommended-${item.id}`}
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    style={{ flexGrow: 0 }}
+                />
+
+                <Text style={HomeIndexStyles.exploreText}>EXPLORE</Text>
+
+                <FlatList
+                    data={items}
+                    renderItem={renderExploreItem}
+                    keyExtractor={(item, index) => `explore-${index}`}
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    style={{ flexGrow: 0 }}
+                />
+
+                <Text style={HomeIndexStyles.hotelstag}>ALL RESTAURANTS</Text>
             </View>
-
-            <Carousel />
-            <Categories />
-
-            <Text style={HomeIndexStyles.exploreText}>Recommended Food Items</Text>
-            <FlatList
-                data={restaurantData.restaurants[0].menu.find(category => category.name === "Recommended")?.items || []}
-                renderItem={renderRecommendedItem}
-                keyExtractor={(item) => `recommended-${item.id}`}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                style={{ flexGrow: 0 }}
-            />
-
-            <Text style={HomeIndexStyles.exploreText}>EXPLORE</Text>
-
-            <FlatList
-                data={items}
-                renderItem={renderExploreItem}
-                keyExtractor={(item, index) => `explore-${index}`}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                style={{ flexGrow: 0 }}
-            />
-
-            <Text style={HomeIndexStyles.hotelstag}>ALL RESTAURANTS</Text>
-        </>
-    ), [displayCurrentAddress, userInitial, fetchUserAddresses, renderRecommendedItem, renderExploreItem]);
+        </TouchableWithoutFeedback>
+    ), [displayCurrentAddress, userInitial, fetchUserAddresses, renderRecommendedItem, renderExploreItem, selectedCategory, searchQuery, searchResults, showSearchResults]);
 
     return (
         <View style={{ flex: 1 }}>
             <FlatList
-                data={restaurantData.restaurants}
+                data={filteredRestaurants}
                 renderItem={renderRestaurantItem}
                 keyExtractor={(item) => item.id}
                 ListHeaderComponent={ListHeaderComponent}

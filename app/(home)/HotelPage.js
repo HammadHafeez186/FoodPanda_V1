@@ -1,12 +1,13 @@
 import React, { useCallback, useState, useEffect } from "react";
-import { View, FlatList, Text, Pressable, StyleSheet,Alert, Touchable, TouchableOpacity } from "react-native";
+import { View, Text, Pressable, Alert, TouchableOpacity, Image, SafeAreaView } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
+import { Ionicons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import FoodItem from "../../components/FoodItem";
 import restaurantData from "../../data/dataRestaurantMenu.json";
 import { useSelector, useDispatch } from "react-redux";
 import { incrementQuantity, decrementQuantity, addToCart, removeFromCart, resetCart } from "../../redux/CartReducer";
-import hotelPageStyles from "../../Styles/HotelPageStyles";
-import Ionicons from '@expo/vector-icons/Ionicons';
+import styles from "../../Styles/HotelPageStyles";
 
 const HotelPage = () => {
   const params = useLocalSearchParams();
@@ -52,52 +53,63 @@ const HotelPage = () => {
     }
   }, [dispatch]);
 
-  const renderItem = useCallback(({ item }) => (
-    <FoodItem
-      item={item}
-      key={item.id}
-      onAddToCart={handleAddToCart}
-      onQuantityChange={handleQuantityChange}
-      cartItems={cart}
-    />
-  ), [handleAddToCart, handleQuantityChange, cart]);
-
-  const keyExtractor = useCallback((item) => item.id.toString(), []);
-
   if (!restaurant) {
     return <Text>Loading...</Text>;
   }
 
   return (
-    <View style={hotelPageStyles.container}>
-      <View style={hotelPageStyles.headingsContainer}>
-           <TouchableOpacity onPress={() => router.back()}>
-                  <Ionicons style={hotelPageStyles.restaurantName} name="arrow-back" size={24} color="black" />
-           </TouchableOpacity>
-           <Text style={hotelPageStyles.restaurantName}>{restaurant.name}</Text>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
+          <Ionicons name="arrow-back" size={24} color="#333" />
+        </TouchableOpacity>
+        <Text style={styles.restaurantName}>{restaurant.name}</Text>
       </View>
-      
-      <FlatList
-        data={restaurant.menu}
-        renderItem={renderItem}
-        keyExtractor={keyExtractor}
-        initialNumToRender={5}
-        maxToRenderPerBatch={10}
-        windowSize={5}
+
+      <Image 
+        source={{ uri: restaurant.featured_image }} 
+        style={styles.bannerImage}
       />
+
+      <View style={styles.infoContainer}>
+        <Text style={styles.cuisineText}>{restaurant.cuisines}</Text>
+        <View style={styles.ratingContainer}>
+          <Ionicons name="star" size={20} color="#FFD700" />
+          <Text style={styles.ratingText}>{restaurant.aggregate_rating}</Text>
+        </View>
+      </View>
+
+      {restaurant.discount.percentage > 0 && (
+        <View style={styles.discountBanner}>
+          <MaterialCommunityIcons name="tag" size={24} color="#FF2B85" />
+          <Text style={styles.discountText}>{restaurant.discount.percentage}% off on all menu items</Text>
+        </View>
+      )}
+
+      <View style={styles.menuContainer}>
+        {restaurant.menu.map((category) => (
+          <FoodItem
+            key={category.id}
+            item={category}
+            onAddToCart={handleAddToCart}
+            onQuantityChange={handleQuantityChange}
+            cartItems={cart}
+            discountPercentage={restaurant.discount.percentage}
+          />
+        ))}
+      </View>
+
       {cart.length > 0 && (
         <Pressable
-          style={hotelPageStyles.viewCartButton}
+          style={styles.viewCartButton}
           onPress={() => router.push({ pathname: "/Cart", params: { name: restaurant.name } })}
         >
-          <Text style={hotelPageStyles.viewCartText}>
+          <Text style={styles.viewCartText}>
             View Cart ({cart.reduce((total, item) => total + item.quantity, 0)} items)
-            
-            
           </Text>
         </Pressable>
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 

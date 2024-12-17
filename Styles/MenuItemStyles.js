@@ -1,84 +1,100 @@
 import { StyleSheet } from 'react-native';
 
-const MenuItemStyles = StyleSheet.create({
-    starRatingText: {
-        marginTop: 5,
-        borderRadius: 4,
-    },
-    pressableContainer: {
-        margin: 10,
-        flexDirection: "row",
-        justifyContent: "space-between",
-        marginVertical: 15,
-    },
-    imageStyle: {
-        width: 120,
-        height: 120,
-        borderRadius: 8,
-    },
-    itemDescriptionText: {
-        width: 200,
-        marginTop: 8,
-        color: "gray",
-        fontSize: 16,
-    },
-    nameText: {
-        fontSize: 18,
-        fontWeight: "600",
-        width: 220,
-    },
-    priceText: {
-        marginTop: 4,
-        fontSize: 15,
-        fontWeight: "500",
-    },
-    pressableImageContainer: {
-        marginRight: 10,
-    },
-    pressableButtonContainer: {
-        position: "absolute",
-        top: 95,
-        left: 20,
-        borderColor: "#a32636",
-        borderWidth: 1,
-        flexDirection: "row",
-        paddingHorizontal: 25,
-        paddingVertical: 5,
-        alignItems: "center",
-        backgroundColor: "white",
-        borderRadius: 5,
-    },
-    addButtonText: {
-        fontSize: 18,
-        fontWeight: "600",
-        color: "#FF2B85",
-    },
-    quantityContainer: {
-        position: "absolute",
-        top: 95,
-        left: 10,
-        flexDirection: "row",
-        alignItems: "center",
-        backgroundColor: "#FF2B85",
-        borderRadius: 5,
-        borderColor: "#a32636",
-        borderWidth: 1,
-    },
-    quantityButton: {
-        paddingHorizontal: 15,
-        paddingVertical: 5,
-    },
-    quantityButtonText: {
-        fontSize: 18,
-        fontWeight: "600",
-        color: "white",
-    },
-    quantityText: {
-        fontSize: 18,
-        fontWeight: "600",
-        color: "white",
-        paddingHorizontal: 10,
-    },
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#fff',
+    padding: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f0f0f0',
+  },
+  contentContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  infoContainer: {
+    flex: 1,
+    marginRight: 16,
+  },
+  itemImage: {
+    width: 100,
+    height: 100,
+    borderRadius: 8,
+  },
+  itemName: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#333',
+    marginBottom: 4,
+  },
+  priceContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 4,
+  },
+  originalPrice: {
+    fontSize: 16,
+    color: '#666',
+    textDecorationLine: 'line-through',
+    marginRight: 8,
+  },
+  discountedPrice: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#FF2B85',
+  },
+  ratingContainer: {
+    flexDirection: 'row',
+    marginBottom: 8,
+  },
+  description: {
+    fontSize: 14,
+    color: '#666',
+    marginBottom: 12,
+  },
+  quantityContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    marginTop: 8,
+  },
+  quantityButton: {
+    width: 32,
+    height: 32,
+    borderWidth: 1,
+    borderColor: '#FF2B85',
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  quantityButtonText: {
+    fontSize: 20,
+    color: '#FF2B85',
+    fontWeight: '600',
+  },
+  quantityText: {
+    fontSize: 16,
+    fontWeight: '600',
+    marginHorizontal: 16,
+    color: '#333',
+  },
+  addButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: '#FF2B85',
+    borderRadius: 4,
+    paddingVertical: 8,
+    paddingHorizontal: 24,
+    alignSelf: 'flex-end',
+    marginTop: 8,
+  },
+  addButtonText: {
+    color: '#FF2B85',
+    fontSize: 14,
+    fontWeight: '600',
+  },
 });
 
-export default MenuItemStyles;
+export default styles;
+
