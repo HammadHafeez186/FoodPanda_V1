@@ -225,23 +225,23 @@ const HomeIndex = () => {
         );
     }, [selectedAddressId, saveSelectedAddress, deleteAddress]);
 
-    const renderRecommendedItem = useCallback(({ item }) => (
+    const renderRecommendedRestaurant = useCallback(({ item }) => (
         <TouchableOpacity 
             style={HomeIndexStyles.foodItemContainer}
             onPress={() => router.push({ 
                 pathname: "/HotelPage", 
-                params: { id: item.hotel_id } 
+                params: { id: item.id } 
             })}
         >
             <View style={HomeIndexStyles.foodImageContainer}>
-                <Image source={{ uri: item?.image }} style={HomeIndexStyles.foodImage} />
+                <Image source={{ uri: item.featured_image }} style={HomeIndexStyles.foodImage} />
             </View>
             <View style={HomeIndexStyles.foodDetailsContainer}>
-                <Text style={HomeIndexStyles.foodName}>{item?.name}</Text>
-                <Text style={HomeIndexStyles.foodType}>{item?.price} RS</Text>
+                <Text style={HomeIndexStyles.foodName}>{item.name}</Text>
+                <Text style={HomeIndexStyles.foodType}>{item.cuisines}</Text>
                 <View style={HomeIndexStyles.timeContainer}>
                     <Ionicons name="star" size={20} color="gold" />
-                    <Text style={HomeIndexStyles.timeText}>{item?.rating}</Text>
+                    <Text style={HomeIndexStyles.timeText}>{item.aggregate_rating}</Text>
                 </View>
             </View>
         </TouchableOpacity>
@@ -390,16 +390,16 @@ const HomeIndex = () => {
                     onSelectCategory={(category) => setSelectedCategory(category)}
                 />
 
-                <Text style={HomeIndexStyles.exploreText}>Recommended Food Items</Text>
+                <Text style={HomeIndexStyles.exploreText}>Recommended Restaurants</Text>
                 <FlatList
-                    data={restaurantData.restaurants[0].menu.find(category => category.name === "Recommended")?.items || []}
-                    renderItem={renderRecommendedItem}
+                    data={restaurantData.restaurants.filter(restaurant => restaurant.recommended)}
+                    renderItem={renderRecommendedRestaurant}
                     keyExtractor={(item) => `recommended-${item.id}`}
                     horizontal
                     showsHorizontalScrollIndicator={false}
-                    style={{ flexGrow: 0 }}
+                    contentContainerStyle={HomeIndexStyles.recommendedList}
+                    
                 />
-
                 <Text style={HomeIndexStyles.exploreText}>EXPLORE</Text>
 
                 <FlatList
@@ -414,7 +414,7 @@ const HomeIndex = () => {
                 <Text style={HomeIndexStyles.hotelstag}>ALL RESTAURANTS</Text>
             </View>
         </TouchableWithoutFeedback>
-    ), [displayCurrentAddress, userInitial, fetchUserAddresses, renderRecommendedItem, renderExploreItem, selectedCategory, searchQuery, searchResults, showSearchResults]);
+    ), [displayCurrentAddress, userInitial, fetchUserAddresses, renderRecommendedRestaurant, renderExploreItem, selectedCategory, searchQuery, searchResults, showSearchResults]);
 
     return (
         <View style={{ flex: 1 }}>
@@ -472,4 +472,3 @@ const HomeIndex = () => {
 };
 
 export default HomeIndex;
-

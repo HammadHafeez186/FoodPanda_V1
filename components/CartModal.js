@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
-import { incrementQuantity, decrementQuantity, removeFromCart } from '../../FoodPanda_V1/redux/CartReducer';
+import { incrementQuantity, decrementQuantity, removeFromCart } from '../redux/CartReducer';
 import { useRouter } from 'expo-router';
 
 const CartModal = ({ isVisible, onClose }) => {

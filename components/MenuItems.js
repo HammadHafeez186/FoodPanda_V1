@@ -3,7 +3,7 @@ import { Image, TouchableOpacity, Text, View } from "react-native";
 import { FontAwesome } from '@expo/vector-icons';
 import styles from "../Styles/MenuItemStyles";
 
-const MenuItems = memo(({ item, onAddToCart, onQuantityChange, quantity, discountPercentage }) => {
+const MenuItem = memo(({ item, onAddToCart, onQuantityChange, quantity, discountPercentage }) => {
   const discountedPrice = (item.price * (1 - discountPercentage / 100)).toFixed(2);
   
   return (
@@ -51,14 +51,14 @@ const MenuItems = memo(({ item, onAddToCart, onQuantityChange, quantity, discoun
       ) : (
         <View style={styles.quantityContainer}>
           <TouchableOpacity
-            onPress={() => onQuantityChange('decrement')}
+            onPress={() => onQuantityChange(item, 'decrement')}
             style={styles.quantityButton}
           >
             <Text style={styles.quantityButtonText}>-</Text>
           </TouchableOpacity>
           <Text style={styles.quantityText}>{quantity}</Text>
           <TouchableOpacity
-            onPress={() => onQuantityChange('increment')}
+            onPress={() => onQuantityChange(item, 'increment')}
             style={styles.quantityButton}
           >
             <Text style={styles.quantityButtonText}>+</Text>
@@ -69,5 +69,5 @@ const MenuItems = memo(({ item, onAddToCart, onQuantityChange, quantity, discoun
   );
 });
 
-export default MenuItems;
+export default MenuItem;
 

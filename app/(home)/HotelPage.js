@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useEffect } from "react";
-import { View, Text, Pressable, Alert, TouchableOpacity, Image, SafeAreaView } from "react-native";
+import { View, Text, Pressable, Alert, TouchableOpacity, Image, FlatList } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -53,12 +53,18 @@ const HotelPage = () => {
     }
   }, [dispatch]);
 
-  if (!restaurant) {
-    return <Text>Loading...</Text>;
-  }
+  const renderFoodItem = useCallback(({ item }) => (
+    <FoodItem
+      item={item}
+      onAddToCart={handleAddToCart}
+      onQuantityChange={handleQuantityChange}
+      cartItems={cart}
+      discountPercentage={restaurant.discount.percentage}
+    />
+  ), [handleAddToCart, handleQuantityChange, cart, restaurant]);
 
-  return (
-    <SafeAreaView style={styles.container}>
+  const renderHeader = useCallback(() => (
+    <>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
           <Ionicons name="arrow-back" size={24} color="#333" />
@@ -85,19 +91,22 @@ const HotelPage = () => {
           <Text style={styles.discountText}>{restaurant.discount.percentage}% off on all menu items</Text>
         </View>
       )}
+    </>
+  ), [restaurant, router]);
 
-      <View style={styles.menuContainer}>
-        {restaurant.menu.map((category) => (
-          <FoodItem
-            key={category.id}
-            item={category}
-            onAddToCart={handleAddToCart}
-            onQuantityChange={handleQuantityChange}
-            cartItems={cart}
-            discountPercentage={restaurant.discount.percentage}
-          />
-        ))}
-      </View>
+  if (!restaurant) {
+    return <Text>Loading...</Text>;
+  }
+
+  return (
+    <View style={styles.container}>
+      <FlatList
+        ListHeaderComponent={renderHeader}
+        data={restaurant.menu}
+        renderItem={renderFoodItem}
+        keyExtractor={(item) => item.id.toString()}
+        contentContainerStyle={styles.menuContainer}
+      />
 
       {cart.length > 0 && (
         <Pressable
@@ -109,7 +118,7 @@ const HotelPage = () => {
           </Text>
         </Pressable>
       )}
-    </SafeAreaView>
+    </View>
   );
 };
 

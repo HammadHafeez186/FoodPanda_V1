@@ -6,17 +6,18 @@
       "name": "Forks n Knives - Johar Town",
       "cuisines": "Fast Food • RS 1000-1500",
       "time": "20 - 30 min • 3Km",
-      "aggregate_rating": 3.7,
+      "aggregate_rating": 4.7,
       "adress": "Johar Town, Lahore",
       "latitude": 74.2939,
       "longitude": 31.4679,
       "is_panda_pro": false,
       "is_home_chef": false,
       "free_delivery": true,
+      "recommended": true,
       "discount": {
-        "percentage": 20,
-        "max_discount": 20,
-        "min_order": 200  
+        "percentage": 10,
+        "max_discount": 200,
+        "min_order": 500  
       },
       "menu": [
         {
@@ -24,24 +25,62 @@
           "name": "Recommended",
           "items": [
             {
-              "id": "101",
-              "name": "Paneer 65",
-              "price": 275,
-              "description": "This is served with Raita and gravy and has loaded with chilli paste mixed chicken Kebabs",
-              "rating": 4.1,
+              "id": "0",
+              "name": "Forks N Knives Special Pizza",
+              "price": 680,
+              "description": "A special combination of three flavors of chicken with onions, green peppers, olives, mushrooms & topped with signature sauce",
+              "rating": 4.7,
               "ratings": 43,
-              "image": "https://picsum.photos/208?random=1",
+              "image": "https://images.deliveryhero.io/image/fd-pk/Products/14078488.jpg??width=2100",
               "veg": true,
               "bestSeller": false,
               "quantity": 1,
               "hotel_id": "0",
               "addons": [
-                { "id": "a1", "name": "Extra Gravy", "price": 30 },
-                { "id": "a2", "name": "Raita", "price": 20 },
-                { "id": "a5", "name": "Spicy Sauce", "price": 15 },
-                { "id": "a6", "name": "Garlic Butter", "price": 25 }
+                { "id": "a1", "name": "Coca Cola - 1 Litre", "price": 200, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100" },
+                { "id": "a2", "name": "Coca Cola - 500 ml", "price": 120, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100"},
+                { "id": "a5", "name": "Coca Cola - 250 ml", "price": 100, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100" },
+                { "id": "a6", "name": "Garlic Butter Dip", "price": 50, "ImageUrl": "https://cdn.loveandlemons.com/wp-content/uploads/2023/05/garlic-yogurt-sauce-1-1.jpg" }
               ]
-            }
+            },
+            {
+            "id": "1",
+              "name": "Forks N Knives Deal-1",
+              "price": 680,
+              "description": "Large pizza with liter drink",
+              "rating": 4.5,
+              "ratings": 43,
+              "image": "https://images.deliveryhero.io/image/fd-pk/Products/17433447.jpg??width=2100",
+              "veg": true,
+              "bestSeller": true,
+              "quantity": 1,
+              "hotel_id": "0",
+              "addons": [
+                { "id": "a1", "name": "Coca Cola - 1 Litre", "price": 200, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100" },
+                { "id": "a2", "name": "Coca Cola - 500 ml", "price": 120, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100"},
+                { "id": "a5", "name": "Coca Cola - 250 ml", "price": 100, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100" },
+                { "id": "a6", "name": "Garlic Butter Dip", "price": 50, "ImageUrl": "https://cdn.loveandlemons.com/wp-content/uploads/2023/05/garlic-yogurt-sauce-1-1.jpg" }
+              ]
+            },
+            {
+              "id": "2",
+                "name": "Forks N Knives Deal-1",
+                "price": 680,
+                "description": "Large pizza with liter drink",
+                "rating": 4.5,
+                "ratings": 43,
+                "image": "https://images.deliveryhero.io/image/fd-pk/Products/17433447.jpg??width=2100",
+                "veg": true,
+                "bestSeller": true,
+                "quantity": 1,
+                "hotel_id": "0",
+                "addons": [
+                  { "id": "a1", "name": "Coca Cola - 1 Litre", "price": 200, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100" },
+                  { "id": "a2", "name": "Coca Cola - 500 ml", "price": 120, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100"},
+                  { "id": "a5", "name": "Coca Cola - 250 ml", "price": 100, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100" },
+                  { "id": "a6", "name": "Garlic Butter Dip", "price": 50, "ImageUrl": "https://cdn.loveandlemons.com/wp-content/uploads/2023/05/garlic-yogurt-sauce-1-1.jpg" }
+                ]
+              }
           ]
         }
       ]
@@ -59,6 +98,7 @@
       "is_panda_pro": true,
       "is_home_chef": true,
       "free_delivery": false,
+      "recommended": false,
       "discount": {
         "percentage": 20,
         "max_discount": 300,
