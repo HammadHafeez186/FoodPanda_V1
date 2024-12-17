@@ -88,7 +88,7 @@
           "name": "Pizza",
           "items": [
             {
-              "id": "0",
+              "id": "3",
               "name": "Cheesy Cheese Pizza - Large",
               "price": 1100,
               "description": "Loads of mozzarella cheese & a real treat for cheese lovers",
@@ -107,7 +107,7 @@
               ]
             },
             {
-              "id": "1",
+              "id": "4",
               "name": "Stuffed Crust Pizza - Large",
               "price": 2500,
               "description": "Serving for 3 to 4 persons. 12 Inches. Crispy on the outside & cheesy on the inside pizza just got so much better!",
@@ -126,7 +126,7 @@
               ]
             },
             {
-              "id": "2",
+              "id": "5",
               "name": "Royal Crust Pizza - Large",
               "price": 2800,
               "description": "Special requests are subject to the restaurant's approval. Tell us here!",
@@ -151,7 +151,7 @@
       "name": "Sandwiches/Rolls",
       "items": [
         {
-          "id": "0",
+          "id": "6",
           "name": "Patty Burger",
           "price": 600,
           "description": "Single serving",
@@ -170,7 +170,7 @@
           ]
         },
         {
-          "id": "1",
+          "id": "7",
           "name": "Malai Boti Rolls",
           "price": 1100,
           "description": "4 Pieces of rolls stuffed with malai boti chicken, onions & jalapeno",
@@ -195,7 +195,7 @@
     "name": "Beverages",
     "items": [
       {
-        "id": "0",
+        "id": "8",
         "name": "Sprite",
         "price": 150,
         "description": "The ultimate drink to enliven your senses",
@@ -214,7 +214,7 @@
         ]
       },
       {
-        "id": "1",
+        "id": "9",
         "name": "Coca-Cola - 500 ml",
         "price": 150,
         "description": "Carbonated drink that refreshes your mind with every sip",
@@ -233,7 +233,7 @@
         ]
       },
       {
-        "id": "2",
+        "id": "10",
         "name": "Coca-Cola - 1 Liter",
         "price": 300,
         "description": "Carbonated drink that refreshes your mind with every sip",
@@ -252,7 +252,7 @@
         ]
       },
       {
-        "id": "3",
+        "id": "11",
         "name": "Sprite Can - 350 ml",
         "price": 150,
         "description": "Carbonated drink that refreshes your mind with every sip",
@@ -299,7 +299,7 @@
           "name": "Popular Dishes",
           "items": [
             {
-              "id": "0",
+              "id": "12",
               "name": "Seekh Kebab",
               "price": 650,
               "description": "Juicy, spiced minced meat kebabs grilled to perfection.",
@@ -319,7 +319,7 @@
               ]
             },
             {
-              "id": "1",
+              "id": "13",
               "name": "Chicken Breast Piece (Jumbo)",
               "price": 650,
               "description": "(300 Gram plus) Piece Regular / Per Kg",
@@ -341,7 +341,7 @@
               ]
             },
             {
-              "id": "2",
+              "id": "14",
               "name": "Chicken Balochi Sajji",
               "price": 650,
               "description": "(300 Gram plus) Piece Regular / Per Kg",
@@ -368,7 +368,7 @@
           "name": "Karahi",
           "items": [
             {
-              "id": "0",
+              "id": "15",
               "name": "Chicken Karahi",
               "price": 1300,
               "description": "Special chicken karahi",
@@ -388,7 +388,7 @@
               ]
             },
             {
-              "id": "1",
+              "id": "16",
               "name": "Chicken White Karahi",
               "price": 1450,
               "description": "Special Chicken white creamy karahi",
@@ -410,7 +410,7 @@
               ]
             },
             {
-              "id": "2",
+              "id": "17",
               "name": "Chicken Makhni Karahi",
               "price": 1200,
               "description": "Special makhni karahi",
@@ -437,7 +437,7 @@
           "name": "Drinks",
           "items": [
             {
-              "id": "0",
+              "id": "18",
               "name": "Sprite",
               "price": 150,
               "description": "The ultimate drink to enliven your senses",
@@ -456,7 +456,7 @@
               ]
             },
             {
-              "id": "1",
+              "id": "19",
               "name": "Coca-Cola - 500 ml",
               "price": 150,
               "description": "Carbonated drink that refreshes your mind with every sip",
@@ -475,7 +475,7 @@
               ]
             },
             {
-              "id": "2",
+              "id": "20",
               "name": "Coca-Cola - 1 Liter",
               "price": 300,
               "description": "Carbonated drink that refreshes your mind with every sip",
@@ -494,7 +494,7 @@
               ]
             },
             {
-              "id": "3",
+              "id": "21",
               "name": "Sprite Can - 350 ml",
               "price": 150,
               "description": "Carbonated drink that refreshes your mind with every sip",
@@ -541,7 +541,7 @@
           "name": "Popular",
           "items": [
             {
-              "id": "0",
+              "id": "22",
               "name": "Hot Wings",
               "price": 1000,
               "description": "10 Pieces Spicy and Fiery hot, get ready for a ride of flavor and spice with KFC Hot Wings.",
@@ -565,7 +565,7 @@
               ]
             },
             {
-              "id": "1",
+              "id": "23",
               "name": "Xtreme Duo Box",
               "price": 1700,
               "description": "2 Zinger burgers, 2 chicken pieces, large fries and 2 regular soft drinks.",
@@ -589,7 +589,7 @@
               ]
             },
             {
-              "id": "2",
+              "id": "24",
               "name": "Mighty Zinger Burger",
               "price": 800,
               "description": "2 whole muscle zingers with cheese and fresh lettuce, all bundled in a Mighty bun.",
@@ -613,7 +613,7 @@
               ]
             },
             {
-              "id": "3",
+              "id": "25",
               "name": "Krunch Combo",
               "price": 700,
               "description": "Enjoy a crispy crunchy chicken fillet on a bed of lettuce with a soft bun, topped with the signature sauce. Served with fries and drink.",
@@ -643,7 +643,7 @@
           "name": "Celebration Deals",
           "items": [
             {
-              "id": "0",
+              "id": "26",
               "name": "It's 3rilling!",
               "price": 1800,
               "description": "3 Zinger Burgers + 3 Chicken Drumsticks + 1 Fries Bucket + 3 Regular Drinks",
@@ -673,7 +673,7 @@
           "name": "Everyday Value",
           "items": [
             {
-              "id": "1",
+              "id": "27",
               "name": "Krunch Burger",
               "price": 350,
               "description": "Enjoy the crispy chicken fillet in a soft bun with our signature sauce with fresh lettuce.",
@@ -697,7 +697,7 @@
               ]
             },
             {
-              "id": "2",
+              "id": "28",
               "name": "Rice & Spice",
               "price": 420,
               "description": "Add some spice to your rice with KFCs Rice and Spice! With lovely pieces of chicken in spicy rice and it'll make for a lovely meal!",
@@ -721,7 +721,7 @@
               ]
             },
             {
-              "id": "3",
+              "id": "29",
               "name": "Zingeratha",
               "price": 420,
               "description": "Crispy zinger strips rolled into a golden paratha with a fusion of Imli ki chutney and Mint Mayo with fresh onions",
@@ -745,7 +745,7 @@
               ]
             },
             {
-              "id": "4",
+              "id": "30",
               "name": "3 Pieces Chicken",
               "price": 700,
               "description": "3 Pieces of Hot and Crispy fried chicken ",
@@ -769,7 +769,7 @@
               ]
             },
             {
-              "id": "5",
+              "id": "31",
               "name": "Mighty Zinger Burger Combo",
               "price": 1100,
               "description": "Mighty zinger burger, fries and soft drink ",
@@ -799,7 +799,7 @@
           "name": "Drinks",
           "items": [
             {
-              "id": "0",
+              "id": "32",
               "name": "Sprite",
               "price": 150,
               "description": "The ultimate drink to enliven your senses",
@@ -823,7 +823,7 @@
               ]
             },
             {
-              "id": "1",
+              "id": "33",
               "name": "Coca-Cola - 500 ml",
               "price": 150,
               "description": "Carbonated drink that refreshes your mind with every sip",
@@ -847,7 +847,7 @@
               ]
             },
             {
-              "id": "2",
+              "id": "34",
               "name": "Coca-Cola - 1 Liter",
               "price": 300,
               "description": "Carbonated drink that refreshes your mind with every sip",
@@ -871,7 +871,7 @@
               ]
             },
             {
-              "id": "3",
+              "id": "35",
               "name": "Sprite Can - 350 ml",
               "price": 150,
               "description": "Carbonated drink that refreshes your mind with every sip",
@@ -923,7 +923,7 @@
           "name": "Popular",
           "items": [
             {
-              "id": "0",
+              "id": "36",
               "name": "TORTILLA WRAP",
               "price": 1000,
               "description": "Al Mashhoor wrap. 4 chicken tenderloin strips wrapped to perfection",
@@ -946,7 +946,7 @@
               ]
             },
             {
-              "id": "1",
+              "id": "37",
               "name": "WEHSHI",
               "price": 900,
               "description": "Crispy & crunchy chicken burger to help you channel your wehshi side.",
@@ -969,7 +969,7 @@
               ]
             },
             {
-              "id": "2",
+              "id": "38",
               "name": "CHICKEN FILLET",
               "price": 900,
               "description": "Fried, breaded, chicken burger. juicy to the core, unlike anything else",
@@ -992,7 +992,7 @@
               ]
             },
             {
-              "id": "3",
+              "id": "39",
               "name": "GOCHU WINGS",
               "price": 800,
               "description": "SWEET MEETS HEAT! 8 Crispy wings coated in a sweet and spicy gucogeng glaze!",
@@ -1021,7 +1021,7 @@
           "name": "Burgers",
           "items": [
             {
-              "id": "0",
+              "id": "40",
               "name": "WEHSHI",
               "price": 900,
               "description": "Crispy & crunchy chicken burger to help you channel your wehshi side.",
@@ -1044,7 +1044,7 @@
               ]
             },
             {
-              "id": "1",
+              "id": "41",
               "name": "CHICKEN FILLET",
               "price": 900,
               "description": "Fried, breaded, chicken burger. juicy to the core, unlike anything else",
@@ -1073,7 +1073,7 @@
           "name": "Wings",
           "items": [
             {
-              "id": "0",
+              "id": "42",
               "name": "GOCHU WINGS",
               "price": 800,
               "description": "SWEET MEETS HEAT! 8 Crispy wings coated in a sweet and spicy gucogeng glaze!",
@@ -1096,7 +1096,7 @@
               ]
             },
             {
-              "id": "1",
+              "id": "43",
               "name": "CRISPY WINGS",
               "price": 800,
               "description": "8 wings coated in a secret batter transforming them into golden masterpieces- but heres the real showstopper- the CRUNCH.",
@@ -1126,7 +1126,7 @@
           "name": "Drinks",
           "items": [
             {
-              "id": "0",
+              "id": "44",
               "name": "Sprite",
               "price": 150,
               "description": "The ultimate drink to enliven your senses",
@@ -1150,7 +1150,7 @@
               ]
             },
             {
-              "id": "1",
+              "id": "45",
               "name": "Coca-Cola - 500 ml",
               "price": 150,
               "description": "Carbonated drink that refreshes your mind with every sip",
@@ -1174,7 +1174,7 @@
               ]
             },
             {
-              "id": "2",
+              "id": "46",
               "name": "Coca-Cola - 1 Liter",
               "price": 300,
               "description": "Carbonated drink that refreshes your mind with every sip",
@@ -1198,7 +1198,7 @@
               ]
             },
             {
-              "id": "3",
+              "id": "47",
               "name": "Sprite Can - 350 ml",
               "price": 150,
               "description": "Carbonated drink that refreshes your mind with every sip",
