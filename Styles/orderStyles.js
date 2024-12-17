@@ -183,4 +183,16 @@ export const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
     },
+    coordinatesContainer: {
+        position: 'absolute',
+        bottom: 10,
+        left: 10,
+        backgroundColor: 'rgba(255, 255, 255, 0.8)',
+        padding: 10,
+        borderRadius: 5,
+    },
+    coordinatesText: {
+        fontSize: 12,
+        color: '#333',
+    },
 });

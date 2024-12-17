@@ -6,6 +6,7 @@ import MapView, { Marker, Polyline } from "react-native-maps";
 import { FontAwesome5, Ionicons } from "@expo/vector-icons";
 import { styles } from "../../Styles/orderStyles";
 import * as Location from 'expo-location';
+import { useSelector } from 'react-redux';
 
 const Order = () => {
     const params = useLocalSearchParams();
@@ -21,10 +22,19 @@ const Order = () => {
     const [canCancelOrder, setCanCancelOrder] = useState(true);
     const [orderCancelled, setOrderCancelled] = useState(false);
 
-    const hotelLocation = {
-        latitude: 31.4708,
-        longitude: 74.2728,
-    };
+    // Get the current hotel ID from Redux store
+    const currentHotelId = useSelector(state => state.cart.currentHotelId);
+
+    // Get the restaurants data
+    const restaurants = useSelector(state => state.restaurants);
+
+    // Find the current restaurant
+    const currentRestaurant = restaurants.find(restaurant => restaurant.id === currentHotelId);
+
+    // Use the actual restaurant coordinates or fallback to default
+    const hotelLocation = currentRestaurant
+        ? { latitude: currentRestaurant.latitude, longitude: currentRestaurant.longitude }
+        : { latitude: 31.4708, longitude: 74.2728 };
 
     useEffect(() => {
         (async () => {
@@ -237,6 +247,15 @@ const Order = () => {
                         <Text style={styles.errorText}>{errorMsg}</Text>
                     </View>
                 )}
+
+                {/* Display Restaurant Coordinates */}
+                <View style={styles.coordinatesContainer}>
+                    <Text style={styles.coordinatesText}>
+                        Restaurant Coordinates: 
+                        {`\nLatitude: ${hotelLocation.latitude.toFixed(4)}`}
+                        {`\nLongitude: ${hotelLocation.longitude.toFixed(4)}`}
+                    </Text>
+                </View>
             </View>
 
             {/* Tip Section */}
@@ -353,31 +372,32 @@ const Order = () => {
             </View>
 
             <View style={{ alignItems: "center", marginTop: 20 }}>
-    <TouchableOpacity
-        style={{
-            backgroundColor: "#FF2B85",
-            borderRadius: 25,
-            paddingVertical: 12,
-            paddingHorizontal: 30,
-            alignItems: "center",
-            justifyContent: "center",
-            shadowColor: "#000",
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.3,
-            shadowRadius: 5,
-            elevation: 5,
-            paddingBelow: 100,
-        }}
-        onPress={() => router.replace("/ReviewPage")}
-    >
-        <Text style={{ color: "white", fontSize: 16, fontWeight: "bold" }}>
-            Order Received
-        </Text>
-    </TouchableOpacity>
-</View>
+                <TouchableOpacity
+                    style={{
+                        backgroundColor: "#FF2B85",
+                        borderRadius: 25,
+                        paddingVertical: 12,
+                        paddingHorizontal: 30,
+                        alignItems: "center",
+                        justifyContent: "center",
+                        shadowColor: "#000",
+                        shadowOffset: { width: 0, height: 2 },
+                        shadowOpacity: 0.3,
+                        shadowRadius: 5,
+                        elevation: 5,
+                        paddingBelow: 100,
+                    }}
+                    onPress={() => router.replace("/ReviewPage")}
+                >
+                    <Text style={{ color: "white", fontSize: 16, fontWeight: "bold" }}>
+                        Order Received
+                    </Text>
+                </TouchableOpacity>
+            </View>
 
         </SafeAreaView>
     );
 };
 
 export default Order;
+

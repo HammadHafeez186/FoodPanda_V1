@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, FlatList, ScrollView, Alert } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { FontAwesome5 } from "@expo/vector-icons";
@@ -8,6 +8,7 @@ import { incrementQuantity, decrementQuantity, removeFromCart, cleanCart } from 
 import Instructions from "../../data/Instructions.json";
 import styles from "../../Styles/CartStyles";
 import { supabase } from '../../lib/supabase';
+import restaurantData from "../../data/dataRestaurantMenu.json";
 
 // Helper function to calculate total price
 const calculateTotalPrice = (cart) => {
@@ -23,15 +24,36 @@ const calculateTotalPrice = (cart) => {
 const Cart = () => {
     const params = useLocalSearchParams();
     const router = useRouter();
-    const { items: cart } = useSelector((state) => state.cart);
+    const { items: cart, currentHotelId } = useSelector((state) => state.cart);
     const dispatch = useDispatch();
+    const [discountInfo, setDiscountInfo] = useState({ percentage: 0, minOrder: 0, maxDiscount: 0 });
+
+    useEffect(() => {
+        // Fetch discount info from the restaurant data
+        const fetchDiscountInfo = () => {
+            const restaurant = restaurantData.restaurants.find(r => r.id === currentHotelId);
+            if (restaurant && restaurant.discount) {
+                setDiscountInfo({
+                    percentage: restaurant.discount.percentage,
+                    minOrder: restaurant.discount.min_order,
+                    maxDiscount: restaurant.discount.max_discount
+                });
+            }
+        };
+        fetchDiscountInfo();
+    }, [currentHotelId]);
 
     // Calculate the total price (including addons)
     const totalPrice = calculateTotalPrice(cart);
-    const deliveryFee = Math.floor(totalPrice * 0.2);
+    const isDiscountApplicable = totalPrice >= discountInfo.minOrder;
+    const discountAmount = isDiscountApplicable 
+        ? Math.min((totalPrice * discountInfo.percentage) / 100, discountInfo.maxDiscount) 
+        : 0;
+    const discountedTotal = totalPrice - discountAmount;
+    const deliveryFee = Math.floor(discountedTotal * 0.2);
     const deliveryPartnerFee = Math.floor(deliveryFee * 0.2);
     const addOnByItem = Array.isArray(cart) ? cart.reduce((sum, item) => sum + (item.addons?.reduce((addonSum, addon) => addonSum + addon.price, 0) || 0), 0) : 0;
-    const finalPrice = totalPrice + deliveryFee + deliveryPartnerFee;
+    const finalPrice = discountedTotal + deliveryFee + deliveryPartnerFee;
 
     // Render Cart Items
     const renderCartItem = ({ item }) => (
@@ -60,7 +82,6 @@ const Cart = () => {
                 </TouchableOpacity>
             </View>
 
-            {/* Remove Button */}
             <TouchableOpacity
                 onPress={() => dispatch(removeFromCart({ id: item.id, hotel_id: item.hotel_id }))}
                 style={styles.removeButton}
@@ -68,7 +89,6 @@ const Cart = () => {
                 <Text style={styles.removeButtonText}>Remove</Text>
             </TouchableOpacity>
 
-            {/* Customize Button */}
             <TouchableOpacity
                 onPress={() => {
                     router.replace({
@@ -81,7 +101,6 @@ const Cart = () => {
                 <Text style={styles.customizeButtonText}>Customize</Text>
             </TouchableOpacity>
 
-            {/* Addon Items Section */}
             {item.addons && item.addons.length > 0 && (
                 <View style={styles.addonsContainer}>
                     <Text style={styles.addonsTitle}>Addons:</Text>
@@ -109,7 +128,6 @@ const Cart = () => {
     const uploadCartData = async (userId, cartItems) => {
         try {
             for (const item of cartItems) {
-                // Insert cart item
                 const { data: cartItem, error: cartItemError } = await supabase
                     .from('cart_items')
                     .insert({
@@ -124,7 +142,6 @@ const Cart = () => {
 
                 if (cartItemError) throw cartItemError;
 
-                // Insert addons for this cart item
                 if (item.addons && item.addons.length > 0) {
                     const addons = item.addons.map(addon => ({
                         cart_item_id: cartItem.id,
@@ -152,7 +169,6 @@ const Cart = () => {
 
     return (
         <ScrollView style={styles.container}>
-            {/* Header Section */}
             <View style={styles.header}>
                 <TouchableOpacity onPress={() => router.back()}>
                     <Ionicons name="arrow-back" size={24} color="black" />
@@ -160,17 +176,14 @@ const Cart = () => {
                 <Text style={styles.headerTitle}>{params?.name}</Text>
             </View>
 
-            {/* Delivery Info */}
             <View style={styles.deliveryContainer}>
                 <Text style={styles.deliveryText}>Delivery in 35 to 40 min.</Text>
             </View>
 
-            {/* Section Title */}
             <View style={styles.sectionTitleContainer}>
                 <Text style={styles.sectionTitle}>ITEM(S) ADDED</Text>
             </View>
 
-            {/* Cart Items */}
             {Array.isArray(cart) && cart.length > 0 ? (
                 <FlatList
                     data={cart}
@@ -184,7 +197,6 @@ const Cart = () => {
                 </View>
             )}
 
-            {/* Delivery Instructions */}
             {Array.isArray(cart) && cart.length > 0 && (
                 <View style={styles.deliveryInstructionsContainer}>
                     <Text style={styles.deliveryInstructionHeading}>Delivery Instruction</Text>
@@ -198,7 +210,6 @@ const Cart = () => {
                 </View>
             )}
 
-            {/* Billing Details */}
             {Array.isArray(cart) && cart.length > 0 && (
                 <View style={styles.billingContainer}>
                     <Text style={styles.billingTitle}>Billing Details</Text>
@@ -206,6 +217,20 @@ const Cart = () => {
                         <View style={styles.billingRow}>
                             <Text>Item(s) Total</Text>
                             <Text>Rs. {totalPrice.toFixed(2)}</Text>
+                        </View>
+                        {isDiscountApplicable ? (
+                            <View style={styles.billingRow}>
+                                <Text>Discount ({discountInfo.percentage}%)</Text>
+                                <Text>- Rs. {discountAmount.toFixed(2)}</Text>
+                            </View>
+                        ) : (
+                            <View style={styles.billingRow}>
+                                <Text>Minimum order for {discountInfo.percentage}% discount: Rs. {discountInfo.minOrder}</Text>
+                            </View>
+                        )}
+                        <View style={styles.billingRow}>
+                            <Text>Discounted Total</Text>
+                            <Text>Rs. {discountedTotal.toFixed(2)}</Text>
                         </View>
                         <View style={styles.billingRow}>
                             <Text>Delivery Fee</Text>
@@ -227,7 +252,6 @@ const Cart = () => {
                 </View>
             )}
 
-            {/* Footer */}
             {Array.isArray(cart) && cart.length > 0 && (
                 <View style={styles.footer}>
                     <TouchableOpacity style={styles.paymentMethod}>
@@ -246,7 +270,6 @@ const Cart = () => {
 
                                     await uploadCartData(user.id, cart);
 
-                                    // If successful, clean the cart and navigate to the Order page
                                     dispatch(cleanCart());
                                     router.replace({
                                         pathname: "/Order",
