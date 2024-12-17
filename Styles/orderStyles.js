@@ -35,7 +35,7 @@ export const styles = StyleSheet.create({
     },
     centerButton: {
         position: 'absolute',
-        bottom: 20,
+        bottom: 80,
         left: '50%',
         marginLeft: -60,
         backgroundColor: '#FF2B85',
@@ -51,23 +51,39 @@ export const styles = StyleSheet.create({
         elevation: 3,
     },
     centerButtonText: {
-        color: 'white',
+        color: '#fff',
         fontSize: 12,
         marginLeft: 5,
+    },
+    cancelOrderButton: {
+        position: 'absolute',
+        bottom: 20,
+        left: '50%',
+        marginLeft: -60,
+        backgroundColor: '#FF2B85',
+        padding: 12,
+        borderRadius: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    cancelOrderText: {
+        color: '#FF2B85',
+        fontWeight: 'bold',
+        fontSize: 14
     },
     errorContainer: {
         position: 'absolute',
         bottom: 10,
         left: '50%',
         marginLeft: -150,
-        backgroundColor: '#ffdddd',
+        backgroundColor: '#FFDDDD',
         padding: 10,
         borderRadius: 5,
         alignItems: 'center',
         justifyContent: 'center',
     },
     errorText: {
-        color: '#ff0000',
+        color: '#FF0000',
         fontWeight: 'bold',
     },
     tipContainer: {
@@ -76,7 +92,7 @@ export const styles = StyleSheet.create({
         paddingBottom: 20,
     },
     tipContent: {
-        backgroundColor: '#f9f9f9',
+        backgroundColor: '#F9F9F9',
         padding: 15,
         borderRadius: 10,
         shadowColor: '#000',
@@ -90,7 +106,7 @@ export const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
         marginBottom: 10,
-        color: '',
+        color: '#333',
     },
     tipRow: {
         flexDirection: 'row',
@@ -104,7 +120,7 @@ export const styles = StyleSheet.create({
     tipTitle: {
         fontSize: 14,
         fontWeight: 'bold',
-    },   
+    },
     tipDescription: {
         fontSize: 12,
         color: '#FF2B85',
@@ -124,13 +140,6 @@ export const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#FF2B85',
     },
-    mostTipped: {
-        fontSize: 14,
-        color: "#FF2B85", 
-        marginTop: 4, 
-        fontWeight: "500", 
-        
-      },
     selectedTipButton: {
         backgroundColor: '#FF2B85',
     },
@@ -138,7 +147,7 @@ export const styles = StyleSheet.create({
         fontSize: 14,
     },
     selectedTipText: {
-        color: 'white',
+        color: '#fff',
     },
     tipPayment: {
         fontSize: 14,
@@ -153,20 +162,8 @@ export const styles = StyleSheet.create({
         fontSize: 14,
         color: '#FF2B85',
     },
-    cancelOrderButton: {
-        backgroundColor: '#FF2B85',
-        padding: 10,
-        borderRadius: 5,
-        marginTop: 15,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    cancelOrderText: {
-        color: 'white',
-        fontWeight: 'bold',
-    },
     orderReceivedButton: {
-        backgroundColor: '##FF2B85',
+        backgroundColor: '#FF2B85',
         borderRadius: 25,
         paddingVertical: 12,
         paddingHorizontal: 30,
@@ -179,7 +176,7 @@ export const styles = StyleSheet.create({
         elevation: 5,
     },
     orderReceivedText: {
-        color: 'white',
+        color: '#fff',
         fontSize: 16,
         fontWeight: 'bold',
     },
