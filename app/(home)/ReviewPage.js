@@ -1,24 +1,14 @@
-import React, { useState, useCallback, useEffect } from "react";
-import {
-  Text,
-  View,
-  SafeAreaView,
-  TextInput,
-  TouchableOpacity,
-  Alert,
-  Image,
-  KeyboardAvoidingView,
-  Platform,
-  TouchableWithoutFeedback,
-  Keyboard,
-  ScrollView,
-  Dimensions
-} from "react-native";
+import React, { useState, useCallback } from "react";
+import { Text, View, SafeAreaView, TextInput, TouchableOpacity, Alert, Image, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, ScrollView, Dimensions } from "react-native";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { supabase } from "../../lib/supabase";
 import { styles } from "../../Styles/ReviewStyles";
 import * as ImagePicker from "expo-image-picker";
+import * as FileSystem from 'expo-file-system';
+import UserProfileFetcher from "../../components/userProfileFetcher";
+import { useSelector, useDispatch } from 'react-redux';
+import { resetCart } from "../../redux/CartReducer";
 
 const { width, height } = Dimensions.get('window');
 const ACCENT_COLOR = '#FF2B85';
@@ -27,42 +17,11 @@ const ReviewPage = () => {
   const [review, setReview] = useState("");
   const [rating, setRating] = useState(0);
   const [image, setImage] = useState(null);
-  const [userProfile, setUserProfile] = useState(null);
-  const [avatarUrl, setAvatarUrl] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
   const router = useRouter();
-
-  useEffect(() => {
-    fetchUserProfile();
-  }, []);
-
-  const fetchUserProfile = async () => {
-    try {
-      const { data: { session } } = await supabase.auth.getSession();
-
-      if (session) {
-        const { data: profileData, error: profileError } = await supabase
-          .from("profiles")
-          .select("*")
-          .eq("id", session.user.id)
-          .single();
-
-        if (profileError) {
-          console.error("Error fetching user profile:", profileError);
-        } else {
-          setUserProfile(profileData);
-          if (profileData.avatar_url) {
-            const { data } = supabase.storage
-              .from("avatars")
-              .getPublicUrl(profileData.avatar_url);
-            setAvatarUrl(data.publicUrl);
-          }
-          console.log("User profile:", profileData);
-        }
-      }
-    } catch (error) {
-      console.error("Unexpected error in fetchUserProfile:", error);
-    }
-  };
+  const dispatch = useDispatch();
+  const currentHotelId = useSelector((state) => state.cart.currentHotelId);
+  const [reviewAvatar, setReviewAvatar] = useState("");
 
   const handleRatingSelect = (selectedRating) => {
     setRating(selectedRating);
@@ -109,7 +68,51 @@ const ReviewPage = () => {
     setImage(null);
   };
 
-  const handleSubmitReview = async () => {
+  const uploadImageToSupabase = async (uri, userId) => {
+    try {
+      const fileName = `${Date.now()}.jpg`;
+      const filePath = `review/${userId}/${fileName}`;
+
+      const base64 = await FileSystem.readAsStringAsync(uri, {
+        encoding: FileSystem.EncodingType.Base64,
+      });
+
+      const formData = new FormData();
+      formData.append('file', {
+        uri: uri,
+        name: fileName,
+        type: 'image/jpeg'
+      });
+
+      const { data: { session } } = await supabase.auth.getSession();
+      const supabaseUrl = supabase.storage.url;
+      const storageUrl = `${supabaseUrl}/object/review-images/${filePath}`;
+
+      const uploadResponse = await fetch(storageUrl, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${session.access_token}`,
+          'x-upsert': 'true'
+        },
+        body: formData
+      });
+
+      if (!uploadResponse.ok) {
+        throw new Error(`Upload failed with status ${uploadResponse.status}`);
+      }
+
+      const { data: urlData } = supabase.storage
+        .from("review-images")
+        .getPublicUrl(filePath);
+
+      return urlData.publicUrl;
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      throw error;
+    }
+  };
+
+  const handleSubmitReview = async (userProfile) => {
     if (!review.trim()) {
       Alert.alert("Incomplete Review", "Please write your review before submitting.");
       return;
@@ -120,6 +123,8 @@ const ReviewPage = () => {
       return;
     }
 
+    setIsUploading(true);
+
     try {
       const { data: { session } } = await supabase.auth.getSession();
 
@@ -129,24 +134,11 @@ const ReviewPage = () => {
 
       let imageUrl = null;
       if (image) {
-        const fileName = `${Date.now()}.jpg`;
-        const filePath = `review/${session.user.id}/${fileName}`;
-
-        const { data: uploadData, error: uploadError } = await supabase.storage
-          .from("review-images")
-          .upload(filePath, image);
-
-        if (uploadError) {
-          console.error("Supabase upload error:", uploadError);
-          Alert.alert("Upload Error", uploadError.message);
-          return;
+        imageUrl = await uploadImageToSupabase(image, session.user.id);
+        
+        if (!imageUrl) {
+          throw new Error("Failed to get image URL after upload");
         }
-
-        const { data: urlData } = supabase.storage
-          .from("review-images")
-          .getPublicUrl(filePath);
-
-        imageUrl = urlData.publicUrl;
       }
 
       const { data, error } = await supabase.from("reviews").insert({
@@ -154,11 +146,17 @@ const ReviewPage = () => {
         review_text: review,
         image_url: imageUrl,
         rating: rating,
+        hotel_id: currentHotelId,
+        user_name: userProfile.username || userProfile.full_name,
+        user_avatar: reviewAvatar
       });
 
       if (error) {
         throw error;
       }
+
+      // Reset cart before navigation
+      dispatch(resetCart());
 
       Alert.alert(
         "Review Submitted",
@@ -172,117 +170,142 @@ const ReviewPage = () => {
         "There was a problem submitting your review. Please try again.",
         [{ text: "OK" }]
       );
+    } finally {
+      setIsUploading(false);
     }
   };
 
+  const handleSkipReview = () => {
+    dispatch(resetCart());
+    router.replace("/MainPage");
+  };
+
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={styles.keyboardContainer}
+    <UserProfileFetcher
+      onError={(error) => {
+        console.error("Profile fetch error:", error);
+        Alert.alert("Error", "Could not load user profile");
+      }}
     >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <ScrollView
-          contentContainerStyle={styles.scrollContainer}
-          keyboardShouldPersistTaps="handled"
+      {({ userProfile, avatarUrl, isLoading }) => (
+        setReviewAvatar(avatarUrl),
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={styles.keyboardContainer}
         >
-          <SafeAreaView style={styles.container}>
-            <Text style={styles.title}>Share Your Experience</Text>
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <ScrollView
+              contentContainerStyle={styles.scrollContainer}
+              keyboardShouldPersistTaps="handled"
+            >
+              <SafeAreaView style={styles.container}>
+                <Text style={styles.title}>Share Your Experience</Text>
 
-            {userProfile && (
-              <View style={styles.userInfo}>
-                <Image
-                  source={{ uri: avatarUrl || 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y' }}
-                  style={styles.avatar}
+                {!isLoading && userProfile && (
+                  <View style={styles.userInfo}>
+                    <Image
+                      source={{
+                        uri: avatarUrl || 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'
+                      }}
+                      style={styles.avatar}
+                    />
+                    <Text style={styles.username}>
+                      {userProfile.username || userProfile.full_name}
+                    </Text>
+                  </View>
+                )}
+
+                <View style={styles.ratingContainer}>
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <TouchableOpacity
+                      key={star}
+                      onPress={() => handleRatingSelect(star)}
+                      style={styles.starButton}
+                    >
+                      <Ionicons
+                        name={star <= rating ? "star" : "star-outline"}
+                        size={30}
+                        color={ACCENT_COLOR}
+                      />
+                    </TouchableOpacity>
+                  ))}
+                </View>
+
+                <TextInput
+                  style={styles.textInput}
+                  placeholder="Write your detailed feedback here..."
+                  placeholderTextColor="#888"
+                  multiline
+                  numberOfLines={6}
+                  value={review}
+                  onChangeText={setReview}
+                  maxLength={500}
                 />
-                <Text style={styles.username}>
-                  {userProfile.username || userProfile.full_name}
-                </Text>
-              </View>
-            )}
 
-            <View style={styles.ratingContainer}>
-              {[1, 2, 3, 4, 5].map((star) => (
-                <TouchableOpacity
-                  key={star}
-                  onPress={() => handleRatingSelect(star)}
-                  style={styles.starButton}
-                >
-                  <Ionicons
-                    name={star <= rating ? "star" : "star-outline"}
-                    size={30}
-                    color={ACCENT_COLOR}
-                  />
-                </TouchableOpacity>
-              ))}
-            </View>
+                <View style={styles.imageSection}>
+                  <View style={styles.imagePickerOptions}>
+                    <TouchableOpacity
+                      style={[styles.pickImageButton, isUploading && styles.disabledButton]}
+                      onPress={pickImageFromGallery}
+                      disabled={isUploading}
+                    >
+                      <Ionicons name="images" size={24} color="white" />
+                      <Text style={styles.pickImageText}>Gallery</Text>
+                    </TouchableOpacity>
 
-            <TextInput
-              style={styles.textInput}
-              placeholder="Write your detailed feedback here..."
-              placeholderTextColor="#888"
-              multiline
-              numberOfLines={6}
-              value={review}
-              onChangeText={setReview}
-              maxLength={500}
-            />
+                    <TouchableOpacity
+                      style={[styles.pickImageButton, isUploading && styles.disabledButton]}
+                      onPress={pickImageFromCamera}
+                      disabled={isUploading}
+                    >
+                      <Ionicons name="camera" size={24} color="white" />
+                      <Text style={styles.pickImageText}>Camera</Text>
+                    </TouchableOpacity>
+                  </View>
 
-            <View style={styles.imageSection}>
-              <View style={styles.imagePickerOptions}>
-                <TouchableOpacity
-                  style={styles.pickImageButton}
-                  onPress={pickImageFromGallery}
-                >
-                  <Ionicons name="images" size={24} color="white" />
-                  <Text style={styles.pickImageText}>Gallery</Text>
-                </TouchableOpacity>
+                  {image && (
+                    <View style={styles.imagePreviewContainer}>
+                      <Image
+                        source={{ uri: image }}
+                        style={styles.imagePreview}
+                      />
+                      <TouchableOpacity
+                        style={styles.removeImageButton}
+                        onPress={removeImage}
+                        disabled={isUploading}
+                      >
+                        <Ionicons name="close" size={20} color="white" />
+                      </TouchableOpacity>
+                    </View>
+                  )}
+                </View>
 
-                <TouchableOpacity
-                  style={styles.pickImageButton}
-                  onPress={pickImageFromCamera}
-                >
-                  <Ionicons name="camera" size={24} color="white" />
-                  <Text style={styles.pickImageText}>Camera</Text>
-                </TouchableOpacity>
-              </View>
-
-              {image && (
-                <View style={styles.imagePreviewContainer}>
-                  <Image
-                    source={{ uri: image }}
-                    style={styles.imagePreview}
-                  />
+                <View style={styles.buttonContainer}>
                   <TouchableOpacity
-                    style={styles.removeImageButton}
-                    onPress={removeImage}
+                    style={[styles.submitButton, isUploading && styles.disabledButton]}
+                    onPress={() => handleSubmitReview(userProfile)}
+                    disabled={isUploading}
                   >
-                    <Ionicons name="close" size={20} color="white" />
+                    <Text style={styles.submitButtonText}>
+                      {isUploading ? "Uploading..." : "Submit Review"}
+                    </Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    style={[styles.skipButton, isUploading && styles.disabledButton]}
+                    onPress={handleSkipReview}
+                    disabled={isUploading}
+                  >
+                    <Text style={styles.skipButtonText}>Skip Review</Text>
                   </TouchableOpacity>
                 </View>
-              )}
-            </View>
-
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity
-                style={styles.submitButton}
-                onPress={handleSubmitReview}
-              >
-                <Text style={styles.submitButtonText}>Submit Review</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={styles.skipButton}
-                onPress={() => router.replace("/MainPage")}
-              >
-                <Text style={styles.skipButtonText}>Skip Review</Text>
-              </TouchableOpacity>
-            </View>
-          </SafeAreaView>
-        </ScrollView>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+              </SafeAreaView>
+            </ScrollView>
+          </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
+      )}
+    </UserProfileFetcher>
   );
 };
 
 export default ReviewPage;
-

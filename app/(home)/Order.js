@@ -167,7 +167,7 @@ const Order = () => {
     }, [canCancelOrder, router]);
 
     const handleOrderReceived = useCallback(() => {
-        dispatch(cleanCart());
+        //dispatch(cleanCart());
         router.replace("/ReviewPage");
     }, [dispatch, router]);
 

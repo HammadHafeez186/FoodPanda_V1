@@ -99,7 +99,7 @@ export default function PasswordResetScreen() {
       Alert.alert(
         'Success',
         'Password has been reset successfully',
-        [{ text: 'OK', onPress: () => router.replace('../login.js') }]
+        [{ text: 'OK', onPress: () => router.replace('../Login') }]
       );
 
     } catch (error) {
