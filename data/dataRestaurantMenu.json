@@ -46,7 +46,7 @@
             {
             "id": "1",
               "name": "Forks N Knives Deal-1",
-              "price": 680,
+              "price": 1190,
               "description": "Large pizza with liter drink",
               "rating": 4.5,
               "ratings": 43,
@@ -64,12 +64,12 @@
             },
             {
               "id": "2",
-                "name": "Forks N Knives Deal-1",
-                "price": 680,
-                "description": "Large pizza with liter drink",
+                "name": "Oven Baked Hot Wings",
+                "price": 500,
+                "description": "Enjoy tender juicy chicken wings marinated in our special recipe and oven baked to perfection.",
                 "rating": 4.5,
                 "ratings": 43,
-                "image": "https://images.deliveryhero.io/image/fd-pk/Products/17433447.jpg??width=2100",
+                "image": "https://images.deliveryhero.io/image/fd-pk/Products/14078476.jpg??width=2100",
                 "veg": true,
                 "bestSeller": true,
                 "quantity": 1,
@@ -82,8 +82,197 @@
                 ]
               }
           ]
+        },
+        {
+          "id": "21",
+          "name": "Pizza",
+          "items": [
+            {
+              "id": "0",
+              "name": "Cheesy Cheese Pizza - Large",
+              "price": 1100,
+              "description": "Loads of mozzarella cheese & a real treat for cheese lovers",
+              "rating": 4.7,
+              "ratings": 43,
+              "image": "https://images.deliveryhero.io/image/fd-pk/Products/14078486.jpg??width=2100",
+              "veg": true,
+              "bestSeller": false,
+              "quantity": 1,
+              "hotel_id": "0",
+              "addons": [
+                { "id": "a1", "name": "Coca Cola - 1 Litre", "price": 200, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100" },
+                { "id": "a2", "name": "Coca Cola - 500 ml", "price": 120, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100"},
+                { "id": "a5", "name": "Coca Cola - 250 ml", "price": 100, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100" },
+                { "id": "a6", "name": "Garlic Butter Dip", "price": 50, "ImageUrl": "https://cdn.loveandlemons.com/wp-content/uploads/2023/05/garlic-yogurt-sauce-1-1.jpg" }
+              ]
+            },
+            {
+              "id": "1",
+              "name": "Stuffed Crust Pizza - Large",
+              "price": 2500,
+              "description": "Serving for 3 to 4 persons. 12 Inches. Crispy on the outside & cheesy on the inside pizza just got so much better!",
+              "rating": 4.7,
+              "ratings": 43,
+              "image": "https://images.deliveryhero.io/image/fd-pk/Products/14078494.jpg??width=2100",
+              "veg": true,
+              "bestSeller": false,
+              "quantity": 1,
+              "hotel_id": "0",
+              "addons": [
+                { "id": "a1", "name": "Coca Cola - 1 Litre", "price": 200, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100" },
+                { "id": "a2", "name": "Coca Cola - 500 ml", "price": 120, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100"},
+                { "id": "a5", "name": "Coca Cola - 250 ml", "price": 100, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100" },
+                { "id": "a6", "name": "Garlic Butter Dip", "price": 50, "ImageUrl": "https://cdn.loveandlemons.com/wp-content/uploads/2023/05/garlic-yogurt-sauce-1-1.jpg" }
+              ]
+            },
+            {
+              "id": "2",
+              "name": "Royal Crust Pizza - Large",
+              "price": 2800,
+              "description": "Special requests are subject to the restaurant's approval. Tell us here!",
+              "rating": 4.9,
+              "ratings": 43,
+              "image": "https://images.deliveryhero.io/image/fd-pk/Products/17280972.jpg??width=2100",
+              "veg": true,
+              "bestSeller": false,
+              "quantity": 1,
+              "hotel_id": "0",
+              "addons": [
+                { "id": "a1", "name": "Coca Cola - 1 Litre", "price": 200, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100" },
+                { "id": "a2", "name": "Coca Cola - 500 ml", "price": 120, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100"},
+                { "id": "a5", "name": "Coca Cola - 250 ml", "price": 100, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100" },
+                { "id": "a6", "name": "Garlic Butter Dip", "price": 50, "ImageUrl": "https://cdn.loveandlemons.com/wp-content/uploads/2023/05/garlic-yogurt-sauce-1-1.jpg" }
+              ]
+            }
+          ]
+      },
+    {
+      "id": "22",
+      "name": "Sandwiches/Rolls",
+      "items": [
+        {
+          "id": "0",
+          "name": "Patty Burger",
+          "price": 600,
+          "description": "Single serving",
+          "rating": 4.2,
+          "ratings": 43,
+          "image": "https://images.deliveryhero.io/image/fd-pk/Products/14078495.jpg??width=2100",
+          "veg": true,
+          "bestSeller": false,
+          "quantity": 1,
+          "hotel_id": "0",
+          "addons": [
+            { "id": "a1", "name": "Coca Cola - 1 Litre", "price": 200, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100" },
+            { "id": "a2", "name": "Coca Cola - 500 ml", "price": 120, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100"},
+            { "id": "a5", "name": "Coca Cola - 250 ml", "price": 100, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100" },
+            { "id": "a6", "name": "Garlic Butter Dip", "price": 50, "ImageUrl": "https://cdn.loveandlemons.com/wp-content/uploads/2023/05/garlic-yogurt-sauce-1-1.jpg" }
+          ]
+        },
+        {
+          "id": "1",
+          "name": "Malai Boti Rolls",
+          "price": 1100,
+          "description": "4 Pieces of rolls stuffed with malai boti chicken, onions & jalapeno",
+          "rating": 4.4,
+          "ratings": 43,
+          "image": "https://images.deliveryhero.io/image/fd-pk/Products/14078501.jpg??width=2100",
+          "veg": true,
+          "bestSeller": false,
+          "quantity": 1,
+          "hotel_id": "0",
+          "addons": [
+            { "id": "a1", "name": "Coca Cola - 1 Litre", "price": 200, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100" },
+            { "id": "a2", "name": "Coca Cola - 500 ml", "price": 120, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100"},
+            { "id": "a5", "name": "Coca Cola - 250 ml", "price": 100, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100" },
+            { "id": "a6", "name": "Garlic Butter Dip", "price": 50, "ImageUrl": "https://cdn.loveandlemons.com/wp-content/uploads/2023/05/garlic-yogurt-sauce-1-1.jpg" }
+          ]
         }
       ]
+  },
+  {
+    "id": "23",
+    "name": "Beverages",
+    "items": [
+      {
+        "id": "0",
+        "name": "Sprite",
+        "price": 150,
+        "description": "The ultimate drink to enliven your senses",
+        "rating": 4.2,
+        "ratings": 43,
+        "image": "https://images.deliveryhero.io/image/fd-pk/Products/16453003.jpg??width=2100",
+        "veg": true,
+        "bestSeller": false,
+        "quantity": 1,
+        "hotel_id": "0",
+        "addons": [
+          { "id": "a1", "name": "Coca Cola - 1 Litre", "price": 200, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100" },
+          { "id": "a2", "name": "Coca Cola - 500 ml", "price": 120, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100"},
+          { "id": "a5", "name": "Coca Cola - 250 ml", "price": 100, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100" },
+          { "id": "a6", "name": "Garlic Butter Dip", "price": 50, "ImageUrl": "https://cdn.loveandlemons.com/wp-content/uploads/2023/05/garlic-yogurt-sauce-1-1.jpg" }
+        ]
+      },
+      {
+        "id": "1",
+        "name": "Coca-Cola - 500 ml",
+        "price": 150,
+        "description": "Carbonated drink that refreshes your mind with every sip",
+        "rating": 4.4,
+        "ratings": 43,
+        "image": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100",
+        "veg": true,
+        "bestSeller": false,
+        "quantity": 1,
+        "hotel_id": "0",
+        "addons": [
+          { "id": "a1", "name": "Coca Cola - 1 Litre", "price": 200, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100" },
+          { "id": "a2", "name": "Coca Cola - 500 ml", "price": 120, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100"},
+          { "id": "a5", "name": "Coca Cola - 250 ml", "price": 100, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100" },
+          { "id": "a6", "name": "Garlic Butter Dip", "price": 50, "ImageUrl": "https://cdn.loveandlemons.com/wp-content/uploads/2023/05/garlic-yogurt-sauce-1-1.jpg" }
+        ]
+      },
+      {
+        "id": "2",
+        "name": "Coca-Cola - 1 Liter",
+        "price": 300,
+        "description": "Carbonated drink that refreshes your mind with every sip",
+        "rating": 4.4,
+        "ratings": 43,
+        "image": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100",
+        "veg": true,
+        "bestSeller": false,
+        "quantity": 1,
+        "hotel_id": "0",
+        "addons": [
+          { "id": "a1", "name": "Coca Cola - 1 Litre", "price": 200, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100" },
+          { "id": "a2", "name": "Coca Cola - 500 ml", "price": 120, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100"},
+          { "id": "a5", "name": "Coca Cola - 250 ml", "price": 100, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100" },
+          { "id": "a6", "name": "Garlic Butter Dip", "price": 50, "ImageUrl": "https://cdn.loveandlemons.com/wp-content/uploads/2023/05/garlic-yogurt-sauce-1-1.jpg" }
+        ]
+      },
+      {
+        "id": "3",
+        "name": "Sprite Can - 350 ml",
+        "price": 150,
+        "description": "Carbonated drink that refreshes your mind with every sip",
+        "rating": 4.4,
+        "ratings": 43,
+        "image": "https://images.deliveryhero.io/image/fd-pk/Products/16804899.jpg??width=2100",
+        "veg": true,
+        "bestSeller": false,
+        "quantity": 1,
+        "hotel_id": "0",
+        "addons": [
+          { "id": "a1", "name": "Coca Cola - 1 Litre", "price": 200, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100" },
+          { "id": "a2", "name": "Coca Cola - 500 ml", "price": 120, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100"},
+          { "id": "a5", "name": "Coca Cola - 250 ml", "price": 100, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100" },
+          { "id": "a6", "name": "Garlic Butter Dip", "price": 50, "ImageUrl": "https://cdn.loveandlemons.com/wp-content/uploads/2023/05/garlic-yogurt-sauce-1-1.jpg" }
+        ]
+      }
+    ]
+}
+    ]
     },
     {
       "id": "1",
@@ -110,25 +299,151 @@
           "name": "Popular Dishes",
           "items": [
             {
-              "id": "201",
+              "id": "0",
               "name": "Seekh Kebab",
-              "price": 250,
+              "price": 650,
               "description": "Juicy, spiced minced meat kebabs grilled to perfection.",
               "rating": 4.5,
               "ratings": 75,
-              "image": "https://picsum.photos/208?random=9",
+              "image": "https://images.deliveryhero.io/image/fd-pk/Products/3315100.jpg??width=2100",
               "veg": false,
               "bestSeller": true,
               "quantity": 1,
               "hotel_id": "1",
               "addons": [
-                { "id": "b1", "name": "Mint Chutney", "price": 20 },
-                { "id": "b2", "name": "Onion Rings", "price": 30 },
-                { "id": "b3", "name": "Yogurt Dip", "price": 25 }
+                { "id": "b1", "name": "Mint Chutney", "price": 20, "ImageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQt3B5GglsgrAjEka6jFQaxeP6l_KnPUqRldQ&s"},
+                { "id": "b2", "name": "Coca Cola - 500 ml", "price": 120, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100"},
+                { "id": "b3", "name": "Coca Cola - 250 ml", "price": 100, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100" },
+                { "id": "b4", "name": "Garlic Butter Dip", "price": 50, "ImageUrl": "https://cdn.loveandlemons.com/wp-content/uploads/2023/05/garlic-yogurt-sauce-1-1.jpg" },
+                { "id": "b5", "name": "Raita/Yogurt Dip", "price": 25, "ImageUrl": "https://cdn.loveandlemons.com/wp-content/uploads/2023/05/garlic-yogurt-sauce-1-1.jpg" }
+              ]
+            },
+            {
+              "id": "1",
+              "name": "Chicken Breast Piece (Jumbo)",
+              "price": 650,
+              "description": "(300 Gram plus) Piece Regular / Per Kg",
+              "rating": 4.5,
+              "ratings": 75,
+              "image": "https://images.deliveryhero.io/image/fd-pk/Products/3315097.jpg??width=2100",
+              "veg": false,
+              "bestSeller": true,
+              "quantity": 1,
+              "hotel_id": "1",
+              "addons": [
+                { "id": "b1", "name": "Mint Chutney", "price": 20, "ImageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQt3B5GglsgrAjEka6jFQaxeP6l_KnPUqRldQ&s"},
+                { "id": "b2", "name": "Coca Cola - 500 ml", "price": 120, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100"},
+                { "id": "b3", "name": "Coca Cola - 250 ml", "price": 100, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100" },
+                { "id": "b4", "name": "Garlic Butter Dip", "price": 50, "ImageUrl": "https://cdn.loveandlemons.com/wp-content/uploads/2023/05/garlic-yogurt-sauce-1-1.jpg" },
+                { "id": "b5", "name": "Raita/Yogurt Dip", "price": 25, "ImageUrl": "https://cdn.loveandlemons.com/wp-content/uploads/2023/05/garlic-yogurt-sauce-1-1.jpg" }
+              
+              ]
+            },
+            {
+              "id": "2",
+              "name": "Chicken Balochi Sajji",
+              "price": 650,
+              "description": "(300 Gram plus) Piece Regular / Per Kg",
+              "rating": 4.5,
+              "ratings": 75,
+              "image": "https://images.deliveryhero.io/image/fd-pk/Products/72120582.jpg??width=2100",
+              "veg": false,
+              "bestSeller": true,
+              "quantity": 1,
+              "hotel_id": "1",
+              "addons": [
+                { "id": "b1", "name": "Mint Chutney", "price": 20, "ImageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQt3B5GglsgrAjEka6jFQaxeP6l_KnPUqRldQ&s"},
+                { "id": "b2", "name": "Coca Cola - 500 ml", "price": 120, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100"},
+                { "id": "b3", "name": "Coca Cola - 250 ml", "price": 100, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100" },
+                { "id": "b4", "name": "Garlic Butter Dip", "price": 50, "ImageUrl": "https://cdn.loveandlemons.com/wp-content/uploads/2023/05/garlic-yogurt-sauce-1-1.jpg" },
+                { "id": "b5", "name": "Raita/Yogurt Dip", "price": 25, "ImageUrl": "https://cdn.loveandlemons.com/wp-content/uploads/2023/05/garlic-yogurt-sauce-1-1.jpg" }
+              
               ]
             }
           ]
-        }
+        },
+        {
+          "id": "24",
+          "name": "Drinks",
+          "items": [
+            {
+              "id": "0",
+              "name": "Sprite",
+              "price": 150,
+              "description": "The ultimate drink to enliven your senses",
+              "rating": 4.2,
+              "ratings": 43,
+              "image": "https://images.deliveryhero.io/image/fd-pk/Products/16453003.jpg??width=2100",
+              "veg": true,
+              "bestSeller": false,
+              "quantity": 1,
+              "hotel_id": "0",
+              "addons": [
+                { "id": "a1", "name": "Coca Cola - 1 Litre", "price": 200, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100" },
+                { "id": "a2", "name": "Coca Cola - 500 ml", "price": 120, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100"},
+                { "id": "a5", "name": "Coca Cola - 250 ml", "price": 100, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100" },
+                { "id": "a6", "name": "Garlic Butter Dip", "price": 50, "ImageUrl": "https://cdn.loveandlemons.com/wp-content/uploads/2023/05/garlic-yogurt-sauce-1-1.jpg" }
+              ]
+            },
+            {
+              "id": "1",
+              "name": "Coca-Cola - 500 ml",
+              "price": 150,
+              "description": "Carbonated drink that refreshes your mind with every sip",
+              "rating": 4.4,
+              "ratings": 43,
+              "image": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100",
+              "veg": true,
+              "bestSeller": false,
+              "quantity": 1,
+              "hotel_id": "0",
+              "addons": [
+                { "id": "a1", "name": "Coca Cola - 1 Litre", "price": 200, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100" },
+                { "id": "a2", "name": "Coca Cola - 500 ml", "price": 120, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100"},
+                { "id": "a5", "name": "Coca Cola - 250 ml", "price": 100, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100" },
+                { "id": "a6", "name": "Garlic Butter Dip", "price": 50, "ImageUrl": "https://cdn.loveandlemons.com/wp-content/uploads/2023/05/garlic-yogurt-sauce-1-1.jpg" }
+              ]
+            },
+            {
+              "id": "2",
+              "name": "Coca-Cola - 1 Liter",
+              "price": 300,
+              "description": "Carbonated drink that refreshes your mind with every sip",
+              "rating": 4.4,
+              "ratings": 43,
+              "image": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100",
+              "veg": true,
+              "bestSeller": false,
+              "quantity": 1,
+              "hotel_id": "0",
+              "addons": [
+                { "id": "a1", "name": "Coca Cola - 1 Litre", "price": 200, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100" },
+                { "id": "a2", "name": "Coca Cola - 500 ml", "price": 120, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100"},
+                { "id": "a5", "name": "Coca Cola - 250 ml", "price": 100, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100" },
+                { "id": "a6", "name": "Garlic Butter Dip", "price": 50, "ImageUrl": "https://cdn.loveandlemons.com/wp-content/uploads/2023/05/garlic-yogurt-sauce-1-1.jpg" }
+              ]
+            },
+            {
+              "id": "3",
+              "name": "Sprite Can - 350 ml",
+              "price": 150,
+              "description": "Carbonated drink that refreshes your mind with every sip",
+              "rating": 4.4,
+              "ratings": 43,
+              "image": "https://images.deliveryhero.io/image/fd-pk/Products/16804899.jpg??width=2100",
+              "veg": true,
+              "bestSeller": false,
+              "quantity": 1,
+              "hotel_id": "0",
+              "addons": [
+                { "id": "a1", "name": "Coca Cola - 1 Litre", "price": 200, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100" },
+                { "id": "a2", "name": "Coca Cola - 500 ml", "price": 120, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100"},
+                { "id": "a5", "name": "Coca Cola - 250 ml", "price": 100, "ImageUrl": "https://images.deliveryhero.io/image/fd-pk/Products/16453005.jpg??width=2100" },
+                { "id": "a6", "name": "Garlic Butter Dip", "price": 50, "ImageUrl": "https://cdn.loveandlemons.com/wp-content/uploads/2023/05/garlic-yogurt-sauce-1-1.jpg" }
+              ]
+            }
+          ]
+      }
       ]
     }
   ]

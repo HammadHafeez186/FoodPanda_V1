@@ -268,7 +268,7 @@ const Order = () => {
                         {currentRestaurant.name} has accepted your order
                     </Text>
 
-                    <View style={styles.cancelButtonContainer}>
+                    <View style={{justifyContent: 'center', alignItems: 'center'}}>
                         <TouchableOpacity
                             onPress={handleCancelOrder}
                             style={[
@@ -277,7 +277,7 @@ const Order = () => {
                             ]}
                             disabled={!canCancelOrder}
                         >
-                            <Text style={styles.cancelButtonText}>
+                            <Text style={styles.cancelOrderText}>
                                 {canCancelOrder 
                                     ? 'Cancel Order' 
                                     : 'Order Cannot Be Cancelled'}
