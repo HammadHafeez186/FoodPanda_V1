@@ -63,6 +63,17 @@ const HotelPage = () => {
     />
   ), [handleAddToCart, handleQuantityChange, cart, restaurant]);
 
+  const handleViewReviews = () => {
+    if (restaurant) {
+      router.push({
+        pathname: `../reviews/${restaurant.id}`,
+        params: {
+          hotelName: restaurant.name,
+        }
+      });
+    }
+  };
+
   const renderHeader = useCallback(() => (
     <>
       <View style={styles.header}>
@@ -70,6 +81,9 @@ const HotelPage = () => {
           <Ionicons name="arrow-back" size={24} color="#333" />
         </TouchableOpacity>
         <Text style={styles.restaurantName}>{restaurant?.name}</Text>
+        <TouchableOpacity onPress={handleViewReviews} style={styles.backButton}>
+          <Ionicons name="star" size={24} color="#333" />
+        </TouchableOpacity>
       </View>
 
       <Image 
@@ -124,4 +138,3 @@ const HotelPage = () => {
 };
 
 export default HotelPage;
-
