@@ -9,7 +9,6 @@ import { supabase } from "../../lib/supabase";
 import { useRouter } from "expo-router";
 import { useIsFocused } from '@react-navigation/native';
 import HomeIndexStyles from "../../Styles/HomeIndexStyles";
-import { items } from "../../data/HomeIndexData";
 import restaurantData from "../../data/dataRestaurantMenu.json";
 import categoriesData from '../../data/categoriesData.json';
 import Hotels from "../../components/Hotels";
@@ -18,6 +17,7 @@ import Carousel from '../../components/Carousel';
 import CartButton from '../../components/CartButton';
 import SearchResults from '../../components/SearchResults';
 import { useSelector } from 'react-redux';
+import items from '../../data/items.json';
 
 const HomeIndex = () => {
     const [locationServicesEnabled, setLocationServicesEnabled] = useState(false);

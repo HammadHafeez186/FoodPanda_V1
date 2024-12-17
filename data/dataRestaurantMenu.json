@@ -15,9 +15,9 @@
       "free_delivery": true,
       "recommended": true,
       "discount": {
-        "percentage": 10,
-        "max_discount": 200,
-        "min_order": 500  
+        "percentage": 20,
+        "max_discount": 600,
+        "min_order": 2500  
       },
       "menu": [
         {

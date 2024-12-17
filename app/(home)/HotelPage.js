@@ -59,7 +59,7 @@ const HotelPage = () => {
       onAddToCart={handleAddToCart}
       onQuantityChange={handleQuantityChange}
       cartItems={cart}
-      discountPercentage={restaurant.discount.percentage}
+      discountPercentage={restaurant?.discount?.percentage || 0}
     />
   ), [handleAddToCart, handleQuantityChange, cart, restaurant]);
 
@@ -69,26 +69,26 @@ const HotelPage = () => {
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
           <Ionicons name="arrow-back" size={24} color="#333" />
         </TouchableOpacity>
-        <Text style={styles.restaurantName}>{restaurant.name}</Text>
+        <Text style={styles.restaurantName}>{restaurant?.name}</Text>
       </View>
 
       <Image 
-        source={{ uri: restaurant.featured_image }} 
+        source={{ uri: restaurant?.featured_image }} 
         style={styles.bannerImage}
       />
 
       <View style={styles.infoContainer}>
-        <Text style={styles.cuisineText}>{restaurant.cuisines}</Text>
+        <Text style={styles.cuisineText}>{restaurant?.cuisines}</Text>
         <View style={styles.ratingContainer}>
           <Ionicons name="star" size={20} color="#FFD700" />
-          <Text style={styles.ratingText}>{restaurant.aggregate_rating}</Text>
+          <Text style={styles.ratingText}>{restaurant?.aggregate_rating}</Text>
         </View>
       </View>
 
-      {restaurant.discount.percentage > 0 && (
+      {restaurant?.discount?.percentage > 0 && (
         <View style={styles.discountBanner}>
           <MaterialCommunityIcons name="tag" size={24} color="#FF2B85" />
-          <Text style={styles.discountText}>{restaurant.discount.percentage}% off on all menu items</Text>
+          <Text style={styles.discountText}>{restaurant?.discount?.percentage}% off on all menu items</Text>
         </View>
       )}
     </>
@@ -107,16 +107,17 @@ const HotelPage = () => {
         keyExtractor={(item) => item.id.toString()}
         contentContainerStyle={styles.menuContainer}
       />
-
       {cart.length > 0 && (
-        <Pressable
-          style={styles.viewCartButton}
-          onPress={() => router.push({ pathname: "/Cart", params: { name: restaurant.name } })}
-        >
-          <Text style={styles.viewCartText}>
-            View Cart ({cart.reduce((total, item) => total + item.quantity, 0)} items)
-          </Text>
-        </Pressable>
+        <View style={styles.viewCartButtonContainer}>
+          <Pressable
+            style={styles.viewCartButton}
+            onPress={() => router.push({ pathname: "/Cart", params: { name: restaurant.name } })}
+          >
+            <Text style={styles.viewCartText}>
+              View Cart ({cart.reduce((total, item) => total + item.quantity, 0)} items)
+            </Text>
+          </Pressable>
+        </View>
       )}
     </View>
   );

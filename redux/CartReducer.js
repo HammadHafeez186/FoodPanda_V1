@@ -20,8 +20,6 @@ const CartSlice = createSlice({
         } else {
           state.items.push({ id, name, price, quantity: 1, addons: [], hotel_id });
         }
-      } else {
-        return state;
       }
     },
     removeFromCart: (state, action) => {

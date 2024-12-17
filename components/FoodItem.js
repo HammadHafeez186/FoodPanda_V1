@@ -31,7 +31,7 @@ const FoodItem = memo(({ item, onAddToCart, onQuantityChange, cartItems, discoun
               onAddToCart={() => onAddToCart(menuItem)}
               onQuantityChange={(action) => onQuantityChange(menuItem, action)}
               quantity={cartItems.find(cartItem => cartItem.id === menuItem.id)?.quantity || 0}
-              discountPercentage={discountPercentage > 0 ? discountPercentage : 0}
+              discountPercentage={discountPercentage}
             />
           ))}
         </View>

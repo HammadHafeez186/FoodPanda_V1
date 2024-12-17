@@ -51,14 +51,14 @@ const MenuItem = memo(({ item, onAddToCart, onQuantityChange, quantity, discount
       ) : (
         <View style={styles.quantityContainer}>
           <TouchableOpacity
-            onPress={() => onQuantityChange(item, 'decrement')}
+            onPress={() => onQuantityChange('decrement')}
             style={styles.quantityButton}
           >
             <Text style={styles.quantityButtonText}>-</Text>
           </TouchableOpacity>
           <Text style={styles.quantityText}>{quantity}</Text>
           <TouchableOpacity
-            onPress={() => onQuantityChange(item, 'increment')}
+            onPress={() => onQuantityChange('increment')}
             style={styles.quantityButton}
           >
             <Text style={styles.quantityButtonText}>+</Text>
