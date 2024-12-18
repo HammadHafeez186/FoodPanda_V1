@@ -6,9 +6,11 @@ const UserProfileFetcher = ({
     onProfileLoaded,
     onError
 }) => {
-    const [userProfile, setUserProfile] = useState(null);
-    const [avatarUrl, setAvatarUrl] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
+    const [profileData, setProfileData] = useState({
+        userProfile: null,
+        avatarUrl: null,
+        isLoading: true
+    });
 
     useEffect(() => {
         const fetchUserProfile = async () => {
@@ -25,20 +27,24 @@ const UserProfileFetcher = ({
                     if (profileError) {
                         console.error("Error fetching user profile:", profileError);
                         onError?.(profileError);
-                        setIsLoading(false);
+                        setProfileData(prevState => ({ ...prevState, isLoading: false }));
                         return;
                     }
 
                     if (profileData) {
-                        setUserProfile(profileData);
-
+                        let avatarUrl = null;
                         if (profileData.avatar_url) {
                             const { data } = supabase.storage
                                 .from("avatars")
                                 .getPublicUrl(profileData.avatar_url);
-
-                            setAvatarUrl(data.publicUrl);
+                            avatarUrl = data.publicUrl;
                         }
+
+                        setProfileData({
+                            userProfile: profileData,
+                            avatarUrl,
+                            isLoading: false
+                        });
 
                         onProfileLoaded?.(profileData);
                         console.log("User profile:", profileData);
@@ -47,8 +53,7 @@ const UserProfileFetcher = ({
             } catch (error) {
                 console.error("Unexpected error in fetchUserProfile:", error);
                 onError?.(error);
-            } finally {
-                setIsLoading(false);
+                setProfileData(prevState => ({ ...prevState, isLoading: false }));
             }
         };
 
@@ -57,8 +62,9 @@ const UserProfileFetcher = ({
 
     // Render children with profile data as a render prop
     return typeof children === 'function'
-        ? children({ userProfile, avatarUrl, isLoading })
+        ? children(profileData)
         : children;
 };
 
 export default UserProfileFetcher;
+
