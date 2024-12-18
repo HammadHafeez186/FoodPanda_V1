@@ -52,7 +52,11 @@ const Cart = () => {
             ? Math.min((totalPrice * discountInfo.percentage) / 100, discountInfo.maxDiscount) 
             : 0;
         const discountedTotal = totalPrice - discountAmount;
-        const deliveryFee = Math.floor(discountedTotal * 0.2);
+        
+        // Check if free delivery is applicable
+        const isFreeDelivery = restaurantData.restaurants.find(r => r.id === currentHotelId)?.free_delivery || false;
+        
+        const deliveryFee = isFreeDelivery ? 0 : Math.floor(discountedTotal * 0.2);
         const deliveryPartnerFee = Math.floor(deliveryFee * 0.2);
         const addOnByItem = cart.reduce((sum, item) => sum + (item.addons?.reduce((addonSum, addon) => addonSum + addon.price, 0) || 0), 0);
         const finalPrice = discountedTotal + deliveryFee + deliveryPartnerFee;
@@ -67,7 +71,7 @@ const Cart = () => {
             addOnByItem, 
             finalPrice 
         };
-    }, [cart, discountInfo]);
+    }, [cart, discountInfo, currentHotelId]);
 
     const renderCartItem = useCallback(({ item }) => {
         // Apply discount to individual item's price if applicable
@@ -324,3 +328,4 @@ const Cart = () => {
 };
 
 export default Cart;
+

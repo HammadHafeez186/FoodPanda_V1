@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { View, Text, Alert, FlatList, TextInput, TouchableOpacity, Image, Modal, Keyboard, TouchableWithoutFeedback } from "react-native";
+import { View, Text, Alert, FlatList, TextInput, TouchableOpacity, Image, Modal, TouchableWithoutFeedback } from "react-native";
 import * as Location from "expo-location";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Octicons from "@expo/vector-icons/Octicons";

@@ -1,10 +1,10 @@
 // PasswordResetScreen.js
 import React, { useState, useRef } from 'react';
-import { 
-  View, 
-  Text, 
-  TextInput, 
-  TouchableOpacity, 
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
   StyleSheet,
   KeyboardAvoidingView,
   Platform,
@@ -15,7 +15,8 @@ import {
 import { supabase } from '../../lib/supabase';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import AntDesign from '@expo/vector-icons/AntDesign';
-import { useRouter, useLocalSearchParams } from 'expo-router';
+import { useRouter, useLocalSearchParams, Link } from 'expo-router';
+import passwordStyles from "../../Styles/reset-passwordStyles"
 
 export default function PasswordResetScreen() {
   const [step, setStep] = useState('verify-otp'); // 'verify-otp' or 'reset-password'
@@ -31,13 +32,20 @@ export default function PasswordResetScreen() {
   // Handle OTP input changes
   const handleOtpChange = (index, value) => {
     if (!/[0-9]/.test(value) && value !== '') return;
-    
+
     const newOtpValues = [...otpValues];
     newOtpValues[index] = value;
     setOtpValues(newOtpValues);
 
     if (value !== '' && index < 5) {
       inputRefs.current[index + 1].focus();
+    }
+
+    if (index === 5 && value !== '') {
+      const otp = newOtpValues.join('');
+      if (otp.length === 6) {
+        verifyOTP(otp);
+      }
     }
   };
 
@@ -47,11 +55,10 @@ export default function PasswordResetScreen() {
     }
   };
 
-  const verifyOTP = async () => {
+  const verifyOTP = async (otp) => {
     try {
       setLoading(true);
-      
-      const otp = otpValues.join('');
+
       if (otp.length !== 6) {
         Alert.alert('Error', 'Please enter the complete 6-digit OTP');
         return;
@@ -99,7 +106,7 @@ export default function PasswordResetScreen() {
       Alert.alert(
         'Success',
         'Password has been reset successfully',
-        [{ text: 'OK', onPress: () => router.replace('../Login') }]
+        [{ text: 'OK', onPress: () => router.replace('/') }]
       );
 
     } catch (error) {
@@ -111,19 +118,19 @@ export default function PasswordResetScreen() {
 
   const renderOTPVerification = () => (
     <>
-      <Text style={styles.headerText}>Verify OTP</Text>
-      <Text style={styles.subHeaderText}>
+      <Text style={passwordStyles.headerText}>Verify OTP</Text>
+      <Text style={passwordStyles.subHeaderText}>
         Enter the OTP code sent to {email}
       </Text>
-      
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Enter OTP Code</Text>
-        <View style={styles.otpContainer}>
+
+      <View style={passwordStyles.inputContainer}>
+        <Text style={passwordStyles.label}>Enter OTP Code</Text>
+        <View style={passwordStyles.otpContainer}>
           {otpValues.map((value, index) => (
             <TextInput
               key={index}
               ref={(el) => (inputRefs.current[index] = el)}
-              style={styles.otpInput}
+              style={passwordStyles.otpInput}
               maxLength={1}
               value={value}
               onChangeText={(text) => handleOtpChange(index, text)}
@@ -137,39 +144,34 @@ export default function PasswordResetScreen() {
           ))}
         </View>
       </View>
+      {loading && (
+        <View style={password.loadingContainer}>
+          <ActivityIndicator color="#FF2B85" />
+          <Text style={password.loadingText}>Verifying OTP...</Text>
+        </View>
+      )}
 
-      <TouchableOpacity 
-        style={[styles.resetButton, loading && styles.buttonDisabled]}
-        onPress={verifyOTP}
-        disabled={loading}
-      >
-        {loading ? (
-          <ActivityIndicator color="#fff" />
-        ) : (
-          <Text style={styles.resetButtonText}>Verify OTP</Text>
-        )}
-      </TouchableOpacity>
     </>
   );
 
   const renderPasswordReset = () => (
     <>
-      <Text style={styles.headerText}>Reset Password</Text>
-      <Text style={styles.subHeaderText}>
+      <Text style={passwordStyles.headerText}>Reset Password</Text>
+      <Text style={passwordStyles.subHeaderText}>
         Create a new password for your account
       </Text>
 
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>New Password</Text>
-        <View style={styles.passwordContainer}>
+      <View style={passwordStyles.inputContainer}>
+        <Text style={passwordStyles.label}>New Password</Text>
+        <View style={passwordStyles.passwordContainer}>
           <MaterialIcons
-            style={styles.icon}
+            style={passwordStyles.icon}
             name="lock"
             size={24}
             color="gray"
           />
           <TextInput
-            style={styles.passwordInput}
+            style={passwordStyles.passwordInput}
             secureTextEntry={!showPassword}
             value={password}
             onChangeText={setPassword}
@@ -185,17 +187,17 @@ export default function PasswordResetScreen() {
         </View>
       </View>
 
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Confirm Password</Text>
-        <View style={styles.passwordContainer}>
+      <View style={passwordStyles.inputContainer}>
+        <Text style={passwordStyles.label}>Confirm Password</Text>
+        <View style={passwordStyles.passwordContainer}>
           <MaterialIcons
-            style={styles.icon}
+            style={passwordStyles.icon}
             name="lock"
             size={24}
             color="gray"
           />
           <TextInput
-            style={styles.passwordInput}
+            style={passwordStyles.passwordInput}
             secureTextEntry={!showPassword}
             value={confirmPassword}
             onChangeText={setConfirmPassword}
@@ -204,129 +206,48 @@ export default function PasswordResetScreen() {
         </View>
       </View>
 
-      <TouchableOpacity 
-        style={[styles.resetButton, loading && styles.buttonDisabled]}
+      <TouchableOpacity
+        style={[passwordStyles.resetButton, loading && passwordStyles.buttonDisabled]}
         onPress={resetPassword}
         disabled={loading}
       >
         {loading ? (
           <ActivityIndicator color="#fff" />
         ) : (
-          <Text style={styles.resetButtonText}>Reset Password</Text>
+          <Text style={passwordStyles.resetButtonText}>Reset Password</Text>
         )}
       </TouchableOpacity>
     </>
   );
 
   return (
-    <SafeAreaView style={styles.safeAreaContainer}>
+    <SafeAreaView style={passwordStyles.safeAreaContainer}>
       <TouchableOpacity
-        style={styles.backButton}
+        style={passwordStyles.backButton}
         onPress={() => {
           if (step === 'reset-password') {
             setStep('verify-otp');
           } else {
-            router.back();
+            router.replace('/');
           }
         }}
       >
         <AntDesign name="arrowleft" size={24} color="black" />
       </TouchableOpacity>
 
-      <KeyboardAvoidingView 
+      <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.container}
+        style={passwordStyles.container}
       >
-        <View style={styles.content}>
+        <View style={passwordStyles.content}>
           {step === 'verify-otp' ? renderOTPVerification() : renderPasswordReset()}
+        </View>
+        <View style={passwordStyles.backToLoginContainer}>
+          <Link href="/" style={passwordStyles.backToLoginText}>
+            Back to Login
+          </Link>
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  safeAreaContainer: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  backButton: {
-    padding: 16,
-  },
-  container: {
-    flex: 1,
-  },
-  content: {
-    flex: 1,
-    padding: 20,
-  },
-  headerText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    color: '#333',
-  },
-  subHeaderText: {
-    fontSize: 16,
-    color: 'gray',
-    marginBottom: 30,
-    lineHeight: 22,
-  },
-  inputContainer: {
-    marginBottom: 20,
-  },
-  label: {
-    fontSize: 16,
-    marginBottom: 8,
-    color: '#333',
-    fontWeight: '500',
-  },
-  otpContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 20,
-  },
-  otpInput: {
-    width: 45,
-    height: 45,
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 8,
-    textAlign: 'center',
-    fontSize: 20,
-    backgroundColor: '#f9f9f9',
-  },
-  passwordContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 8,
-    backgroundColor: '#f9f9f9',
-    paddingHorizontal: 12,
-  },
-  icon: {
-    marginRight: 8,
-  },
-  passwordInput: {
-    flex: 1,
-    height: 50,
-    fontSize: 16,
-  },
-  resetButton: {
-    backgroundColor: '#FF2B85',
-    height: 50,
-    borderRadius: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 20,
-  },
-  buttonDisabled: {
-    opacity: 0.7,
-  },
-  resetButtonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-});
