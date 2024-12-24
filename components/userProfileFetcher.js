@@ -47,7 +47,6 @@ const UserProfileFetcher = ({
                         });
 
                         onProfileLoaded?.(profileData);
-                        console.log("User profile:", profileData);
                     }
                 }
             } catch (error) {
@@ -58,12 +57,9 @@ const UserProfileFetcher = ({
         };
 
         fetchUserProfile();
-    }, []);
+    }, [onProfileLoaded, onError]);
 
-    // Render children with profile data as a render prop
-    return typeof children === 'function'
-        ? children(profileData)
-        : children;
+    return children(profileData);
 };
 
 export default UserProfileFetcher;

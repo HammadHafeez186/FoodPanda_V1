@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { Text, View, SafeAreaView, TextInput, TouchableOpacity, Alert, Image, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, ScrollView, Dimensions } from "react-native";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
@@ -18,10 +18,10 @@ const ReviewPage = () => {
   const [rating, setRating] = useState(0);
   const [image, setImage] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [reviewAvatar, setReviewAvatar] = useState("");
   const router = useRouter();
   const dispatch = useDispatch();
   const currentHotelId = useSelector((state) => state.cart.currentHotelId);
-  const [reviewAvatar, setReviewAvatar] = useState("");
 
   const handleRatingSelect = (selectedRating) => {
     setRating(selectedRating);
@@ -155,7 +155,6 @@ const ReviewPage = () => {
         throw error;
       }
 
-      // Reset cart before navigation
       dispatch(resetCart());
 
       Alert.alert(
@@ -180,15 +179,24 @@ const ReviewPage = () => {
     router.replace("/MainPage");
   };
 
+  const handleProfileLoaded = useCallback((profileData) => {
+    if (profileData.avatar_url) {
+      const { data } = supabase.storage
+        .from("avatars")
+        .getPublicUrl(profileData.avatar_url);
+      setReviewAvatar(data.publicUrl);
+    }
+  }, []);
+
   return (
     <UserProfileFetcher
       onError={(error) => {
         console.error("Profile fetch error:", error);
         Alert.alert("Error", "Could not load user profile");
       }}
+      onProfileLoaded={handleProfileLoaded}
     >
       {({ userProfile, avatarUrl, isLoading }) => (
-        setReviewAvatar(avatarUrl),
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
           style={styles.keyboardContainer}
@@ -309,3 +317,4 @@ const ReviewPage = () => {
 };
 
 export default ReviewPage;
+
