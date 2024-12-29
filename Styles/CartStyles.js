@@ -106,6 +106,10 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: "#555",
     },
+    deliveryInstructionsContainer: {
+        marginTop: 20,
+        marginBottom: 10,
+    },
     deliveryInstructionHeading: {
         fontSize: 16,
         fontWeight: "bold",
@@ -123,6 +127,11 @@ const styles = StyleSheet.create({
         fontSize: 14,
         marginLeft: 10,
         color: "#333",
+    },
+    selectedInstruction: {
+        backgroundColor: '#e0e0e0',
+        borderRadius: 5,
+        padding: 5,
     },
     billingContainer: {
         backgroundColor: "#f9f9f9",
@@ -170,6 +179,67 @@ const styles = StyleSheet.create({
         paddingTop: 5,
         alignSelf: "center",
     },
+    emptyCartText: {
+        fontSize: 16,
+        color: "#333",
+        textAlign: "center",
+        marginTop: 20,
+    },
+    removeButton: {
+        backgroundColor: "#ff4d4d",
+        padding: 8,
+        borderRadius: 5,
+        marginTop: 10,
+    },
+    removeButtonText: {
+        color: "#fff",
+        fontSize: 14,
+        fontWeight: "600",
+        textAlign: "center",
+    },
+    addonsContainer: {
+        marginTop: 10,
+    },
+    addonsTitle: {
+        fontSize: 14,
+        fontWeight: "600",
+        color: "#333",
+        marginBottom: 5,
+    },
+    footer: {
+        marginTop: 20,
+    },
+    paymentMethod: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        backgroundColor: "#f0f0f0",
+        padding: 15,
+        borderRadius: 8,
+    },
+    paymentMethodTitle: {
+        fontSize: 16,
+        fontWeight: "bold",
+        color: "#333",
+    },
+    paymentMethodSubtitle: {
+        fontSize: 14,
+        color: "#666",
+    },
+    placeOrderButtonContent: {
+        alignItems: "center",
+    },
+    totalText: {
+        fontSize: 16,
+        fontWeight: "bold",
+        color: "#333",
+    },
+    totalAmount: {
+        fontSize: 16,
+        fontWeight: "bold",
+        color: "#FF2B85",
+    },
 });
 
 export default styles;
+

@@ -1,22 +1,28 @@
 [
   {
-    "id": "0",
-    "name": "Avoid Ringing",
-    "iconName": "bell"
-  },
-  {
     "id": "1",
-    "name": "Leave at the door",
+    "name": "Leave at door",
     "iconName": "door-open"
   },
   {
     "id": "2",
-    "name": "Directions to Reach",
-    "iconName": "directions"
+    "name": "Hand it to me",
+    "iconName": "hand-paper"
   },
   {
     "id": "3",
-    "name": "Avoid Calling",
-    "iconName": "phone"
+    "name": "Meet outside",
+    "iconName": "building"
+  },
+  {
+    "id": "4",
+    "name": "Avoid calling",
+    "iconName": "phone-slash"
+  },
+  {
+    "id": "5",
+    "name": "Leave with security",
+    "iconName": "user-shield"
   }
 ]
+
