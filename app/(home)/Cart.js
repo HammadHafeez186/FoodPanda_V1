@@ -24,6 +24,7 @@ const Cart = () => {
     const { items: cart, currentHotelId } = useSelector((state) => state.cart);
     const dispatch = useDispatch();
     const [discountInfo, setDiscountInfo] = useState({ percentage: 0, minOrder: 0, maxDiscount: 0 });
+    const [selectedInstructions, setSelectedInstructions] = useState([]);
 
     useEffect(() => {
         const restaurant = restaurantData.restaurants.find(r => r.id === currentHotelId);
@@ -53,7 +54,6 @@ const Cart = () => {
             : 0;
         const discountedTotal = totalPrice - discountAmount;
         
-        // Check if free delivery is applicable
         const isFreeDelivery = restaurantData.restaurants.find(r => r.id === currentHotelId)?.free_delivery || false;
         
         const deliveryFee = isFreeDelivery ? 0 : Math.floor(discountedTotal * 0.2);
@@ -74,7 +74,6 @@ const Cart = () => {
     }, [cart, discountInfo, currentHotelId]);
 
     const renderCartItem = useCallback(({ item }) => {
-        // Apply discount to individual item's price if applicable
         const itemPrice = isDiscountApplicable 
             ? item.price * (1 - discountInfo.percentage / 100)
             : item.price;
@@ -135,18 +134,29 @@ const Cart = () => {
     }, [dispatch, router, isDiscountApplicable, discountInfo]);
 
     const renderInstructionItem = useCallback(({ item }) => (
-        <TouchableOpacity style={styles.deliveryIconPressable}>
+        <TouchableOpacity 
+            style={[
+                styles.deliveryIconPressable,
+                selectedInstructions.includes(item.id) && styles.selectedInstruction
+            ]}
+            onPress={() => {
+                setSelectedInstructions(prev => 
+                    prev.includes(item.id)
+                        ? prev.filter(id => id !== item.id)
+                        : [...prev, item.id]
+                );
+            }}
+        >
             <View style={styles.deliveryInstructionView}>
                 <FontAwesome5 name={item.iconName} size={20} color="black" />
                 <Text style={styles.deliveryInstructionText}>{item.name}</Text>
             </View>
         </TouchableOpacity>
-    ), []);
+    ), [selectedInstructions]);
 
     const uploadCartData = useCallback(async (userId, cartItems, discountInfo) => {
         try {
             for (const item of cartItems) {
-                // Calculate the discounted price for this specific item
                 const discountedItemPrice = discountInfo.percentage > 0 && isDiscountApplicable
                     ? item.price * (1 - discountInfo.percentage / 100)
                     : item.price;
@@ -157,7 +167,7 @@ const Cart = () => {
                         user_id: userId,
                         hotel_id: item.hotel_id,
                         item_name: item.name,
-                        price: discountedItemPrice, // Use the discounted price here
+                        price: discountedItemPrice,
                         quantity: item.quantity
                     })
                     .select()
@@ -180,12 +190,24 @@ const Cart = () => {
                 }
             }
 
-            console.log('Cart data uploaded successfully');
+            // Upload selected instructions
+            if (selectedInstructions.length > 0) {
+                const { error: instructionsError } = await supabase
+                    .from('order_instructions')
+                    .insert({
+                        user_id: userId,
+                        instructions: selectedInstructions
+                    });
+
+                if (instructionsError) throw instructionsError;
+            }
+
+            console.log('Cart data and instructions uploaded successfully');
         } catch (error) {
             console.error('Error uploading cart data:', error);
             throw error;
         }
-    }, [isDiscountApplicable]);
+    }, [isDiscountApplicable, selectedInstructions]);
 
     const handlePlaceOrder = useCallback(async () => {
         if (finalPrice < 500) return;
